@@ -1,17 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Absensi Event Bonataon 2026 - MANIHURUK</title>
-    https://cdn.tailwindcss.com</script>
-    https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap
-    https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap
-    https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
-
-    https://unpkg.com/html5-qrcode</script>
-
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    
     <style>
         :root {
             --primary: #4361ee;
@@ -22,38 +21,42 @@
             --light: #f8f9fa;
             --dark: #212529;
         }
-
-        body {
+        
+        body { 
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-
+        
         .glass-effect {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-
+        
         .glass-effect-dark {
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
+        
         .gradient-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             position: relative;
             overflow: hidden;
         }
+        
         .gradient-header::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-
+        
         .card {
             background: white;
             border-radius: 20px;
@@ -61,11 +64,12 @@
             transition: all 0.3s ease;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
+        
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
         }
-
+        
         .btn-primary {
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
@@ -76,11 +80,12 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
         }
+        
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
         }
-
+        
         .btn-secondary {
             background: linear-gradient(to right, #6c757d, #495057);
             color: white;
@@ -90,11 +95,12 @@
             padding: 14px 24px;
             transition: all 0.3s ease;
         }
+        
         .btn-secondary:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
         }
-
+        
         .stat-card {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
@@ -104,11 +110,12 @@
             text-align: center;
             transition: all 0.3s ease;
         }
+        
         .stat-card:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-5px);
         }
-
+        
         .nav-tab {
             background: white;
             border-radius: 14px;
@@ -119,6 +126,7 @@
             border: 2px solid transparent;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
+        
         .nav-tab.active {
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
@@ -126,11 +134,12 @@
             box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
             transform: translateY(-5px);
         }
+        
         .nav-tab:hover:not(.active) {
             background: #f8f9fa;
             transform: translateY(-3px);
         }
-
+        
         .input-field {
             background: #f8f9fa;
             border: 2px solid #e9ecef;
@@ -139,13 +148,14 @@
             font-weight: 500;
             transition: all 0.3s ease;
         }
+        
         .input-field:focus {
             background: white;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
             outline: none;
         }
-
+        
         .badge {
             display: inline-flex;
             align-items: center;
@@ -154,56 +164,92 @@
             font-weight: 600;
             font-size: 12px;
         }
-        .badge-primary { background: rgba(67, 97, 238, 0.1); color: var(--primary); }
-        .badge-success { background: rgba(76, 201, 240, 0.1); color: #4cc9f0; }
-        .badge-warning { background: rgba(247, 37, 133, 0.1); color: #f72585; }
-
-        .modal { animation: modalFadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
+        
+        .badge-primary {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
         }
-
-        .floating-element { animation: float 6s ease-in-out infinite; }
+        
+        .badge-success {
+            background: rgba(76, 201, 240, 0.1);
+            color: #4cc9f0;
+        }
+        
+        .badge-warning {
+            background: rgba(247, 37, 133, 0.1);
+            color: #f72585;
+        }
+        
+        .modal {
+            animation: modalFadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
         }
-
-        .pulse-soft { animation: pulseSoft 2s infinite; }
+        
+        .pulse-soft {
+            animation: pulseSoft 2s infinite;
+        }
+        
         @keyframes pulseSoft {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
         }
-
+        
         /* CSS Scanner */
-        #reader {
-            width: 100%;
-            background: #000;
+        #reader { 
+            width: 100%; 
+            background: #000; 
             border-radius: 16px;
             border: none;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
-        #reader video { object-fit: cover; border-radius: 16px; transform: scaleX(-1); }
-        #reader__dashboard_section_csr span,
+        #reader video { 
+            object-fit: cover; 
+            border-radius: 16px;
+            transform: scaleX(-1); 
+        }
+        #reader__dashboard_section_csr span, 
         #reader__dashboard_section_swaplink { display: none !important; }
-        #reader__filescan_input_label { display: none; }
+        #reader__filescan_input_label { display: none; } 
         #reader__dashboard_section_csr button {
             background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
+            color: white; 
             padding: 12px 24px;
-            border-radius: 10px;
-            border: none;
-            font-weight: bold;
+            border-radius: 10px; 
+            border: none; 
+            font-weight: bold; 
             margin-top: 10px;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
         }
-
+        
         /* Custom scrollbar */
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: linear-gradient(to bottom, var(--primary), var(--secondary));
             border-radius: 10px;
@@ -211,14 +257,14 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(to bottom, var(--secondary), var(--accent));
         }
-
+        
         .ornament {
             position: absolute;
             z-index: 0;
             opacity: 0.1;
             pointer-events: none;
         }
-
+        
         .title-text {
             font-family: 'Poppins', sans-serif;
             font-weight: 800;
@@ -227,7 +273,7 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-
+        
         .logo-container {
             background: white;
             width: 60px;
@@ -240,9 +286,22 @@
             border: 3px solid rgba(255, 255, 255, 0.5);
             overflow: hidden;
         }
-        .logo-img { width: 100%; height: 100%; object-fit: cover; border-radius: 13px; }
-
-        .tugu-logo { width: 100%; height: 100%; object-fit: contain; padding: 5px; border-radius: 13px; }
+        
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 13px;
+        }
+        
+        /* Logo Tugu Raja Manihuruk styling */
+        .tugu-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
+            border-radius: 13px;
+        }
     </style>
 </head>
 <body class="min-h-screen text-gray-800">
@@ -261,7 +320,7 @@
     </div>
 
     <div id="app" class="relative z-10 max-w-md mx-auto md:max-w-4xl min-h-screen md:my-8 md:rounded-3xl overflow-hidden flex flex-col glass-effect">
-
+        
         <div id="loading" class="absolute inset-0 z-[9999] bg-white flex flex-col justify-center items-center">
             <div class="logo-container mb-6">
                 <!-- Tugu Raja Manihuruk Logo -->
@@ -286,7 +345,7 @@
             <!-- Animated background elements -->
             <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
             <div class="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl"></div>
-
+            
             <div class="flex justify-between items-start relative z-10">
                 <div class="flex items-center gap-4">
                     <div class="logo-container floating-element">
@@ -315,7 +374,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="flex gap-4 mt-8 overflow-x-auto pb-2 custom-scrollbar">
                 <div class="stat-card flex-1 min-w-[100px]">
                     <div class="text-3xl font-bold" id="statRegistered">0</div>
@@ -368,7 +427,7 @@
         <main class="flex-1 p-6 overflow-y-auto bg-gradient-to-b from-gray-50 to-white pb-24">
             <div id="content-area"></div>
         </main>
-
+        
         <!-- Footer -->
         <footer class="py-4 px-6 border-t border-gray-100 text-center text-gray-500 text-sm bg-white">
             <div class="flex justify-between items-center">
@@ -391,7 +450,7 @@
             <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
                 <i class="fas fa-times"></i>
             </button>
-
+            
             <div class="mb-6 text-center">
                 <div class="logo-container mx-auto mb-4">
                     <!-- Tugu Raja Manihuruk Logo -->
@@ -408,25 +467,25 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Panel Admin</h3>
                 <p class="text-sm text-gray-500">Masukkan password untuk akses fitur admin</p>
             </div>
-
+            
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Password Admin</label>
                     <div class="relative">
-                        <input type="password" id="adminPassword"
-                               placeholder="Masukkan password"
+                        <input type="password" id="adminPassword" 
+                               placeholder="Masukkan password" 
                                class="input-field w-full pr-10">
                         <i class="fas fa-lock absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     </div>
                 </div>
-
+                
                 <div class="space-y-3 pt-2">
-                    <button onclick="window.verifyAdmin()"
+                    <button onclick="window.verifyAdmin()" 
                             class="btn-primary w-full flex items-center justify-center gap-2">
                         <i class="fas fa-sign-in-alt"></i> Masuk
                     </button>
-
-                    <button onclick="closeModal('adminModal')"
+                    
+                    <button onclick="closeModal('adminModal')" 
                             class="btn-secondary w-full">
                         Batal
                     </button>
@@ -443,16 +502,16 @@
                 <i class="fas fa-user-check text-blue-500"></i> Check-in Manual
             </h3>
             <p class="text-sm text-gray-500 mb-4">Pilih peserta untuk check-in manual:</p>
-
+            
             <div class="space-y-3 mb-6">
                 <div class="relative">
-                    <input type="text" id="manualSearch" placeholder="Cari nama peserta..."
+                    <input type="text" id="manualSearch" placeholder="Cari nama peserta..." 
                            class="input-field w-full pr-10">
                     <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                 </div>
                 <div id="manualCheckinList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2"></div>
             </div>
-
+            
             <div class="flex gap-3">
                 <button onclick="closeModal('manualCheckinModal')" class="btn-secondary flex-1">Batal</button>
                 <button onclick="processManualCheckin()" class="btn-primary flex-1" disabled id="manualCheckinBtn">
@@ -470,16 +529,16 @@
                 <i class="fas fa-gift text-purple-500"></i> Ambil Hadiah Manual
             </h3>
             <p class="text-sm text-gray-500 mb-4">Pilih peserta untuk ambil hadiah manual:</p>
-
+            
             <div class="space-y-3 mb-6">
                 <div class="relative">
-                    <input type="text" id="manualGiftSearch" placeholder="Cari nama peserta..."
+                    <input type="text" id="manualGiftSearch" placeholder="Cari nama peserta..." 
                            class="input-field w-full pr-10">
                     <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                 </div>
                 <div id="manualGiftList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2"></div>
             </div>
-
+            
             <div class="flex gap-3">
                 <button onclick="closeModal('manualGiftModal')" class="btn-secondary flex-1">Batal</button>
                 <button onclick="processManualGift()" class="btn-primary flex-1" disabled id="manualGiftBtn" style="background: linear-gradient(to right, var(--warning), #b5179e);">
@@ -503,12 +562,12 @@
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-gray-50 p-4 rounded-xl">
-                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Status</div>
-                        <div id="confStatus" class="font-bold text-purple-600"></div>
+                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Kelas</div>
+                        <div id="confClass" class="font-bold text-purple-600"></div>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-xl">
-                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Group</div>
-                        <div id="confGroup" class="font-bold text-blue-600"></div>
+                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Sektor</div>
+                        <div id="confSector" class="font-bold text-blue-600"></div>
                     </div>
                 </div>
             </div>
@@ -528,39 +587,40 @@
             <button onclick="closeModal('ticketModal')" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
                 <i class="fas fa-times"></i>
             </button>
-
+            
             <div class="mb-6">
                 <div class="badge badge-primary mx-auto mb-3">
                     <i class="fas fa-ticket-alt mr-2"></i> Tiket Bonataon 2026
                 </div>
                 <h2 id="ticName" class="text-2xl font-black text-gray-800 leading-tight mb-3">Nama Peserta</h2>
                 <div class="flex justify-center gap-3 mb-6">
-                    <span id="ticStatus" class="badge badge-primary flex items-center gap-1">
-                        <i class="fas fa-user-tag"></i> <span class="ticStatusText">Status</span>
+                    <span id="ticClass" class="badge badge-primary flex items-center gap-1">
+                        <i class="fas fa-graduation-cap"></i> <span class="ticClassText">Kelas</span>
                     </span>
-                    <span id="ticGroup" class="badge badge-success flex items-center gap-1">
-                        <i class="fas fa-users"></i> <span class="ticGroupText">Group</span>
+                    <span id="ticSector" class="badge badge-success flex items-center gap-1">
+                        <i class="fas fa-map-marker-alt"></i> <span class="ticSectorText">Sektor</span>
                     </span>
                 </div>
             </div>
-
+            
             <div class="bg-white p-6 rounded-2xl shadow-inner mb-8 mx-auto max-w-xs">
                 <div class="text-xs text-gray-500 font-bold mb-3">SCAN QR CODE UNTUK ABSENSI</div>
                 <img id="ticQR" src="" class="w-56 h-56 object-contain mx-auto rounded-lg" alt="QR Code Tiket">
                 <div class="text-xs text-gray-400 mt-3 font-mono" id="ticCode">BONATAON-XXXXXX</div>
             </div>
-
+            
             <div class="space-y-3">
-                #
+                <a id="btnDownloadTicket" href="#" download="Tiket_Bonataon_2026_MANIHURUK.png" 
+                   class="btn-primary w-full flex items-center justify-center gap-2">
                     <i class="fas fa-download"></i> Simpan Tiket
                 </a>
-
-                <button onclick="printTicket()"
+                
+                <button onclick="printTicket()" 
                         class="btn-secondary w-full flex items-center justify-center gap-2">
                     <i class="fas fa-print"></i> Cetak Tiket
                 </button>
-
-                <button onclick="closeModal('ticketModal')"
+                
+                <button onclick="closeModal('ticketModal')" 
                         class="w-full py-3 text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors">
                     Tutup
                 </button>
@@ -576,14 +636,14 @@
 
         // --- CONFIG FIREBASE ---
         const firebaseConfig = {
-            apiKey: "AIzaSyD1jqsGb3gIGEhg8qo37oMAANNcKDdDuFU",
-            authDomain: "bonataon-2026.firebaseapp.com",
-            databaseURL: "https://bonataon-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "bonataon-2026",
-            storageBucket: "bonataon-2026.firebasestorage.app",
-            messagingSenderId: "392578784070",
-            appId: "1:392578784070:web:f85870afad7f202a592347",
-            measurementId: "G-BX7BB696ET"
+            apiKey: "AIzaSyBzka8Ps_nf-8zDA2tMDmqEMw6zMoy3aeM",
+            authDomain: "eventnatal2025.firebaseapp.com",
+            databaseURL: "https://eventnatal2025-default-rtdb.asia-southeast1.firebasedatabase.app/", 
+            projectId: "eventnatal2025",
+            storageBucket: "eventnatal2025.firebasestorage.app",
+            messagingSenderId: "961570070334",
+            appId: "1:961570070334:web:888638e9de275e27b2566f",
+            measurementId: "G-QX5GJPEDCF"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -595,7 +655,7 @@
             attendance: [],
             gifts: [],
             tab: 'register',
-            dataViewMode: 'attendance',
+            dataViewMode: 'attendance', 
             scanner: null,
             tempData: null,
             searchTerm: '',
@@ -627,37 +687,22 @@
         // QR Code Generator (Resolusi Tinggi untuk Download)
         const getQR = (txt) => `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=20&ecc=L&color=000000&bgcolor=ffffff&format=png&data=${encodeURIComponent(txt)}`;
 
-        // --- LISTENERS (dengan fallback data lama classGrade/sector) ---
+        // --- LISTENERS ---
         onValue(ref(db, 'participants'), s => {
-            const raw = s.val() ? Object.values(s.val()) : [];
-            state.participants = raw.map(p => ({
-                ...p,
-                status: p.status ?? p.classGrade ?? '-',
-                group:  p.group  ?? p.sector     ?? '-',
-            }));
+            state.participants = s.val() ? Object.values(s.val()) : [];
             updateStats();
             if (state.tab === 'register') renderParticipantListOnly();
         });
-
+        
         onValue(ref(db, 'attendance'), s => {
-            const raw = s.val() ? Object.values(s.val()) : [];
-            state.attendance = raw.map(a => ({
-                ...a,
-                status: a.status ?? a.classGrade ?? '-',
-                group:  a.group  ?? a.sector     ?? '-',
-            }));
+            state.attendance = s.val() ? Object.values(s.val()) : [];
             updateStats();
             if (state.tab === 'data' && state.dataViewMode === 'attendance') render();
             document.getElementById('loading').style.display = 'none';
         });
 
         onValue(ref(db, 'gifts'), s => {
-            const raw = s.val() ? Object.values(s.val()) : [];
-            state.gifts = raw.map(g => ({
-                ...g,
-                status: g.status ?? g.classGrade ?? '-',
-                group:  g.group  ?? g.sector     ?? '-',
-            }));
+            state.gifts = s.val() ? Object.values(s.val()) : [];
             updateStats();
             if (state.tab === 'data' && state.dataViewMode === 'gifts') render();
         });
@@ -671,33 +716,33 @@
         // --- CORE LOGIC ---
         window.preRegister = () => {
             const name = document.getElementById('inName').value.trim();
-            const status = document.getElementById('inStatus').value;
-            const group = document.getElementById('inGroup').value;
-            if(!name || !status || !group) {
+            const cls = document.getElementById('inClass').value;
+            const sec = document.getElementById('inSector').value;
+            if(!name || !cls || !sec) {
                 showToast('Mohon lengkapi semua data!', 'warning');
                 return;
             }
-            state.tempData = { name, status, group };
+            state.tempData = { name, cls, sec };
             document.getElementById('confName').innerText = name;
-            document.getElementById('confStatus').innerText = status;
-            document.getElementById('confGroup').innerText = group;
+            document.getElementById('confClass').innerText = cls;
+            document.getElementById('confSector').innerText = sec;
             showModal('confirmModal');
         };
 
         window.processSave = () => {
             if(!state.tempData) return;
-            const { name, status, group } = state.tempData;
+            const { name, cls, sec } = state.tempData;
             const id = Date.now().toString();
             const qr = `BONATAON-${id.slice(-6)}`;
             push(ref(db, 'participants'), {
-                id, name, status, group, qrCode: qr,
+                id, name, classGrade: cls, sector: sec, qrCode: qr,
                 registeredAt: fmtDate(), timestamp: Date.now()
             });
             closeModal('confirmModal');
             document.getElementById('inName').value = '';
-
+            
             // Langsung tampilkan tiket setelah simpan
-            window.showTicket(name, status, group, qr);
+            window.showTicket(name, cls, sec, qr);
             showToast('Pendaftaran berhasil! Tiket telah dibuat.', 'success');
         };
 
@@ -705,14 +750,21 @@
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `fixed top-6 right-6 z-[10000] px-6 py-4 rounded-xl shadow-xl text-white font-medium transform translate-x-full transition-transform duration-300`;
-
+            
             let bgColor = 'bg-blue-500';
             let icon = 'fas fa-info-circle';
-
-            if (type === 'success') { bgColor = 'bg-green-500'; icon = 'fas fa-check-circle'; }
-            else if (type === 'warning') { bgColor = 'bg-yellow-500'; icon = 'fas fa-exclamation-triangle'; }
-            else if (type === 'error') { bgColor = 'bg-red-500'; icon = 'fas fa-times-circle'; }
-
+            
+            if (type === 'success') {
+                bgColor = 'bg-green-500';
+                icon = 'fas fa-check-circle';
+            } else if (type === 'warning') {
+                bgColor = 'bg-yellow-500';
+                icon = 'fas fa-exclamation-triangle';
+            } else if (type === 'error') {
+                bgColor = 'bg-red-500';
+                icon = 'fas fa-times-circle';
+            }
+            
             toast.className += ` ${bgColor}`;
             toast.innerHTML = `
                 <div class="flex items-center gap-3">
@@ -720,13 +772,20 @@
                     <span>${message}</span>
                 </div>
             `;
-
+            
             document.body.appendChild(toast);
-
-            setTimeout(() => { toast.classList.remove('translate-x-full'); toast.classList.add('translate-x-0'); }, 10);
+            
             setTimeout(() => {
-                toast.classList.remove('translate-x-0'); toast.classList.add('translate-x-full');
-                setTimeout(() => { document.body.removeChild(toast); }, 300);
+                toast.classList.remove('translate-x-full');
+                toast.classList.add('translate-x-0');
+            }, 10);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-x-0');
+                toast.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
             }, 3000);
         }
 
@@ -734,13 +793,17 @@
         window.showModal = (id) => {
             const modal = document.getElementById(id);
             modal.classList.remove('hidden');
-            setTimeout(() => { modal.style.opacity = '1'; }, 10);
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
         };
 
         window.closeModal = (id) => {
             const modal = document.getElementById(id);
             modal.style.opacity = '0';
-            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
             // Reset selections
             if (id === 'manualCheckinModal') state.selectedManualCheckin = null;
             if (id === 'manualGiftModal') state.selectedManualGift = null;
@@ -749,7 +812,9 @@
         // --- ADMIN FUNCTIONS ---
         window.adminLogin = () => {
             showModal('adminModal');
-            setTimeout(() => { document.getElementById('adminPassword').focus(); }, 100);
+            setTimeout(() => {
+                document.getElementById('adminPassword').focus();
+            }, 100);
         };
 
         window.verifyAdmin = () => {
@@ -781,7 +846,7 @@
                 window.adminLogin();
                 return;
             }
-
+            
             showModal('manualCheckinModal');
             setTimeout(() => {
                 renderManualCheckinList();
@@ -795,7 +860,7 @@
                 window.adminLogin();
                 return;
             }
-
+            
             showModal('manualGiftModal');
             setTimeout(() => {
                 renderManualGiftList();
@@ -807,13 +872,13 @@
             const searchTerm = document.getElementById('manualSearch').value.toLowerCase();
             const listEl = document.getElementById('manualCheckinList');
             const btn = document.getElementById('manualCheckinBtn');
-
+            
             // Filter participants who haven't checked in
             const filtered = state.participants.filter(p => {
                 const alreadyPresent = state.attendance.find(a => a.participantId === p.id);
                 return !alreadyPresent && p.name.toLowerCase().includes(searchTerm);
             });
-
+            
             if (filtered.length === 0) {
                 listEl.innerHTML = `
                     <div class="text-center py-8 text-gray-400">
@@ -824,23 +889,23 @@
                 btn.disabled = true;
                 return;
             }
-
+            
             listEl.innerHTML = filtered.map(p => `
-                <div class="p-4 border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer rounded-xl transition-all ${state.selectedManualCheckin?.id === p.id ? 'bg-blue-50 border-blue-400' : ''}"
+                <div class="p-4 border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer rounded-xl transition-all ${state.selectedManualCheckin?.id === p.id ? 'bg-blue-50 border-blue-400' : ''}" 
                      onclick="selectManualCheckin(${JSON.stringify(p)})">
                     <div class="flex justify-between items-center">
                         <div>
                             <div class="font-bold text-gray-800">${p.name}</div>
                             <div class="flex gap-2 mt-2">
-                                <span class="badge badge-primary">${p.status}</span>
-                                <span class="badge badge-success">${p.group}</span>
+                                <span class="badge badge-primary">${p.classGrade}</span>
+                                <span class="badge badge-success">${p.sector}</span>
                             </div>
                         </div>
                         <i class="fas fa-chevron-right text-gray-400 ${state.selectedManualCheckin?.id === p.id ? 'text-blue-500' : ''}"></i>
                     </div>
                 </div>
             `).join('');
-
+            
             btn.disabled = !state.selectedManualCheckin;
         }
 
@@ -848,13 +913,13 @@
             const searchTerm = document.getElementById('manualGiftSearch').value.toLowerCase();
             const listEl = document.getElementById('manualGiftList');
             const btn = document.getElementById('manualGiftBtn');
-
+            
             // Filter participants who haven't claimed gift
             const filtered = state.participants.filter(p => {
                 const alreadyClaimed = state.gifts.find(g => g.participantId === p.id);
                 return !alreadyClaimed && p.name.toLowerCase().includes(searchTerm);
             });
-
+            
             if (filtered.length === 0) {
                 listEl.innerHTML = `
                     <div class="text-center py-8 text-gray-400">
@@ -865,23 +930,23 @@
                 btn.disabled = true;
                 return;
             }
-
+            
             listEl.innerHTML = filtered.map(p => `
-                <div class="p-4 border border-gray-200 hover:border-purple-300 hover:bg-purple-50 cursor-pointer rounded-xl transition-all ${state.selectedManualGift?.id === p.id ? 'bg-purple-50 border-purple-400' : ''}"
+                <div class="p-4 border border-gray-200 hover:border-purple-300 hover:bg-purple-50 cursor-pointer rounded-xl transition-all ${state.selectedManualGift?.id === p.id ? 'bg-purple-50 border-purple-400' : ''}" 
                      onclick="selectManualGift(${JSON.stringify(p)})">
                     <div class="flex justify-between items-center">
                         <div>
                             <div class="font-bold text-gray-800">${p.name}</div>
                             <div class="flex gap-2 mt-2">
-                                <span class="badge badge-primary">${p.status}</span>
-                                <span class="badge badge-success">${p.group}</span>
+                                <span class="badge badge-primary">${p.classGrade}</span>
+                                <span class="badge badge-success">${p.sector}</span>
                             </div>
                         </div>
                         <i class="fas fa-chevron-right text-gray-400 ${state.selectedManualGift?.id === p.id ? 'text-purple-500' : ''}"></i>
                     </div>
                 </div>
             `).join('');
-
+            
             btn.disabled = !state.selectedManualGift;
         }
 
@@ -901,53 +966,72 @@
             renderManualGiftList();
         };
 
+        window.processManualCheckin = () => {
+            if (!state.selectedManualCheckin || !state.isAdmin) return;
+            
+            const p = state.selectedManualCheckin;
+            window.doCheckIn(p);
+            state.selectedManualCheckin = null;
+            closeModal('manualCheckinModal');
+        };
+
+        window.processManualGift = () => {
+            if (!state.selectedManualGift || !state.isAdmin) return;
+            
+            const p = state.selectedManualGift;
+            window.claimGift(p);
+            state.selectedManualGift = null;
+            closeModal('manualGiftModal');
+        };
+
         // --- FUNGSI CARI TIKET ---
         window.findMyTicket = () => {
             const nameInput = document.getElementById('findName');
-            const groupInput = document.getElementById('findGroup');
-
-            if(!nameInput || !groupInput) {
+            const sectorInput = document.getElementById('findSector');
+            
+            if(!nameInput || !sectorInput) {
                 showToast('Form pencarian tidak tersedia!', 'error');
                 return;
             }
 
             const name = nameInput.value.trim().toLowerCase();
-            const group = groupInput.value;
+            const sector = sectorInput.value;
 
-            if(!name || !group) {
-                showToast('Mohon isi Nama Lengkap dan Pilih Group!', 'warning');
+            if(!name || !sector) {
+                showToast('Mohon isi Nama Lengkap dan Pilih Sektor!', 'warning');
                 return;
             }
 
             const found = state.participants.find(p => {
                 const pName = p.name?.trim().toLowerCase() || "";
-                const pGroup = p.group || "";
-                return pName.includes(name) && pGroup === group;
+                const pSector = p.sector || "";
+                
+                return pName.includes(name) && pSector === sector;
             });
 
             if (found) {
                 const safeName = found.name || "Peserta";
-                const safeStatus = found.status || "-";
-                const safeGroup = found.group || "-";
+                const safeClass = found.classGrade || "-";
+                const safeSector = found.sector || "-";
                 const safeQR = found.qrCode || `BONATAON-${found.id?.slice(-6) || "000000"}`;
 
-                window.showTicket(safeName, safeStatus, safeGroup, safeQR);
+                window.showTicket(safeName, safeClass, safeSector, safeQR);
             } else {
-                const participantsInGroup = state.participants.filter(p => p.group === group);
-
+                const participantsInSector = state.participants.filter(p => p.sector === sector);
+                
                 let errorMsg = "Data tidak ditemukan!\n";
                 errorMsg += `\nNama: ${nameInput.value.trim()}`;
-                errorMsg += `\nGroup: ${group}`;
-
-                if (participantsInGroup.length === 0) {
-                    errorMsg += "\n\nTidak ada peserta terdaftar di group ini.";
+                errorMsg += `\nSektor: ${sector}`;
+                
+                if (participantsInSector.length === 0) {
+                    errorMsg += "\n\nTidak ada peserta terdaftar di sektor ini.";
                 } else {
                     errorMsg += "\n\nTips:";
                     errorMsg += "\n- Cek ejaan nama";
                     errorMsg += "\n- Gunakan nama lengkap";
-                    errorMsg += `\n\nTotal ${participantsInGroup.length} peserta di group ${group}`;
+                    errorMsg += `\n\nTotal ${participantsInSector.length} peserta di sektor ${sector}`;
                 }
-
+                
                 showToast(errorMsg, 'warning');
             }
         };
@@ -971,7 +1055,7 @@
                 beep('success');
                 push(ref(db, 'attendance'), {
                     id: Date.now().toString(), participantId: p.id, name: p.name,
-                    status: p.status, group: p.group, timestamp: fmtDate()
+                    classGrade: p.classGrade, sector: p.sector, timestamp: fmtDate()
                 });
                 showScanResult(true, `${p.name} berhasil check-in!`);
             }
@@ -986,7 +1070,7 @@
                 beep('success');
                 push(ref(db, 'gifts'), {
                     id: Date.now().toString(), participantId: p.id, name: p.name,
-                    status: p.status, group: p.group, timestamp: fmtDate()
+                    classGrade: p.classGrade, sector: p.sector, timestamp: fmtDate()
                 });
                 showScanResult(true, `${p.name} berhasil ambil hadiah!`, 'success');
             }
@@ -997,14 +1081,14 @@
             if(state.scanner) return;
             const config = { fps: 10, qrbox: 450, aspectRatio: 1.0, disableFlip: false };
             state.scanner = new Html5QrcodeScanner("reader", config, false);
-
+            
             state.scanner.render((decodedText) => {
                 if(state.scanner) state.scanner.pause();
                 const p = state.participants.find(x => x.qrCode === decodedText);
                 if(p) window.processScannedID(p.id);
-                else {
-                    beep('fail');
-                    showScanResult(false, "QR Code tidak dikenali!");
+                else { 
+                    beep('fail'); 
+                    showScanResult(false, "QR Code tidak dikenali!"); 
                 }
                 setTimeout(() => { if(state.scanner) state.scanner.resume(); }, 2500);
             }, (error) => {});
@@ -1055,7 +1139,7 @@
                 let statusBadge = '';
                 const claimedGift = state.gifts.find(g => g.participantId === p.id);
                 const present = state.attendance.find(a => a.participantId === p.id);
-
+                
                 if (isGiftMode) {
                     if (claimedGift) {
                         statusBadge = `<span class="badge badge-warning flex items-center gap-1"><i class="fas fa-gift"></i> DIAMBIL</span>`;
@@ -1074,8 +1158,8 @@
                     <div class="flex-1">
                         <div class="font-bold text-gray-800">${p.name}</div>
                         <div class="flex gap-2 mt-2">
-                            <span class="badge badge-primary">${p.status}</span>
-                            <span class="badge badge-success">${p.group}</span>
+                            <span class="badge badge-primary">${p.classGrade}</span>
+                            <span class="badge badge-success">${p.sector}</span>
                             ${claimedGift ? '<span class="badge badge-warning"><i class="fas fa-gift"></i> Hadiah</span>' : ''}
                         </div>
                     </div>
@@ -1094,7 +1178,11 @@
             state.tab = t;
             ['register','find','scan','gift','data','admin'].forEach(x => {
                 const btn = document.getElementById(`tab-${x}`);
-                if(x === t) { btn.classList.add('active'); } else { btn.classList.remove('active'); }
+                if(x === t) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
             });
             render();
             if(t === 'scan' || t === 'gift') setTimeout(() => window.initScanner(), 100);
@@ -1113,7 +1201,7 @@
                     `;
                     return;
                 }
-
+                
                 container.innerHTML = `
                     <div class="mb-6 flex justify-between items-center">
                         <div>
@@ -1133,8 +1221,8 @@
                                 <div class="flex-1">
                                     <div class="font-bold text-gray-800 mb-2">${p.name}</div>
                                     <div class="flex gap-2">
-                                        <span class="badge badge-primary">${p.status}</span>
-                                        <span class="badge badge-success">${p.group}</span>
+                                        <span class="badge badge-primary">${p.classGrade}</span>
+                                        <span class="badge badge-success">${p.sector}</span>
                                         ${active ? '<span class="badge badge-success"><i class="fas fa-check"></i> Hadir</span>' : ''}
                                         ${claimedGift ? '<span class="badge badge-warning"><i class="fas fa-gift"></i> Hadiah</span>' : ''}
                                     </div>
@@ -1149,11 +1237,11 @@
 
         window.render = () => {
             const root = document.getElementById('content-area');
-
+            
             if (state.tab === 'register') {
                 if (!document.getElementById('registration-form')) {
                     root.innerHTML = `
-                        <div class="card p-6 mb-6" id="registration-form">
+                        <div class="card p-6 mb-6">
                             <div class="flex items-center gap-3 mb-6">
                                 <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
                                     <i class="fas fa-user-plus text-white text-xl"></i>
@@ -1163,37 +1251,37 @@
                                     <p class="text-sm text-gray-400">Daftarkan peserta Bonataon 2026</p>
                                 </div>
                             </div>
-
+                            
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
                                     <input id="inName" type="text" placeholder="Masukkan nama lengkap..." class="input-field w-full">
                                 </div>
-
+                                
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                                        <select id="inStatus" class="input-field w-full">
-                                            <option value="" disabled selected>Pilih Status</option>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                                        <select id="inClass" class="input-field w-full">
+                                            <option value="" disabled selected>Pilih Kelas</option>
+                                            <option value="Daud">Kelas Daud</option>
+                                            <option value="Daniel">Kelas Daniel</option>
+                                            <option value="Paulus">Kelas Paulus</option>
+                                            <option value="Ester">Kelas Ester</option>
+                                            <option value="GSM">GSM</option>
                                             <option value="Orang Tua">Orang Tua</option>
-                                            <option value="Sekolah Minggu">Sekolah Minggu</option>
-                                            <option value="Pemuda">Pemuda</option>
                                             <option value="Tamu Undangan">Tamu Undangan</option>
-                                            <option value="Pengurus Jabodetabek">Pengurus Jabodetabek</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Group</label>
-                                        <select id="inGroup" class="input-field w-full">
-                                            <option value="" disabled selected>Pilih Group</option>
-                                            <option value="Marga Manihuruk">Marga Manihuruk</option>
-                                            <option value="Boru">Boru</option>
-                                            <option value="Bere / Panagolan">Bere / Panagolan</option>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Sektor</label>
+                                        <select id="inSector" class="input-field w-full">
+                                            <option value="" disabled selected>Pilih Sektor</option>
+                                            ${[...Array(12)].map((_,i)=>`<option value="Sektor ${i+1}">Sektor ${i+1}</option>`).join('')}
                                         </select>
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <button onclick="preRegister()" class="btn-primary w-full mt-6">
                                 <i class="fas fa-user-plus mr-2"></i> Daftarkan Peserta
                             </button>
@@ -1214,38 +1302,36 @@
                                 <p class="text-sm text-gray-400">Temukan tiket Bonataon 2026 Anda</p>
                             </div>
                         </div>
-
+                        
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
                                 <div class="relative">
-                                    <input id="findName" type="text"
-                                           placeholder="Contoh: Budi Santoso"
+                                    <input id="findName" type="text" 
+                                           placeholder="Contoh: Budi Santoso" 
                                            class="input-field w-full pr-10">
                                     <i class="fas fa-user absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                                 </div>
                             </div>
-
+                            
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Group</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Sektor</label>
                                 <div class="relative">
-                                    <select id="findGroup"
+                                    <select id="findSector" 
                                             class="input-field w-full appearance-none pr-10">
-                                        <option value="" disabled selected>Pilih Group Anda</option>
-                                        <option value="Marga Manihuruk">Marga Manihuruk</option>
-                                        <option value="Boru">Boru</option>
-                                        <option value="Bere / Panagolan">Bere / Panagolan</option>
+                                        <option value="" disabled selected>Pilih Sektor Anda</option>
+                                        ${[...Array(12)].map((_,i)=>`<option value="Sektor ${i+1}">Sektor ${i+1}</option>`).join('')}
                                     </select>
                                     <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                                 </div>
                             </div>
                         </div>
-
-                        <button onclick="findMyTicket()"
+                        
+                        <button onclick="findMyTicket()" 
                                 class="btn-primary w-full mt-8 flex items-center justify-center gap-2">
                             <i class="fas fa-search"></i> Cari Tiket Saya
                         </button>
-
+                        
                         <div class="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
                             <div class="flex items-start gap-3">
                                 <i class="fas fa-lightbulb text-yellow-500 text-lg mt-1"></i>
@@ -1256,7 +1342,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="grid grid-cols-2 gap-4">
                         <div class="card p-5 text-center">
                             <div class="text-2xl font-bold text-gray-700 mb-1">${state.participants.length}</div>
@@ -1285,16 +1371,16 @@
                                 <p class="text-sm text-gray-400">${isGift ? 'Scan QR untuk ambil hadiah' : 'Scan QR untuk kehadiran'}</p>
                             </div>
                         </div>
-
+                        
                         <div id="scanRes" class="hidden"></div>
-
+                        
                         <div class="mb-6">
                             <div id="reader"></div>
                         </div>
-
+                        
                         ${state.isAdmin ? `
                         <div class="mt-6 pt-6 border-t border-gray-100">
-                            <button onclick="${isGift ? 'openManualGift()' : 'openManualCheckin()'}"
+                            <button onclick="${isGift ? 'openManualGift()' : 'openManualCheckin()'}" 
                                     class="w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-bold rounded-xl shadow-lg hover:from-purple-700 hover:to-indigo-800 transition-all flex items-center justify-center gap-2">
                                 <i class="fas fa-user-shield"></i> ${isGift ? 'Ambil Hadiah Manual (Admin)' : 'Check-in Manual (Admin)'}
                             </button>
@@ -1304,7 +1390,7 @@
                         </div>
                         ` : ''}
                     </div>
-
+                    
                     <div class="card p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
@@ -1313,19 +1399,19 @@
                             </div>
                             <span class="text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1 rounded-full">${state.participants.length}</span>
                         </div>
-
+                        
                         <div class="relative mb-4">
                             <input oninput="window.handleSearch(this)" type="text" placeholder="Cari nama peserta..." class="input-field w-full pr-10">
                             <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
-
+                        
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-lg mb-4">
                             <p class="text-xs text-blue-700 text-center">
                                 <i class="fas fa-info-circle mr-1"></i>
                                 Manual ${isGift ? 'Ambil Hadiah' : 'Check-In'} hanya tersedia untuk admin
                             </p>
                         </div>
-
+                        
                         <div id="manual-list" class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar"></div>
                     </div>
                 `;
@@ -1334,13 +1420,13 @@
                 const dataToShow = isGiftView ? state.gifts : state.attendance;
                 const headerText = isGiftView ? 'Laporan Pengambilan Hadiah' : 'Laporan Kehadiran Jemaat';
                 const headerIcon = isGiftView ? 'fa-gift' : 'fa-clipboard-check';
-
-                const btnAttendanceClass = !isGiftView
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                
+                const btnAttendanceClass = !isGiftView 
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg' 
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200';
-
-                const btnGiftClass = isGiftView
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                
+                const btnGiftClass = isGiftView 
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg' 
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200';
 
                 root.innerHTML = `
@@ -1377,13 +1463,13 @@
                                 </button>
                             </div>
                         </div>
-
+                        
                         <button onclick="triggerImport()" class="w-full py-4 bg-gray-100 text-gray-700 rounded-xl text-sm font-bold border-2 border-dashed border-gray-300 hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 mb-6">
                             <i class="fas fa-file-import"></i> Import Data Peserta (CSV)
                         </button>
-
+                        
                         <div class="pt-6 border-t border-gray-100">
-                            ${state.isAdmin ?
+                            ${state.isAdmin ? 
                                 `<div class="text-center">
                                     <div class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 px-4 py-2 rounded-full font-bold mb-4">
                                         <i class="fas fa-crown"></i> Mode Admin Aktif
@@ -1416,14 +1502,14 @@
                                 <div class="text-sm text-gray-400">Data akan muncul di sini setelah ada peserta yang ${isGiftView ? 'mengambil hadiah' : 'check-in'}</div>
                             </div>
                         ` : ''}
-
+                        
                         ${dataToShow.slice().reverse().map(item => `
                             <div class="card p-5 flex items-center justify-between border-l-4 ${isGiftView ? 'border-purple-500' : 'border-blue-500'}">
                                 <div class="flex-1">
                                     <div class="font-bold text-gray-800 mb-2">${item.name}</div>
                                     <div class="flex gap-2 mb-3">
-                                        <span class="badge badge-primary">${item.status}</span>
-                                        <span class="badge badge-success">${item.group}</span>
+                                        <span class="badge badge-primary">${item.classGrade}</span>
+                                        <span class="badge badge-success">${item.sector}</span>
                                     </div>
                                     <div class="text-xs text-gray-400 font-mono flex items-center gap-2">
                                         <i class="fas fa-clock"></i> ${item.timestamp}
@@ -1435,7 +1521,7 @@
                             </div>
                         `).join('')}
                     </div>
-
+                    
                     ${state.isAdmin ? `
                     <div class="text-center pt-8">
                         <button onclick="resetData()" class="text-sm text-red-400 font-bold border border-red-200 px-5 py-2 rounded-full hover:bg-red-50 transition-colors">
@@ -1447,23 +1533,23 @@
             }
         };
 
-        window.showTicket = (n, status, group, q) => {
+        window.showTicket = (n, c, s, q) => {
             if (!n || !q) {
                 showToast("Data tiket tidak valid!", 'error');
                 return;
             }
-
+            
             document.getElementById('ticName').innerText = n || "Peserta";
-            document.getElementById('ticStatus').innerText = status || "-";
-            document.querySelector('.ticStatusText').innerText = status || "Status";
-            document.getElementById('ticGroup').innerText = group || "-";
-            document.querySelector('.ticGroupText').innerText = group || "Group";
+            document.getElementById('ticClass').innerText = c || "-";
+            document.querySelector('.ticClassText').innerText = c || "Kelas";
+            document.getElementById('ticSector').innerText = s || "-";
+            document.querySelector('.ticSectorText').innerText = s || "Sektor";
             document.getElementById('ticCode').innerText = q;
-
+            
             const qrUrl = getQR(q);
             document.getElementById('ticQR').src = qrUrl;
             document.getElementById('btnDownloadTicket').href = qrUrl;
-
+            
             showModal('ticketModal');
         };
 
@@ -1472,7 +1558,7 @@
             const modalContent = document.querySelector('#ticketModal > div').cloneNode(true);
             modalContent.style.transform = 'scale(1)';
             modalContent.classList.remove('relative');
-
+            
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <html>
@@ -1480,11 +1566,11 @@
                         <title>Tiket Bonataon 2026 - MANIHURUK</title>
                         <style>
                             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-                            body {
-                                font-family: 'Poppins', sans-serif;
-                                margin: 0;
-                                padding: 30px;
+                            
+                            body { 
+                                font-family: 'Poppins', sans-serif; 
+                                margin: 0; 
+                                padding: 30px; 
                                 text-align: center;
                                 background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
                                 min-height: 100vh;
@@ -1492,18 +1578,18 @@
                                 align-items: center;
                                 justify-content: center;
                             }
-                            .ticket {
-                                max-width: 400px;
-                                margin: 0 auto;
+                            .ticket { 
+                                max-width: 400px; 
+                                margin: 0 auto; 
                                 background: white;
                                 border-radius: 20px;
                                 padding: 30px;
                                 box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
                                 border-top: 8px solid #4361ee;
                             }
-                            h1 {
-                                color: #4361ee;
-                                margin: 10px 0;
+                            h1 { 
+                                color: #4361ee; 
+                                margin: 10px 0; 
                                 font-size: 24px;
                                 font-weight: 700;
                             }
@@ -1514,9 +1600,9 @@
                                 font-size: 12px;
                                 margin-bottom: 20px;
                             }
-                            .qr-code {
-                                width: 250px;
-                                height: 250px;
+                            .qr-code { 
+                                width: 250px; 
+                                height: 250px; 
                                 margin: 20px auto;
                                 border: 2px solid #e9ecef;
                                 border-radius: 12px;
@@ -1531,16 +1617,28 @@
                                 font-size: 12px;
                                 margin: 0 5px;
                             }
-                            .badge-primary { background: rgba(67, 97, 238, 0.1); color: #4361ee; }
-                            .badge-success { background: rgba(76, 201, 240, 0.1); color: #4cc9f0; }
+                            .badge-primary {
+                                background: rgba(67, 97, 238, 0.1);
+                                color: #4361ee;
+                            }
+                            .badge-success {
+                                background: rgba(76, 201, 240, 0.1);
+                                color: #4cc9f0;
+                            }
                             .footer {
                                 margin-top: 20px;
                                 font-size: 10px;
                                 color: #6c757d;
                             }
-                            @media print {
-                                body { padding: 0; background: white !important; }
-                                .ticket { box-shadow: none; border: 2px solid #4361ee; }
+                            @media print { 
+                                body { 
+                                    padding: 0;
+                                    background: white !important;
+                                }
+                                .ticket {
+                                    box-shadow: none;
+                                    border: 2px solid #4361ee;
+                                }
                                 button { display: none; }
                                 .no-print { display: none; }
                             }
@@ -1551,11 +1649,11 @@
                             <div class="subtitle">TIKET BONATAON 2026</div>
                             <h1 id="printName">${document.getElementById('ticName').innerText}</h1>
                             <div style="margin: 15px 0;">
-                                <span class="badge badge-primary">${document.getElementById('ticStatus').innerText}</span>
-                                <span class="badge badge-success">${document.getElementById('ticGroup').innerText}</span>
+                                <span class="badge badge-primary">${document.getElementById('ticClass').innerText}</span>
+                                <span class="badge badge-success">${document.getElementById('ticSector').innerText}</span>
                             </div>
                             <div class="qr-code">
-                                ${document.getElementById(
+                                <img src="${document.getElementById('ticQR').src}" style="width: 100%; height: 100%;">
                             </div>
                             <div style="font-family: monospace; margin-top: 10px; font-size: 12px; color: #495057;">
                                 ${document.getElementById('ticCode').innerText}
@@ -1572,14 +1670,14 @@
                                     setTimeout(() => window.close(), 1000);
                                 }, 500);
                             };
-                        </script>
+                        <\/script>
                     </body>
                 </html>
             `);
             printWindow.document.close();
         };
 
-        // PERBAIKAN FUNGSI EXPORT DATA (Status & Group)
+        // PERBAIKAN FUNGSI EXPORT DATA
         window.exportData = (type) => {
             try {
                 let csv = "";
@@ -1587,32 +1685,32 @@
                 let data = [];
 
                 if (type === 'p') {
-                    csv += "Nama,Status,Group,QR_Code,Waktu_Daftar\n";
+                    csv += "Nama,Kelas,Sektor,QR_Code,Waktu_Daftar\n";
                     data = state.participants;
                     filename = "Data_Jemaat_Bonataon_2026_MANIHURUK.csv";
-                    data.forEach(x => {
-                        csv += `"${x.name || ''}","${x.status || ''}","${x.group || ''}","${x.qrCode || ''}","${x.registeredAt || ''}"\n`;
+                    data.forEach(x => { 
+                        csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.qrCode || ''}","${x.registeredAt || ''}"\n`; 
                     });
                 } else if (type === 'a') {
-                    csv += "Nama,Status,Group,Waktu_Hadir\n";
+                    csv += "Nama,Kelas,Sektor,Waktu_Hadir\n";
                     data = state.attendance;
                     filename = "Laporan_Absensi_Bonataon_2026_MANIHURUK.csv";
-                    data.forEach(x => {
-                        csv += `"${x.name || ''}","${x.status || ''}","${x.group || ''}","${x.timestamp || ''}"\n`;
+                    data.forEach(x => { 
+                        csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.timestamp || ''}"\n`; 
                     });
                 } else if (type === 'g') {
-                    csv += "Nama,Status,Group,Waktu_Ambil_Hadiah\n";
+                    csv += "Nama,Kelas,Sektor,Waktu_Ambil_Hadiah\n";
                     data = state.gifts;
                     filename = "Laporan_Hadiah_Bonataon_2026_MANIHURUK.csv";
-                    data.forEach(x => {
-                        csv += `"${x.name || ''}","${x.status || ''}","${x.group || ''}","${x.timestamp || ''}"\n`;
+                    data.forEach(x => { 
+                        csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.timestamp || ''}"\n`; 
                     });
                 }
 
                 const BOM = "\uFEFF";
                 const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement("a");
-
+                
                 if (navigator.msSaveBlob) {
                     navigator.msSaveBlob(blob, filename);
                 } else {
@@ -1623,7 +1721,7 @@
                     link.click();
                     document.body.removeChild(link);
                 }
-
+                
                 showToast(`Data berhasil diekspor: ${filename}`, 'success');
             } catch (error) {
                 console.error("Error exporting data:", error);
@@ -1631,34 +1729,34 @@
             }
         };
 
-        window.importData = (input) => {
-            const f = input.files[0]; if(!f) return;
-            const r = new FileReader();
-            r.onload = e => {
-                const lines = e.target.result.split('\n');
-                let c = 0;
-                lines.forEach((l,i) => {
-                    if(i===0) return;
-                    const [n, status, group] = l.split(',').map(x => x?.replace(/"/g,'').trim());
-                    if(n) {
-                        const id = (Date.now()+i).toString();
-                        push(ref(db, 'participants'), {
-                            id, name: n, status: status || 'Orang Tua', group: group || 'Marga Manihuruk',
-                            qrCode: `BONATAON-${id.slice(-6)}`, registeredAt: fmtDate(), timestamp: Date.now()
-                        });
-                        c++;
-                    }
-                });
-                showToast(`Import ${c} data sukses!`, 'success');
-                input.value = '';
-            };
-            r.readAsText(f);
+        window.importData = (input) => { 
+             const f = input.files[0]; if(!f) return;
+             const r = new FileReader();
+             r.onload = e => {
+                 const lines = e.target.result.split('\n');
+                 let c = 0;
+                 lines.forEach((l,i) => {
+                     if(i===0) return;
+                     const [n, cl, sc] = l.split(',').map(x => x?.replace(/"/g,'').trim());
+                     if(n) {
+                         const id = (Date.now()+i).toString();
+                         push(ref(db, 'participants'), {
+                             id, name: n, classGrade: cl||'Daud', sector: sc||'Sektor 1',
+                             qrCode: `BONATAON-${id.slice(-6)}`, registeredAt: fmtDate(), timestamp: Date.now()
+                         });
+                         c++;
+                     }
+                 });
+                 showToast(`Import ${c} data sukses!`, 'success');
+                 input.value = '';
+             };
+             r.readAsText(f);
         };
-
+        
         window.handleImport = (input) => {
             window.importData(input);
         };
-
+        
         window.triggerImport = () => document.getElementById('importInput').click();
 
         window.resetData = () => {
@@ -1672,8 +1770,9 @@
 
         // Init
         setTimeout(() => {
-                       document.getElementById('loading').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
             setTab('register');
         }, 1500);
     </script>
 </body>
+</html>
