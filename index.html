@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -8,10 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    
+     
     <style>
+        /* --- STYLES SAMA SEPERTI SEBELUMNYA --- */
         :root {
             --primary: #4361ee;
             --secondary: #3a0ca3;
@@ -21,42 +21,33 @@
             --light: #f8f9fa;
             --dark: #212529;
         }
-        
+         
         body { 
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        
+         
         .glass-effect {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-        
-        .glass-effect-dark {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
+         
         .gradient-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             position: relative;
             overflow: hidden;
         }
-        
+         
         .gradient-header::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-        
+         
         .card {
             background: white;
             border-radius: 20px;
@@ -64,12 +55,12 @@
             transition: all 0.3s ease;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        
+         
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
         }
-        
+         
         .btn-primary {
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
@@ -80,12 +71,12 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
         }
-        
+         
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
         }
-        
+         
         .btn-secondary {
             background: linear-gradient(to right, #6c757d, #495057);
             color: white;
@@ -95,28 +86,12 @@
             padding: 14px 24px;
             transition: all 0.3s ease;
         }
-        
+         
         .btn-secondary:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
         }
-        
-        .btn-danger {
-            background: linear-gradient(to right, #dc3545, #c82333);
-            color: white;
-            font-weight: 600;
-            border: none;
-            border-radius: 12px;
-            padding: 14px 24px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
-        }
-        
-        .btn-danger:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.4);
-        }
-        
+         
         .stat-card {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
@@ -126,12 +101,12 @@
             text-align: center;
             transition: all 0.3s ease;
         }
-        
+         
         .stat-card:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-5px);
         }
-        
+         
         .nav-tab {
             background: white;
             border-radius: 14px;
@@ -142,7 +117,7 @@
             border: 2px solid transparent;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        
+         
         .nav-tab.active {
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
@@ -150,12 +125,12 @@
             box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
             transform: translateY(-5px);
         }
-        
+         
         .nav-tab:hover:not(.active) {
             background: #f8f9fa;
             transform: translateY(-3px);
         }
-        
+         
         .input-field {
             background: #f8f9fa;
             border: 2px solid #e9ecef;
@@ -164,14 +139,14 @@
             font-weight: 500;
             transition: all 0.3s ease;
         }
-        
+         
         .input-field:focus {
             background: white;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
             outline: none;
         }
-        
+         
         .badge {
             display: inline-flex;
             align-items: center;
@@ -180,60 +155,23 @@
             font-weight: 600;
             font-size: 12px;
         }
-        
-        .badge-primary {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary);
-        }
-        
-        .badge-success {
-            background: rgba(76, 201, 240, 0.1);
-            color: #4cc9f0;
-        }
-        
-        .badge-warning {
-            background: rgba(247, 37, 133, 0.1);
-            color: #f72585;
-        }
-        
-        .badge-danger {
-            background: rgba(220, 53, 69, 0.1);
-            color: #dc3545;
-        }
-        
-        .modal {
-            animation: modalFadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        
+         
+        .badge-primary { background: rgba(67, 97, 238, 0.1); color: var(--primary); }
+        .badge-success { background: rgba(76, 201, 240, 0.1); color: #4cc9f0; }
+        .badge-warning { background: rgba(247, 37, 133, 0.1); color: #f72585; }
+         
+        .modal { animation: modalFadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
         @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        
-        .floating-element {
-            animation: float 6s ease-in-out infinite;
-        }
-        
+         
+        .floating-element { animation: float 6s ease-in-out infinite; }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
         }
-        
-        .pulse-soft {
-            animation: pulseSoft 2s infinite;
-        }
-        
-        @keyframes pulseSoft {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
+         
         /* CSS Scanner */
         #reader { 
             width: 100%; 
@@ -262,30 +200,20 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
         }
-        
+         
         /* Custom scrollbar */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--primary), var(--secondary));
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(to bottom, var(--secondary), var(--accent));
-        }
-        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, var(--primary), var(--secondary)); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, var(--secondary), var(--accent)); }
+         
         .ornament {
             position: absolute;
             z-index: 0;
             opacity: 0.1;
             pointer-events: none;
         }
-        
+         
         .title-text {
             font-family: 'Poppins', sans-serif;
             font-weight: 800;
@@ -294,7 +222,7 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
+         
         .logo-container {
             background: white;
             width: 60px;
@@ -307,26 +235,9 @@
             border: 3px solid rgba(255, 255, 255, 0.5);
             overflow: hidden;
         }
-        
-        .logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 13px;
-        }
-        
-        /* Logo Tugu Raja Manihuruk styling */
-        .tugu-logo {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 5px;
-            border-radius: 13px;
-        }
     </style>
 </head>
 <body class="min-h-screen text-gray-800">
-    <!-- Background Ornaments -->
     <div class="ornament" style="top: 5%; left: 5%; width: 100px; height: 100px;">
         <i class="fas fa-star text-white text-5xl"></i>
     </div>
@@ -341,10 +252,9 @@
     </div>
 
     <div id="app" class="relative z-10 max-w-md mx-auto md:max-w-4xl min-h-screen md:my-8 md:rounded-3xl overflow-hidden flex flex-col glass-effect">
-        
+         
         <div id="loading" class="absolute inset-0 z-[9999] bg-white flex flex-col justify-center items-center">
             <div class="logo-container mb-6">
-                <!-- Tugu Raja Manihuruk Logo -->
                 <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 13px; padding: 8px;">
                     <div style="background: white; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px;">
                         <div style="font-family: 'Poppins', sans-serif; font-weight: 800; text-align: center; line-height: 1; color: #3a0ca3; font-size: 10px;">
@@ -363,14 +273,12 @@
         </div>
 
         <header class="gradient-header text-white p-6 pb-20 shadow-lg relative overflow-hidden">
-            <!-- Animated background elements -->
             <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
             <div class="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl"></div>
-            
+             
             <div class="flex justify-between items-start relative z-10">
                 <div class="flex items-center gap-4">
                     <div class="logo-container floating-element">
-                        <!-- Tugu Raja Manihuruk Logo -->
                         <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 13px; padding: 8px;">
                             <div style="background: white; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px;">
                                 <div style="font-family: 'Poppins', sans-serif; font-weight: 800; text-align: center; line-height: 1; color: #3a0ca3; font-size: 9px;">
@@ -395,7 +303,7 @@
                     </div>
                 </div>
             </div>
-            
+             
             <div class="flex gap-4 mt-8 overflow-x-auto pb-2 custom-scrollbar">
                 <div class="stat-card flex-1 min-w-[100px]">
                     <div class="text-3xl font-bold" id="statRegistered">0</div>
@@ -448,8 +356,7 @@
         <main class="flex-1 p-6 overflow-y-auto bg-gradient-to-b from-gray-50 to-white pb-24">
             <div id="content-area"></div>
         </main>
-        
-        <!-- Footer -->
+         
         <footer class="py-4 px-6 border-t border-gray-100 text-center text-gray-500 text-sm bg-white">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
@@ -464,17 +371,15 @@
         </footer>
     </div>
 
-    <!-- Admin Modal -->
     <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('adminModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-8">
             <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
                 <i class="fas fa-times"></i>
             </button>
-            
+             
             <div class="mb-6 text-center">
                 <div class="logo-container mx-auto mb-4">
-                    <!-- Tugu Raja Manihuruk Logo -->
                     <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 13px; padding: 8px;">
                         <div style="background: white; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px;">
                             <div style="font-family: 'Poppins', sans-serif; font-weight: 800; text-align: center; line-height: 1; color: #3a0ca3; font-size: 9px;">
@@ -488,7 +393,7 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Panel Admin</h3>
                 <p class="text-sm text-gray-500">Masukkan password untuk akses fitur admin</p>
             </div>
-            
+             
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Password Admin</label>
@@ -499,13 +404,13 @@
                         <i class="fas fa-lock absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     </div>
                 </div>
-                
+                 
                 <div class="space-y-3 pt-2">
                     <button onclick="window.verifyAdmin()" 
                             class="btn-primary w-full flex items-center justify-center gap-2">
                         <i class="fas fa-sign-in-alt"></i> Masuk
                     </button>
-                    
+                     
                     <button onclick="closeModal('adminModal')" 
                             class="btn-secondary w-full">
                         Batal
@@ -515,81 +420,6 @@
         </div>
     </div>
 
-    <!-- Reset System Modal -->
-    <div id="resetModal" class="fixed inset-0 z-[9500] flex items-center justify-center hidden">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('resetModal')"></div>
-        <div class="card max-w-md w-full mx-4 relative z-10 modal p-8">
-            <button onclick="closeModal('resetModal')" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-                <i class="fas fa-times"></i>
-            </button>
-            
-            <div class="mb-6 text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center">
-                    <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Reset System</h3>
-                <p class="text-sm text-gray-500">Hati-hati! Tindakan ini akan menghapus data secara permanen</p>
-            </div>
-            
-            <div class="space-y-6">
-                <div class="bg-red-50 border border-red-200 rounded-xl p-4">
-                    <div class="flex items-start gap-3">
-                        <i class="fas fa-exclamation-circle text-red-500 text-lg mt-0.5"></i>
-                        <div>
-                            <h4 class="font-bold text-red-700 mb-1">PERINGATAN!</h4>
-                            <p class="text-sm text-red-600">Data yang direset tidak dapat dikembalikan. Pastikan Anda sudah mengekspor data penting.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Password Admin</label>
-                        <div class="relative">
-                            <input type="password" id="resetPassword" 
-                                   placeholder="Masukkan password admin" 
-                                   class="input-field w-full pr-10">
-                            <i class="fas fa-key absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Reset</label>
-                        <div class="relative">
-                            <input type="text" id="resetConfirm" 
-                                   placeholder="Ketik 'RESET-BONATAON-2026'" 
-                                   class="input-field w-full pr-10">
-                            <i class="fas fa-check-double absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="space-y-3 pt-2">
-                    <button onclick="confirmResetSystem()" 
-                            class="btn-danger w-full flex items-center justify-center gap-2">
-                        <i class="fas fa-trash-alt"></i> Reset Semua Data
-                    </button>
-                    
-                    <button onclick="resetAttendanceOnly()" 
-                            class="btn-secondary w-full flex items-center justify-center gap-2" style="background: linear-gradient(to right, #fd7e14, #e8590c);">
-                        <i class="fas fa-user-times"></i> Reset Absensi Saja
-                    </button>
-                    
-                    <button onclick="resetGiftsOnly()" 
-                            class="btn-secondary w-full flex items-center justify-center gap-2" style="background: linear-gradient(to right, #20c997, #099268);">
-                        <i class="fas fa-gift"></i> Reset Hadiah Saja
-                    </button>
-                    
-                    <button onclick="closeModal('resetModal')" 
-                            class="w-full py-3 text-sm font-medium text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors">
-                        Batalkan
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Manual Check-in Modal -->
     <div id="manualCheckinModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('manualCheckinModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6">
@@ -597,7 +427,7 @@
                 <i class="fas fa-user-check text-blue-500"></i> Check-in Manual
             </h3>
             <p class="text-sm text-gray-500 mb-4">Pilih peserta untuk check-in manual:</p>
-            
+             
             <div class="space-y-3 mb-6">
                 <div class="relative">
                     <input type="text" id="manualSearch" placeholder="Cari nama peserta..." 
@@ -606,7 +436,7 @@
                 </div>
                 <div id="manualCheckinList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2"></div>
             </div>
-            
+             
             <div class="flex gap-3">
                 <button onclick="closeModal('manualCheckinModal')" class="btn-secondary flex-1">Batal</button>
                 <button onclick="processManualCheckin()" class="btn-primary flex-1" disabled id="manualCheckinBtn">
@@ -616,7 +446,6 @@
         </div>
     </div>
 
-    <!-- Manual Gift Claim Modal -->
     <div id="manualGiftModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('manualGiftModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6">
@@ -624,7 +453,7 @@
                 <i class="fas fa-gift text-purple-500"></i> Ambil Hadiah Manual
             </h3>
             <p class="text-sm text-gray-500 mb-4">Pilih peserta untuk ambil hadiah manual:</p>
-            
+             
             <div class="space-y-3 mb-6">
                 <div class="relative">
                     <input type="text" id="manualGiftSearch" placeholder="Cari nama peserta..." 
@@ -633,7 +462,7 @@
                 </div>
                 <div id="manualGiftList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2"></div>
             </div>
-            
+             
             <div class="flex gap-3">
                 <button onclick="closeModal('manualGiftModal')" class="btn-secondary flex-1">Batal</button>
                 <button onclick="processManualGift()" class="btn-primary flex-1" disabled id="manualGiftBtn" style="background: linear-gradient(to right, var(--warning), #b5179e);">
@@ -643,7 +472,6 @@
         </div>
     </div>
 
-    <!-- Confirm Modal -->
     <div id="confirmModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('confirmModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6">
@@ -657,12 +485,12 @@
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-gray-50 p-4 rounded-xl">
-                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Kelas</div>
-                        <div id="confClass" class="font-bold text-purple-600"></div>
+                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Status</div>
+                        <div id="confStatus" class="font-bold text-purple-600"></div>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-xl">
-                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Sektor</div>
-                        <div id="confSector" class="font-bold text-blue-600"></div>
+                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Marga</div>
+                        <div id="confMarga" class="font-bold text-blue-600"></div>
                     </div>
                 </div>
             </div>
@@ -675,46 +503,45 @@
         </div>
     </div>
 
-    <!-- Ticket Modal -->
     <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeModal('ticketModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6 text-center border-t-4" style="border-image: linear-gradient(to right, var(--primary), var(--secondary)) 1;">
             <button onclick="closeModal('ticketModal')" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
                 <i class="fas fa-times"></i>
             </button>
-            
+             
             <div class="mb-6">
                 <div class="badge badge-primary mx-auto mb-3">
                     <i class="fas fa-ticket-alt mr-2"></i> Tiket Bonataon 2026
                 </div>
                 <h2 id="ticName" class="text-2xl font-black text-gray-800 leading-tight mb-3">Nama Peserta</h2>
                 <div class="flex justify-center gap-3 mb-6">
-                    <span id="ticClass" class="badge badge-primary flex items-center gap-1">
-                        <i class="fas fa-graduation-cap"></i> <span class="ticClassText">Kelas</span>
+                    <span id="ticStatus" class="badge badge-primary flex items-center gap-1">
+                        <i class="fas fa-user-tag"></i> <span class="ticStatusText">Status</span>
                     </span>
-                    <span id="ticSector" class="badge badge-success flex items-center gap-1">
-                        <i class="fas fa-map-marker-alt"></i> <span class="ticSectorText">Sektor</span>
+                    <span id="ticMarga" class="badge badge-success flex items-center gap-1">
+                        <i class="fas fa-users"></i> <span class="ticMargaText">Marga</span>
                     </span>
                 </div>
             </div>
-            
+             
             <div class="bg-white p-6 rounded-2xl shadow-inner mb-8 mx-auto max-w-xs">
                 <div class="text-xs text-gray-500 font-bold mb-3">SCAN QR CODE UNTUK ABSENSI</div>
                 <img id="ticQR" src="" class="w-56 h-56 object-contain mx-auto rounded-lg" alt="QR Code Tiket">
                 <div class="text-xs text-gray-400 mt-3 font-mono" id="ticCode">BONATAON-XXXXXX</div>
             </div>
-            
+             
             <div class="space-y-3">
                 <a id="btnDownloadTicket" href="#" download="Tiket_Bonataon_2026_MANIHURUK.png" 
                    class="btn-primary w-full flex items-center justify-center gap-2">
                     <i class="fas fa-download"></i> Simpan Tiket
                 </a>
-                
+                 
                 <button onclick="printTicket()" 
                         class="btn-secondary w-full flex items-center justify-center gap-2">
                     <i class="fas fa-print"></i> Cetak Tiket
                 </button>
-                
+                 
                 <button onclick="closeModal('ticketModal')" 
                         class="w-full py-3 text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors">
                     Tutup
@@ -743,8 +570,12 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const ADMIN_PASS = "ADMIN123";
-        const RESET_CONFIRM_TEXT = "RESET-BONATAON-2026";
+         
+        // ==========================================
+        // PERINGATAN KEAMANAN PENTING:
+        // Menyimpan password admin di sisi klien (browser) seperti ini SANGAT TIDAK AMAN.
+        // ==========================================
+        const ADMIN_PASS = "ADMIN123"; 
 
         let state = {
             participants: [],
@@ -760,8 +591,12 @@
             selectedManualGift: null
         };
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Initialize AudioContext
+        let audioCtx = null;
         function beep(type = 'success') {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
@@ -789,7 +624,7 @@
             updateStats();
             if (state.tab === 'register') renderParticipantListOnly();
         });
-        
+         
         onValue(ref(db, 'attendance'), s => {
             state.attendance = s.val() ? Object.values(s.val()) : [];
             updateStats();
@@ -812,44 +647,49 @@
         // --- CORE LOGIC ---
         window.preRegister = () => {
             const name = document.getElementById('inName').value.trim();
-            const cls = document.getElementById('inClass').value;
-            const sec = document.getElementById('inSector').value;
-            if(!name || !cls || !sec) {
+            const st = document.getElementById('inStatus').value; // Changed from inClass
+            const mg = document.getElementById('inMarga').value; // Changed from inSector
+            if(!name || !st || !mg) {
                 showToast('Mohon lengkapi semua data!', 'warning');
                 return;
             }
-            state.tempData = { name, cls, sec };
+            state.tempData = { name, st, mg };
             document.getElementById('confName').innerText = name;
-            document.getElementById('confClass').innerText = cls;
-            document.getElementById('confSector').innerText = sec;
+            document.getElementById('confStatus').innerText = st; // Changed from confClass
+            document.getElementById('confMarga').innerText = mg; // Changed from confSector
             showModal('confirmModal');
         };
 
         window.processSave = () => {
             if(!state.tempData) return;
-            const { name, cls, sec } = state.tempData;
+            const { name, st, mg } = state.tempData;
             const id = Date.now().toString();
             const qr = `BONATAON-${id.slice(-6)}`;
+             
+            // UPDATED: Using 'status' and 'marga' keys
             push(ref(db, 'participants'), {
-                id, name, classGrade: cls, sector: sec, qrCode: qr,
+                id, name, status: st, marga: mg, qrCode: qr,
                 registeredAt: fmtDate(), timestamp: Date.now()
+            }).then(() => {
+                closeModal('confirmModal');
+                document.getElementById('inName').value = '';
+                // Langsung tampilkan tiket setelah simpan
+                window.showTicket(name, st, mg, qr);
+                showToast('Pendaftaran berhasil! Tiket telah dibuat.', 'success');
+            }).catch(error => {
+                 console.error("Error saving data:", error);
+                 showToast('Gagal menyimpan data. Periksa koneksi internet.', 'error');
             });
-            closeModal('confirmModal');
-            document.getElementById('inName').value = '';
-            
-            // Langsung tampilkan tiket setelah simpan
-            window.showTicket(name, cls, sec, qr);
-            showToast('Pendaftaran berhasil! Tiket telah dibuat.', 'success');
         };
 
         // --- TOAST NOTIFICATION ---
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `fixed top-6 right-6 z-[10000] px-6 py-4 rounded-xl shadow-xl text-white font-medium transform translate-x-full transition-transform duration-300`;
-            
+             
             let bgColor = 'bg-blue-500';
             let icon = 'fas fa-info-circle';
-            
+             
             if (type === 'success') {
                 bgColor = 'bg-green-500';
                 icon = 'fas fa-check-circle';
@@ -860,7 +700,7 @@
                 bgColor = 'bg-red-500';
                 icon = 'fas fa-times-circle';
             }
-            
+             
             toast.className += ` ${bgColor}`;
             toast.innerHTML = `
                 <div class="flex items-center gap-3">
@@ -868,19 +708,21 @@
                     <span>${message}</span>
                 </div>
             `;
-            
+             
             document.body.appendChild(toast);
-            
+             
             setTimeout(() => {
                 toast.classList.remove('translate-x-full');
                 toast.classList.add('translate-x-0');
             }, 10);
-            
+             
             setTimeout(() => {
                 toast.classList.remove('translate-x-0');
                 toast.classList.add('translate-x-full');
                 setTimeout(() => {
-                    document.body.removeChild(toast);
+                    if (document.body.contains(toast)) {
+                        document.body.removeChild(toast);
+                    }
                 }, 300);
             }, 3000);
         }
@@ -903,10 +745,6 @@
             // Reset selections
             if (id === 'manualCheckinModal') state.selectedManualCheckin = null;
             if (id === 'manualGiftModal') state.selectedManualGift = null;
-            if (id === 'resetModal') {
-                document.getElementById('resetPassword').value = '';
-                document.getElementById('resetConfirm').value = '';
-            }
         };
 
         // --- ADMIN FUNCTIONS ---
@@ -925,10 +763,7 @@
                 document.getElementById('tab-admin').innerHTML = '<i class="fas fa-crown text-lg"></i><span class="text-xs">Admin</span>';
                 document.getElementById('tab-admin').classList.add('active');
                 closeModal('adminModal');
-                showToast('Login admin berhasil! Fitur manual dan reset system sekarang aktif.', 'success');
-                
-                // Update render jika di tab data
-                if (state.tab === 'data') render();
+                showToast('Login admin berhasil! Fitur manual sekarang aktif.', 'success');
             } else {
                 beep('fail');
                 showToast('Password salah!', 'error');
@@ -941,114 +776,6 @@
             document.getElementById('tab-admin').innerHTML = '<i class="fas fa-user-shield text-lg"></i><span class="text-xs">Admin</span>';
             document.getElementById('tab-admin').classList.remove('active');
             showToast('Logout admin berhasil.', 'info');
-            
-            // Update render jika di tab data
-            if (state.tab === 'data') render();
-        };
-
-        // --- RESET SYSTEM FUNCTIONS ---
-        window.openResetSystem = () => {
-            if (!state.isAdmin) {
-                showToast('Hanya admin yang bisa melakukan reset system!', 'warning');
-                window.adminLogin();
-                return;
-            }
-            
-            showModal('resetModal');
-            setTimeout(() => {
-                document.getElementById('resetPassword').focus();
-            }, 100);
-        };
-
-        window.confirmResetSystem = () => {
-            const password = document.getElementById('resetPassword').value;
-            const confirmText = document.getElementById('resetConfirm').value;
-            
-            if (password !== ADMIN_PASS) {
-                showToast('Password admin salah!', 'error');
-                beep('fail');
-                return;
-            }
-            
-            if (confirmText !== RESET_CONFIRM_TEXT) {
-                showToast(`Ketik "${RESET_CONFIRM_TEXT}" untuk konfirmasi!`, 'error');
-                beep('fail');
-                return;
-            }
-            
-            if (!confirm("YAKIN ingin menghapus SEMUA data (peserta, absensi, hadiah)?\n\nTindakan ini TIDAK DAPAT DIBATALKAN!")) {
-                return;
-            }
-            
-            // Reset semua data
-            Promise.all([
-                set(ref(db, 'participants'), null),
-                set(ref(db, 'attendance'), null),
-                set(ref(db, 'gifts'), null)
-            ]).then(() => {
-                beep('success');
-                showToast('Semua data berhasil direset!', 'success');
-                closeModal('resetModal');
-                updateStats();
-                if (state.tab === 'data') render();
-            }).catch(error => {
-                showToast('Gagal mereset data: ' + error.message, 'error');
-                beep('fail');
-            });
-        };
-
-        window.resetAttendanceOnly = () => {
-            const password = document.getElementById('resetPassword').value;
-            
-            if (password !== ADMIN_PASS) {
-                showToast('Password admin salah!', 'error');
-                beep('fail');
-                return;
-            }
-            
-            if (!confirm("Reset data absensi saja?\n\nData peserta dan hadiah akan tetap ada.")) {
-                return;
-            }
-            
-            set(ref(db, 'attendance'), null)
-                .then(() => {
-                    beep('success');
-                    showToast('Data absensi berhasil direset!', 'success');
-                    closeModal('resetModal');
-                    updateStats();
-                    if (state.tab === 'data' && state.dataViewMode === 'attendance') render();
-                })
-                .catch(error => {
-                    showToast('Gagal mereset absensi: ' + error.message, 'error');
-                    beep('fail');
-                });
-        };
-
-        window.resetGiftsOnly = () => {
-            const password = document.getElementById('resetPassword').value;
-            
-            if (password !== ADMIN_PASS) {
-                showToast('Password admin salah!', 'error');
-                beep('fail');
-                return;
-            }
-            
-            if (!confirm("Reset data hadiah saja?\n\nData peserta dan absensi akan tetap ada.")) {
-                return;
-            }
-            
-            set(ref(db, 'gifts'), null)
-                .then(() => {
-                    beep('success');
-                    showToast('Data hadiah berhasil direset!', 'success');
-                    closeModal('resetModal');
-                    updateStats();
-                    if (state.tab === 'data' && state.dataViewMode === 'gifts') render();
-                })
-                .catch(error => {
-                    showToast('Gagal mereset hadiah: ' + error.message, 'error');
-                    beep('fail');
-                });
         };
 
         window.openManualCheckin = () => {
@@ -1057,7 +784,7 @@
                 window.adminLogin();
                 return;
             }
-            
+             
             showModal('manualCheckinModal');
             setTimeout(() => {
                 renderManualCheckinList();
@@ -1071,7 +798,7 @@
                 window.adminLogin();
                 return;
             }
-            
+             
             showModal('manualGiftModal');
             setTimeout(() => {
                 renderManualGiftList();
@@ -1083,13 +810,13 @@
             const searchTerm = document.getElementById('manualSearch').value.toLowerCase();
             const listEl = document.getElementById('manualCheckinList');
             const btn = document.getElementById('manualCheckinBtn');
-            
+             
             // Filter participants who haven't checked in
             const filtered = state.participants.filter(p => {
                 const alreadyPresent = state.attendance.find(a => a.participantId === p.id);
                 return !alreadyPresent && p.name.toLowerCase().includes(searchTerm);
             });
-            
+             
             if (filtered.length === 0) {
                 listEl.innerHTML = `
                     <div class="text-center py-8 text-gray-400">
@@ -1100,7 +827,7 @@
                 btn.disabled = true;
                 return;
             }
-            
+             
             listEl.innerHTML = filtered.map(p => `
                 <div class="p-4 border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer rounded-xl transition-all ${state.selectedManualCheckin?.id === p.id ? 'bg-blue-50 border-blue-400' : ''}" 
                      onclick="selectManualCheckin(${JSON.stringify(p)})">
@@ -1108,15 +835,15 @@
                         <div>
                             <div class="font-bold text-gray-800">${p.name}</div>
                             <div class="flex gap-2 mt-2">
-                                <span class="badge badge-primary">${p.classGrade}</span>
-                                <span class="badge badge-success">${p.sector}</span>
+                                <span class="badge badge-primary">${p.status || '-'}</span>
+                                <span class="badge badge-success">${p.marga || '-'}</span>
                             </div>
                         </div>
                         <i class="fas fa-chevron-right text-gray-400 ${state.selectedManualCheckin?.id === p.id ? 'text-blue-500' : ''}"></i>
                     </div>
                 </div>
             `).join('');
-            
+             
             btn.disabled = !state.selectedManualCheckin;
         }
 
@@ -1124,13 +851,13 @@
             const searchTerm = document.getElementById('manualGiftSearch').value.toLowerCase();
             const listEl = document.getElementById('manualGiftList');
             const btn = document.getElementById('manualGiftBtn');
-            
+             
             // Filter participants who haven't claimed gift
             const filtered = state.participants.filter(p => {
                 const alreadyClaimed = state.gifts.find(g => g.participantId === p.id);
                 return !alreadyClaimed && p.name.toLowerCase().includes(searchTerm);
             });
-            
+             
             if (filtered.length === 0) {
                 listEl.innerHTML = `
                     <div class="text-center py-8 text-gray-400">
@@ -1141,7 +868,7 @@
                 btn.disabled = true;
                 return;
             }
-            
+             
             listEl.innerHTML = filtered.map(p => `
                 <div class="p-4 border border-gray-200 hover:border-purple-300 hover:bg-purple-50 cursor-pointer rounded-xl transition-all ${state.selectedManualGift?.id === p.id ? 'bg-purple-50 border-purple-400' : ''}" 
                      onclick="selectManualGift(${JSON.stringify(p)})">
@@ -1149,15 +876,15 @@
                         <div>
                             <div class="font-bold text-gray-800">${p.name}</div>
                             <div class="flex gap-2 mt-2">
-                                <span class="badge badge-primary">${p.classGrade}</span>
-                                <span class="badge badge-success">${p.sector}</span>
+                                <span class="badge badge-primary">${p.status || '-'}</span>
+                                <span class="badge badge-success">${p.marga || '-'}</span>
                             </div>
                         </div>
                         <i class="fas fa-chevron-right text-gray-400 ${state.selectedManualGift?.id === p.id ? 'text-purple-500' : ''}"></i>
                     </div>
                 </div>
             `).join('');
-            
+             
             btn.disabled = !state.selectedManualGift;
         }
 
@@ -1179,7 +906,7 @@
 
         window.processManualCheckin = () => {
             if (!state.selectedManualCheckin || !state.isAdmin) return;
-            
+             
             const p = state.selectedManualCheckin;
             window.doCheckIn(p);
             state.selectedManualCheckin = null;
@@ -1188,7 +915,7 @@
 
         window.processManualGift = () => {
             if (!state.selectedManualGift || !state.isAdmin) return;
-            
+             
             const p = state.selectedManualGift;
             window.claimGift(p);
             state.selectedManualGift = null;
@@ -1198,51 +925,51 @@
         // --- FUNGSI CARI TIKET ---
         window.findMyTicket = () => {
             const nameInput = document.getElementById('findName');
-            const sectorInput = document.getElementById('findSector');
-            
-            if(!nameInput || !sectorInput) {
+            const margaInput = document.getElementById('findMarga'); // Changed from findSector
+             
+            if(!nameInput || !margaInput) {
                 showToast('Form pencarian tidak tersedia!', 'error');
                 return;
             }
 
             const name = nameInput.value.trim().toLowerCase();
-            const sector = sectorInput.value;
+            const marga = margaInput.value;
 
-            if(!name || !sector) {
-                showToast('Mohon isi Nama Lengkap dan Pilih Sektor!', 'warning');
+            if(!name || !marga) {
+                showToast('Mohon isi Nama Lengkap dan Pilih Marga!', 'warning');
                 return;
             }
 
             const found = state.participants.find(p => {
                 const pName = p.name?.trim().toLowerCase() || "";
-                const pSector = p.sector || "";
-                
-                return pName.includes(name) && pSector === sector;
+                const pMarga = p.marga || ""; // Changed from sector
+                 
+                return pName.includes(name) && pMarga === marga;
             });
 
             if (found) {
                 const safeName = found.name || "Peserta";
-                const safeClass = found.classGrade || "-";
-                const safeSector = found.sector || "-";
+                const safeStatus = found.status || "-"; // Changed from classGrade
+                const safeMarga = found.marga || "-"; // Changed from sector
                 const safeQR = found.qrCode || `BONATAON-${found.id?.slice(-6) || "000000"}`;
 
-                window.showTicket(safeName, safeClass, safeSector, safeQR);
+                window.showTicket(safeName, safeStatus, safeMarga, safeQR);
             } else {
-                const participantsInSector = state.participants.filter(p => p.sector === sector);
-                
+                const participantsInMarga = state.participants.filter(p => p.marga === marga);
+                 
                 let errorMsg = "Data tidak ditemukan!\n";
                 errorMsg += `\nNama: ${nameInput.value.trim()}`;
-                errorMsg += `\nSektor: ${sector}`;
-                
-                if (participantsInSector.length === 0) {
-                    errorMsg += "\n\nTidak ada peserta terdaftar di sektor ini.";
+                errorMsg += `\nMarga: ${marga}`;
+                 
+                if (participantsInMarga.length === 0) {
+                    errorMsg += "\n\nTidak ada peserta terdaftar di marga ini.";
                 } else {
                     errorMsg += "\n\nTips:";
                     errorMsg += "\n- Cek ejaan nama";
                     errorMsg += "\n- Gunakan nama lengkap";
-                    errorMsg += `\n\nTotal ${participantsInSector.length} peserta di sektor ${sector}`;
+                    errorMsg += `\n\nTotal ${participantsInMarga.length} peserta di marga ${marga}`;
                 }
-                
+                 
                 showToast(errorMsg, 'warning');
             }
         };
@@ -1263,12 +990,18 @@
                 beep('fail');
                 showScanResult(false, `${p.name} sudah absen!`);
             } else {
-                beep('success');
+                // UPDATED: Using status and marga
                 push(ref(db, 'attendance'), {
                     id: Date.now().toString(), participantId: p.id, name: p.name,
-                    classGrade: p.classGrade, sector: p.sector, timestamp: fmtDate()
+                    status: p.status, marga: p.marga, timestamp: fmtDate()
+                }).then(() => {
+                    beep('success');
+                    showScanResult(true, `${p.name} berhasil check-in!`);
+                }).catch(error => {
+                    console.error("Error recording attendance:", error);
+                    beep('fail');
+                    showScanResult(false, "Gagal mencatat kehadiran. Cek koneksi.");
                 });
-                showScanResult(true, `${p.name} berhasil check-in!`);
             }
         };
 
@@ -1278,12 +1011,18 @@
                 beep('fail');
                 showScanResult(false, `${p.name} sudah ambil hadiah!`, 'warning');
             } else {
-                beep('success');
+                // UPDATED: Using status and marga
                 push(ref(db, 'gifts'), {
                     id: Date.now().toString(), participantId: p.id, name: p.name,
-                    classGrade: p.classGrade, sector: p.sector, timestamp: fmtDate()
+                    status: p.status, marga: p.marga, timestamp: fmtDate()
+                }).then(() => {
+                    beep('success');
+                    showScanResult(true, `${p.name} berhasil ambil hadiah!`, 'success');
+                }).catch(error => {
+                    console.error("Error recording gift:", error);
+                    beep('fail');
+                    showScanResult(false, "Gagal mencatat hadiah. Cek koneksi.", 'warning');
                 });
-                showScanResult(true, `${p.name} berhasil ambil hadiah!`, 'success');
             }
         };
 
@@ -1292,7 +1031,7 @@
             if(state.scanner) return;
             const config = { fps: 10, qrbox: 450, aspectRatio: 1.0, disableFlip: false };
             state.scanner = new Html5QrcodeScanner("reader", config, false);
-            
+             
             state.scanner.render((decodedText) => {
                 if(state.scanner) state.scanner.pause();
                 const p = state.participants.find(x => x.qrCode === decodedText);
@@ -1302,13 +1041,19 @@
                     showScanResult(false, "QR Code tidak dikenali!"); 
                 }
                 setTimeout(() => { if(state.scanner) state.scanner.resume(); }, 2500);
-            }, (error) => {});
+            }, (error) => {
+                // console.warn("QR Scan Error:", error); // Optional: uncomment for debugging
+            });
         };
 
         window.stopScanner = () => {
             if(state.scanner) {
-                state.scanner.clear().catch(e => console.error(e));
-                state.scanner = null;
+                state.scanner.clear().then(() => {
+                    state.scanner = null;
+                }).catch(e => {
+                    console.error("Failed to clear scanner", e);
+                    state.scanner = null;
+                });
             }
         };
 
@@ -1350,7 +1095,7 @@
                 let statusBadge = '';
                 const claimedGift = state.gifts.find(g => g.participantId === p.id);
                 const present = state.attendance.find(a => a.participantId === p.id);
-                
+                 
                 if (isGiftMode) {
                     if (claimedGift) {
                         statusBadge = `<span class="badge badge-warning flex items-center gap-1"><i class="fas fa-gift"></i> DIAMBIL</span>`;
@@ -1364,13 +1109,14 @@
                         statusBadge = `<span class="badge badge-primary flex items-center gap-1"><i class="fas fa-qrcode"></i> SCAN QR</span>`;
                     }
                 }
+                // UPDATED: Display status and marga
                 return `
                 <div class="flex items-center justify-between p-4 border-b border-gray-100 hover:bg-gray-50 rounded-lg transition-colors">
                     <div class="flex-1">
                         <div class="font-bold text-gray-800">${p.name}</div>
                         <div class="flex gap-2 mt-2">
-                            <span class="badge badge-primary">${p.classGrade}</span>
-                            <span class="badge badge-success">${p.sector}</span>
+                            <span class="badge badge-primary">${p.status || '-'}</span>
+                            <span class="badge badge-success">${p.marga || '-'}</span>
                             ${claimedGift ? '<span class="badge badge-warning"><i class="fas fa-gift"></i> Hadiah</span>' : ''}
                         </div>
                     </div>
@@ -1385,7 +1131,9 @@
         }
 
         window.setTab = (t) => {
-            if((state.tab === 'scan' || state.tab === 'gift') && (t !== 'scan' && t !== 'gift')) window.stopScanner();
+            if((state.tab === 'scan' || state.tab === 'gift') && (t !== 'scan' && t !== 'gift')) {
+                window.stopScanner();
+            }
             state.tab = t;
             ['register','find','scan','gift','data','admin'].forEach(x => {
                 const btn = document.getElementById(`tab-${x}`);
@@ -1412,7 +1160,7 @@
                     `;
                     return;
                 }
-                
+                 
                 container.innerHTML = `
                     <div class="mb-6 flex justify-between items-center">
                         <div>
@@ -1427,13 +1175,14 @@
                         ${state.participants.slice().reverse().map(p => {
                             const active = state.attendance.find(a => a.participantId === p.id);
                             const claimedGift = state.gifts.find(g => g.participantId === p.id);
+                            // UPDATED: Using status and marga
                             return `
                             <div class="card p-5 flex justify-between items-center border-l-4 ${active ? 'border-green-500' : claimedGift ? 'border-yellow-500' : 'border-blue-500'}">
                                 <div class="flex-1">
                                     <div class="font-bold text-gray-800 mb-2">${p.name}</div>
                                     <div class="flex gap-2">
-                                        <span class="badge badge-primary">${p.classGrade}</span>
-                                        <span class="badge badge-success">${p.sector}</span>
+                                        <span class="badge badge-primary">${p.status || '-'}</span>
+                                        <span class="badge badge-success">${p.marga || '-'}</span>
                                         ${active ? '<span class="badge badge-success"><i class="fas fa-check"></i> Hadir</span>' : ''}
                                         ${claimedGift ? '<span class="badge badge-warning"><i class="fas fa-gift"></i> Hadiah</span>' : ''}
                                     </div>
@@ -1448,11 +1197,12 @@
 
         window.render = () => {
             const root = document.getElementById('content-area');
-            
+             
             if (state.tab === 'register') {
                 if (!document.getElementById('registration-form')) {
+                    // UPDATED: Form fields changed to Status and Marga
                     root.innerHTML = `
-                        <div class="card p-6 mb-6">
+                        <div class="card p-6 mb-6" id="registration-form">
                             <div class="flex items-center gap-3 mb-6">
                                 <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
                                     <i class="fas fa-user-plus text-white text-xl"></i>
@@ -1462,37 +1212,37 @@
                                     <p class="text-sm text-gray-400">Daftarkan peserta Bonataon 2026</p>
                                 </div>
                             </div>
-                            
+                             
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
                                     <input id="inName" type="text" placeholder="Masukkan nama lengkap..." class="input-field w-full">
                                 </div>
-                                
+                                 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
-                                        <select id="inClass" class="input-field w-full">
-                                            <option value="" disabled selected>Pilih Kelas</option>
-                                            <option value="Daud">Kelas Daud</option>
-                                            <option value="Daniel">Kelas Daniel</option>
-                                            <option value="Paulus">Kelas Paulus</option>
-                                            <option value="Ester">Kelas Ester</option>
-                                            <option value="GSM">GSM</option>
-                                            <option value="Orang Tua">Orang Tua</option>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                        <select id="inStatus" class="input-field w-full">
+                                            <option value="" disabled selected>Pilih Status</option>
+                                            <option value="Orangtua">Orangtua</option>
+                                            <option value="Pemuda">Pemuda</option>
+                                            <option value="Sekolah Minggu">Sekolah Minggu</option>
                                             <option value="Tamu Undangan">Tamu Undangan</option>
+                                            <option value="Pengurus Tupuan">Pengurus Tupuan</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Sektor</label>
-                                        <select id="inSector" class="input-field w-full">
-                                            <option value="" disabled selected>Pilih Sektor</option>
-                                            ${[...Array(12)].map((_,i)=>`<option value="Sektor ${i+1}">Sektor ${i+1}</option>`).join('')}
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Marga</label>
+                                        <select id="inMarga" class="input-field w-full">
+                                            <option value="" disabled selected>Pilih Marga</option>
+                                            <option value="Marga Manihuruk">Marga Manihuruk</option>
+                                            <option value="Boru">Boru</option>
+                                            <option value="Bere / Panagolan">Bere / Panagolan</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            
+                             
                             <button onclick="preRegister()" class="btn-primary w-full mt-6">
                                 <i class="fas fa-user-plus mr-2"></i> Daftarkan Peserta
                             </button>
@@ -1502,6 +1252,7 @@
                 }
                 renderParticipantListOnly();
             } else if (state.tab === 'find') {
+                // UPDATED: Find form changed to Marga
                 root.innerHTML = `
                     <div class="card p-6 mb-6">
                         <div class="flex items-center gap-3 mb-6">
@@ -1513,7 +1264,7 @@
                                 <p class="text-sm text-gray-400">Temukan tiket Bonataon 2026 Anda</p>
                             </div>
                         </div>
-                        
+                         
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
@@ -1524,25 +1275,27 @@
                                     <i class="fas fa-user absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                                 </div>
                             </div>
-                            
+                             
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Sektor</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Marga</label>
                                 <div class="relative">
-                                    <select id="findSector" 
+                                    <select id="findMarga" 
                                             class="input-field w-full appearance-none pr-10">
-                                        <option value="" disabled selected>Pilih Sektor Anda</option>
-                                        ${[...Array(12)].map((_,i)=>`<option value="Sektor ${i+1}">Sektor ${i+1}</option>`).join('')}
+                                        <option value="" disabled selected>Pilih Marga Anda</option>
+                                        <option value="Marga Manihuruk">Marga Manihuruk</option>
+                                        <option value="Boru">Boru</option>
+                                        <option value="Bere / Panagolan">Bere / Panagolan</option>
                                     </select>
                                     <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                                 </div>
                             </div>
                         </div>
-                        
+                         
                         <button onclick="findMyTicket()" 
                                 class="btn-primary w-full mt-8 flex items-center justify-center gap-2">
                             <i class="fas fa-search"></i> Cari Tiket Saya
                         </button>
-                        
+                         
                         <div class="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
                             <div class="flex items-start gap-3">
                                 <i class="fas fa-lightbulb text-yellow-500 text-lg mt-1"></i>
@@ -1553,7 +1306,7 @@
                             </div>
                         </div>
                     </div>
-                    
+                     
                     <div class="grid grid-cols-2 gap-4">
                         <div class="card p-5 text-center">
                             <div class="text-2xl font-bold text-gray-700 mb-1">${state.participants.length}</div>
@@ -1582,13 +1335,13 @@
                                 <p class="text-sm text-gray-400">${isGift ? 'Scan QR untuk ambil hadiah' : 'Scan QR untuk kehadiran'}</p>
                             </div>
                         </div>
-                        
+                         
                         <div id="scanRes" class="hidden"></div>
-                        
+                         
                         <div class="mb-6">
                             <div id="reader"></div>
                         </div>
-                        
+                         
                         ${state.isAdmin ? `
                         <div class="mt-6 pt-6 border-t border-gray-100">
                             <button onclick="${isGift ? 'openManualGift()' : 'openManualCheckin()'}" 
@@ -1601,7 +1354,7 @@
                         </div>
                         ` : ''}
                     </div>
-                    
+                     
                     <div class="card p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
@@ -1610,19 +1363,19 @@
                             </div>
                             <span class="text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1 rounded-full">${state.participants.length}</span>
                         </div>
-                        
+                         
                         <div class="relative mb-4">
                             <input oninput="window.handleSearch(this)" type="text" placeholder="Cari nama peserta..." class="input-field w-full pr-10">
                             <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
-                        
+                         
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-lg mb-4">
                             <p class="text-xs text-blue-700 text-center">
                                 <i class="fas fa-info-circle mr-1"></i>
                                 Manual ${isGift ? 'Ambil Hadiah' : 'Check-In'} hanya tersedia untuk admin
                             </p>
                         </div>
-                        
+                         
                         <div id="manual-list" class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar"></div>
                     </div>
                 `;
@@ -1631,11 +1384,11 @@
                 const dataToShow = isGiftView ? state.gifts : state.attendance;
                 const headerText = isGiftView ? 'Laporan Pengambilan Hadiah' : 'Laporan Kehadiran Jemaat';
                 const headerIcon = isGiftView ? 'fa-gift' : 'fa-clipboard-check';
-                
+                 
                 const btnAttendanceClass = !isGiftView 
                     ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg' 
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200';
-                
+                 
                 const btnGiftClass = isGiftView 
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg' 
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200';
@@ -1674,22 +1427,11 @@
                                 </button>
                             </div>
                         </div>
-                        
+                         
                         <button onclick="triggerImport()" class="w-full py-4 bg-gray-100 text-gray-700 rounded-xl text-sm font-bold border-2 border-dashed border-gray-300 hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 mb-6">
                             <i class="fas fa-file-import"></i> Import Data Peserta (CSV)
                         </button>
-                        
-                        ${state.isAdmin ? `
-                        <div class="mb-6">
-                            <button onclick="openResetSystem()" class="w-full py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-xl text-sm font-bold shadow-lg hover:from-red-600 hover:to-orange-600 transition-all flex items-center justify-center gap-2">
-                                <i class="fas fa-exclamation-triangle"></i> Reset System
-                            </button>
-                            <p class="text-xs text-red-500 text-center mt-2 font-medium">
-                                <i class="fas fa-shield-alt mr-1"></i> Hanya untuk Admin
-                            </p>
-                        </div>
-                        ` : ''}
-                        
+                         
                         <div class="pt-6 border-t border-gray-100">
                             ${state.isAdmin ? 
                                 `<div class="text-center">
@@ -1724,14 +1466,14 @@
                                 <div class="text-sm text-gray-400">Data akan muncul di sini setelah ada peserta yang ${isGiftView ? 'mengambil hadiah' : 'check-in'}</div>
                             </div>
                         ` : ''}
-                        
+                         
                         ${dataToShow.slice().reverse().map(item => `
                             <div class="card p-5 flex items-center justify-between border-l-4 ${isGiftView ? 'border-purple-500' : 'border-blue-500'}">
                                 <div class="flex-1">
                                     <div class="font-bold text-gray-800 mb-2">${item.name}</div>
                                     <div class="flex gap-2 mb-3">
-                                        <span class="badge badge-primary">${item.classGrade}</span>
-                                        <span class="badge badge-success">${item.sector}</span>
+                                        <span class="badge badge-primary">${item.status || '-'}</span>
+                                        <span class="badge badge-success">${item.marga || '-'}</span>
                                     </div>
                                     <div class="text-xs text-gray-400 font-mono flex items-center gap-2">
                                         <i class="fas fa-clock"></i> ${item.timestamp}
@@ -1743,36 +1485,40 @@
                             </div>
                         `).join('')}
                     </div>
+                     
+                    ${state.isAdmin ? `
+                    <div class="text-center pt-8">
+                        <button onclick="resetData()" class="text-sm text-red-400 font-bold border border-red-200 px-5 py-2 rounded-full hover:bg-red-50 transition-colors">
+                            <i class="fas fa-exclamation-triangle mr-2"></i> Admin Reset System
+                        </button>
+                    </div>
+                    ` : ''}
                 `;
             }
         };
 
-        window.showTicket = (n, c, s, q) => {
+        window.showTicket = (n, st, mg, q) => {
             if (!n || !q) {
                 showToast("Data tiket tidak valid!", 'error');
                 return;
             }
-            
+             
             document.getElementById('ticName').innerText = n || "Peserta";
-            document.getElementById('ticClass').innerText = c || "-";
-            document.querySelector('.ticClassText').innerText = c || "Kelas";
-            document.getElementById('ticSector').innerText = s || "-";
-            document.querySelector('.ticSectorText').innerText = s || "Sektor";
+            document.getElementById('ticStatus').innerText = st || "-";
+            document.querySelector('.ticStatusText').innerText = st || "Status";
+            document.getElementById('ticMarga').innerText = mg || "-";
+            document.querySelector('.ticMargaText').innerText = mg || "Marga";
             document.getElementById('ticCode').innerText = q;
-            
+             
             const qrUrl = getQR(q);
             document.getElementById('ticQR').src = qrUrl;
             document.getElementById('btnDownloadTicket').href = qrUrl;
-            
+             
             showModal('ticketModal');
         };
 
         // FUNGSI PRINT TIKET
         window.printTicket = () => {
-            const modalContent = document.querySelector('#ticketModal > div').cloneNode(true);
-            modalContent.style.transform = 'scale(1)';
-            modalContent.classList.remove('relative');
-            
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <html>
@@ -1780,7 +1526,7 @@
                         <title>Tiket Bonataon 2026 - MANIHURUK</title>
                         <style>
                             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-                            
+                             
                             body { 
                                 font-family: 'Poppins', sans-serif; 
                                 margin: 0; 
@@ -1831,14 +1577,8 @@
                                 font-size: 12px;
                                 margin: 0 5px;
                             }
-                            .badge-primary {
-                                background: rgba(67, 97, 238, 0.1);
-                                color: #4361ee;
-                            }
-                            .badge-success {
-                                background: rgba(76, 201, 240, 0.1);
-                                color: #4cc9f0;
-                            }
+                            .badge-primary { background: rgba(67, 97, 238, 0.1); color: #4361ee; }
+                            .badge-success { background: rgba(76, 201, 240, 0.1); color: #4cc9f0; }
                             .footer {
                                 margin-top: 20px;
                                 font-size: 10px;
@@ -1863,11 +1603,11 @@
                             <div class="subtitle">TIKET BONATAON 2026</div>
                             <h1 id="printName">${document.getElementById('ticName').innerText}</h1>
                             <div style="margin: 15px 0;">
-                                <span class="badge badge-primary">${document.getElementById('ticClass').innerText}</span>
-                                <span class="badge badge-success">${document.getElementById('ticSector').innerText}</span>
+                                <span class="badge badge-primary">${document.getElementById('ticStatus').innerText}</span>
+                                <span class="badge badge-success">${document.getElementById('ticMarga').innerText}</span>
                             </div>
                             <div class="qr-code">
-                                <img src="${document.getElementById('ticQR').src}" style="width: 100%; height: 100%;">
+                                <img src="${document.getElementById('ticQR').src}" style="width: 100%; height: 100%; object-fit: contain;">
                             </div>
                             <div style="font-family: monospace; margin-top: 10px; font-size: 12px; color: #495057;">
                                 ${document.getElementById('ticCode').innerText}
@@ -1891,7 +1631,7 @@
             printWindow.document.close();
         };
 
-        // PERBAIKAN FUNGSI EXPORT DATA
+        // UPDATED: Export data headers to match new fields
         window.exportData = (type) => {
             try {
                 let csv = "";
@@ -1899,32 +1639,32 @@
                 let data = [];
 
                 if (type === 'p') {
-                    csv += "Nama,Kelas,Sektor,QR_Code,Waktu_Daftar\n";
+                    csv += "Nama,Status,Marga,QR_Code,Waktu_Daftar\n";
                     data = state.participants;
                     filename = "Data_Jemaat_Bonataon_2026_MANIHURUK.csv";
                     data.forEach(x => { 
-                        csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.qrCode || ''}","${x.registeredAt || ''}"\n`; 
+                        csv += `"${x.name || ''}","${x.status || ''}","${x.marga || ''}","${x.qrCode || ''}","${x.registeredAt || ''}"\n`; 
                     });
                 } else if (type === 'a') {
-                    csv += "Nama,Kelas,Sektor,Waktu_Hadir\n";
+                    csv += "Nama,Status,Marga,Waktu_Hadir\n";
                     data = state.attendance;
                     filename = "Laporan_Absensi_Bonataon_2026_MANIHURUK.csv";
                     data.forEach(x => { 
-                        csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.timestamp || ''}"\n`; 
+                        csv += `"${x.name || ''}","${x.status || ''}","${x.marga || ''}","${x.timestamp || ''}"\n`; 
                     });
                 } else if (type === 'g') {
-                    csv += "Nama,Kelas,Sektor,Waktu_Ambil_Hadiah\n";
+                    csv += "Nama,Status,Marga,Waktu_Ambil_Hadiah\n";
                     data = state.gifts;
                     filename = "Laporan_Hadiah_Bonataon_2026_MANIHURUK.csv";
                     data.forEach(x => { 
-                        csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.timestamp || ''}"\n`; 
+                        csv += `"${x.name || ''}","${x.status || ''}","${x.marga || ''}","${x.timestamp || ''}"\n`; 
                     });
                 }
 
                 const BOM = "\uFEFF";
                 const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement("a");
-                
+                 
                 if (navigator.msSaveBlob) {
                     navigator.msSaveBlob(blob, filename);
                 } else {
@@ -1935,7 +1675,7 @@
                     link.click();
                     document.body.removeChild(link);
                 }
-                
+                 
                 showToast(`Data berhasil diekspor: ${filename}`, 'success');
             } catch (error) {
                 console.error("Error exporting data:", error);
@@ -1943,6 +1683,7 @@
             }
         };
 
+        // UPDATED: Import data to map new CSV structure (Nama, Status, Marga)
         window.importData = (input) => { 
              const f = input.files[0]; if(!f) return;
              const r = new FileReader();
@@ -1951,11 +1692,11 @@
                  let c = 0;
                  lines.forEach((l,i) => {
                      if(i===0) return;
-                     const [n, cl, sc] = l.split(',').map(x => x?.replace(/"/g,'').trim());
+                     const [n, st, mg] = l.split(',').map(x => x?.replace(/"/g,'').trim());
                      if(n) {
-                         const id = (Date.now()+i).toString();
+                         const id = (Date.now() + i + Math.floor(Math.random()*1000)).toString();
                          push(ref(db, 'participants'), {
-                             id, name: n, classGrade: cl||'Daud', sector: sc||'Sektor 1',
+                             id, name: n, status: st || '-', marga: mg || '-',
                              qrCode: `BONATAON-${id.slice(-6)}`, registeredAt: fmtDate(), timestamp: Date.now()
                          });
                          c++;
@@ -1972,6 +1713,21 @@
         };
         
         window.triggerImport = () => document.getElementById('importInput').click();
+
+        window.resetData = () => {
+            if(prompt("Password Admin:") === ADMIN_PASS && confirm("Hapus SEMUA data? Tindakan ini tidak dapat dibatalkan.")) {
+                Promise.all([
+                    set(ref(db, 'participants'), null),
+                    set(ref(db, 'attendance'), null),
+                    set(ref(db, 'gifts'), null)
+                ]).then(() => {
+                    showToast("Database berhasil direset.", 'success');
+                }).catch(error => {
+                    console.error("Error resetting data:", error);
+                    showToast("Gagal mereset data. Cek koneksi.", 'error');
+                });
+            }
+        };
 
         // Init
         setTimeout(() => {
