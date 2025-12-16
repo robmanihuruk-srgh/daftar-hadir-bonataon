@@ -48,6 +48,7 @@
         .header-bg {
             background: linear-gradient(135deg, var(--emerald-900) 0%, var(--emerald-600) 100%);
             position: relative;
+            overflow: hidden;
         }
         .header-bg::after {
             content: "";
@@ -81,7 +82,7 @@
         /* Chart Container Fix */
         .chart-wrapper {
             position: relative;
-            height: 300px;
+            height: 250px;
             width: 100%;
         }
         
@@ -97,20 +98,28 @@
             box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
             outline: none;
         }
+
+        .ornament { position: absolute; z-index: 0; opacity: 0.6; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); pointer-events: none; }
     </style>
 </head>
 <body class="antialiased">
 
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="ornament top-10 left-10 opacity-10"><i class="fas fa-leaf text-emerald-400 text-6xl transform -rotate-12"></i></div>
+        <div class="ornament bottom-20 right-10 opacity-10"><i class="fas fa-church text-emerald-300 text-8xl"></i></div>
+        <div class="ornament top-1/4 right-20 opacity-5"><i class="fas fa-music text-amber-200 text-5xl"></i></div>
+    </div>
+
     <div id="app" class="relative z-10 max-w-md mx-auto md:max-w-4xl min-h-screen md:my-8 md:rounded-[2rem] overflow-hidden flex flex-col glass-panel transition-all duration-500">
          
         <div id="loading" class="absolute inset-0 z-[9999] bg-slate-50 flex flex-col justify-center items-center">
-            <div class="logo-frame w-28 h-28 p-2 mb-6 animate-bounce">
+            <div class="logo-frame w-32 h-32 p-3 mb-6 animate-bounce">
                 <img src="logo tugu manihuruk.png" alt="Logo Tugu" class="w-full h-full object-contain" 
-                     onerror="this.parentElement.innerHTML='<i class=\'fas fa-mountain text-4xl text-emerald-800\'></i>'">
+                     onerror="this.parentElement.innerHTML='<div class=\'text-center leading-none text-xs font-bold text-emerald-800\'>TUGU<br>RAJA<br>MANIHURUK</div>'">
             </div>
             <h2 class="text-2xl font-bold text-emerald-900 mb-2 serif-font tracking-wide">BONATAON 2026</h2>
             <div class="flex items-center gap-2 text-emerald-600 text-sm font-semibold">
-                <i class="fas fa-circle-notch fa-spin"></i> Memuat Data...
+                <i class="fas fa-circle-notch fa-spin"></i> Menyiapkan Sukacita...
             </div>
         </div>
 
@@ -123,7 +132,7 @@
                     <div>
                         <h1 class="text-2xl md:text-3xl font-bold text-white serif-font tracking-wide drop-shadow-md">TUGU RAJA<br>MANIHURUK</h1>
                         <p class="text-emerald-100 text-xs font-medium uppercase tracking-widest mt-1 opacity-90">
-                            <i class="fas fa-calendar-check mr-1 text-amber-400"></i> Bonataon 2026
+                            <i class="fas fa-map-pin mr-1 text-amber-400"></i> Bonataon 2026
                         </p>
                     </div>
                 </div>
@@ -132,7 +141,7 @@
             <div class="flex gap-3 mt-8 overflow-x-auto pb-2 custom-scrollbar">
                 <div class="flex-1 min-w-[100px] bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10 text-center">
                     <div class="text-2xl font-bold text-white" id="statRegistered">0</div>
-                    <div class="text-[10px] font-bold text-emerald-200 uppercase tracking-wider mt-1">Jemaat</div>
+                    <div class="text-[10px] font-bold text-emerald-200 uppercase tracking-wider mt-1">Terdaftar</div>
                 </div>
                 <div class="flex-1 min-w-[100px] bg-emerald-500/30 backdrop-blur-sm rounded-xl p-3 border border-emerald-400/50 text-center">
                     <div class="text-2xl font-bold text-emerald-50" id="statPresent">0</div>
@@ -140,30 +149,34 @@
                 </div>
                 <div class="flex-1 min-w-[100px] bg-amber-500/20 backdrop-blur-sm rounded-xl p-3 border border-amber-400/30 text-center">
                     <div class="text-2xl font-bold text-amber-200" id="statGifts">0</div>
-                    <div class="text-[10px] font-bold text-amber-100 uppercase tracking-wider mt-1">Kado</div>
+                    <div class="text-[10px] font-bold text-amber-100 uppercase tracking-wider mt-1">Berkat</div>
                 </div>
             </div>
         </header>
 
         <nav class="flex px-4 -mt-12 relative z-30 gap-2 overflow-x-auto pb-4 custom-scrollbar">
-            <button onclick="setTab('register')" id="tab-register" class="nav-btn flex-1 min-w-[70px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+            <button onclick="setTab('register')" id="tab-register" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-user-plus text-lg text-slate-400"></i>
-                <span class="text-[10px] font-bold uppercase">Daftar</span>
+                <span class="text-[10px] font-bold uppercase">Registrasi</span>
             </button>
-            <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 min-w-[70px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
-                <i class="fas fa-search text-lg text-slate-400"></i>
-                <span class="text-[10px] font-bold uppercase">Cari</span>
+            <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+                <i class="fas fa-search-location text-lg text-slate-400"></i>
+                <span class="text-[10px] font-bold uppercase">Cari Tiket</span>
             </button>
-            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[70px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-qrcode text-lg text-slate-400"></i>
                 <span class="text-[10px] font-bold uppercase">Scan</span>
             </button>
-            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[70px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
-                <i class="fas fa-chart-pie text-lg text-slate-400"></i>
-                <span class="text-[10px] font-bold uppercase">Grafik</span>
+            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+                <i class="fas fa-gift text-lg text-slate-400"></i>
+                <span class="text-[10px] font-bold uppercase">Berkat</span>
             </button>
-            <button onclick="window.adminLogin()" id="tab-admin" class="nav-btn flex-1 min-w-[70px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
-                <i class="fas fa-user-shield text-lg text-slate-400"></i>
+            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+                <i class="fas fa-chart-pie text-lg text-slate-400"></i>
+                <span class="text-[10px] font-bold uppercase">Data</span>
+            </button>
+            <button onclick="window.adminLogin()" id="tab-admin" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+                <i class="fas fa-user-lock text-lg text-slate-400"></i>
                 <span class="text-[10px] font-bold uppercase">Admin</span>
             </button>
         </nav>
@@ -173,8 +186,12 @@
         </main>
          
         <footer class="py-4 px-6 border-t border-slate-200 text-center bg-white/90 backdrop-blur-sm absolute bottom-0 w-full z-20">
-            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Powered by</div>
-            <div class="text-xs font-bold text-emerald-800">Panitia Bonataon Manihuruk 2026</div>
+            <div class="flex justify-between items-center text-xs">
+                <div class="font-bold text-slate-400">&copy; 2026 Manihuruk</div>
+                <div class="font-bold text-emerald-700 flex items-center gap-1">
+                    Sukacita Bersama <i class="fas fa-heart text-amber-500"></i>
+                </div>
+            </div>
         </footer>
     </div>
 
@@ -295,14 +312,11 @@
         });
 
         function updateDashboard() {
-            // Update Top Stats
             document.getElementById('statRegistered').innerText = state.participants.length;
             document.getElementById('statPresent').innerText = state.attendance.length;
             document.getElementById('statGifts').innerText = state.gifts.length;
             
-            // If on data tab, refresh charts
             if (state.tab === 'data') renderCharts();
-            // If on register tab, refresh list
             if (state.tab === 'register') renderParticipantList();
             
             document.getElementById('loading').style.display = 'none';
@@ -311,10 +325,8 @@
         // --- NAVIGATION & RENDERING ---
         window.setTab = (t) => {
             if ((state.tab === 'scan') && t !== 'scan') window.stopScanner();
-            
             state.tab = t;
             
-            // Update Active Button
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 if (btn.id === `tab-${t}`) btn.classList.add('active');
                 else btn.classList.remove('active');
@@ -322,15 +334,15 @@
 
             const root = document.getElementById('content-area');
             
-            // Render Content based on Tab
             if (t === 'register') {
                 root.innerHTML = `
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-6">
-                        <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none"><i class="fas fa-pen-fancy text-6xl"></i></div>
+                        <div class="flex items-center gap-3 mb-4 relative z-10">
                             <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600"><i class="fas fa-user-plus"></i></div>
                             <h3 class="font-bold text-slate-800">Registrasi Keluarga</h3>
                         </div>
-                        <div class="space-y-4">
+                        <div class="space-y-4 relative z-10">
                             <div>
                                 <label class="text-xs font-bold text-slate-400 uppercase">Nama Lengkap</label>
                                 <input id="inName" type="text" class="form-input w-full rounded-xl mt-1" placeholder="Masukkan nama...">
@@ -351,9 +363,9 @@
                                     <label class="text-xs font-bold text-slate-400 uppercase">Marga</label>
                                     <select id="inMarga" class="form-input w-full rounded-xl mt-1">
                                         <option value="" disabled selected>Pilih...</option>
-                                        <option value="Marga Manihuruk">Manihuruk</option>
+                                        <option value="Marga Manihuruk">Marga Manihuruk</option>
                                         <option value="Boru">Boru</option>
-                                        <option value="Bere / Panagolan">Bere/Panagolan</option>
+                                        <option value="Bere / Panagolan">Bere / Panagolan</option>
                                     </select>
                                 </div>
                             </div>
@@ -368,79 +380,76 @@
             } 
             else if (t === 'find') {
                 root.innerHTML = `
-                    <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center">
-                        <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4 text-amber-500 text-2xl"><i class="fas fa-search"></i></div>
+                    <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center relative overflow-hidden">
+                        <div class="absolute -top-10 -left-10 w-32 h-32 bg-amber-100 rounded-full blur-2xl opacity-50"></div>
+                        <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4 text-amber-500 text-2xl shadow-inner"><i class="fas fa-search"></i></div>
                         <h3 class="font-bold text-lg text-slate-800 mb-2">Cari Undangan</h3>
                         <p class="text-slate-400 text-sm mb-6">Cari tiket berdasarkan nama dan marga.</p>
                         <div class="space-y-3 text-left">
                             <input id="findName" type="text" placeholder="Nama Lengkap..." class="form-input w-full rounded-xl text-center">
                             <select id="findMarga" class="form-input w-full rounded-xl text-center">
                                 <option value="" disabled selected>Pilih Marga</option>
-                                <option value="Marga Manihuruk">Manihuruk</option>
+                                <option value="Marga Manihuruk">Marga Manihuruk</option>
                                 <option value="Boru">Boru</option>
-                                <option value="Bere / Panagolan">Bere/Panagolan</option>
+                                <option value="Bere / Panagolan">Bere / Panagolan</option>
                             </select>
-                            <button onclick="findTicket()" class="btn-primary w-full rounded-xl py-3 shadow-lg shadow-emerald-200">Cari Tiket</button>
+                            <button onclick="findTicket()" class="btn-primary w-full rounded-xl py-3 shadow-lg shadow-emerald-200">Cari Tiket Saya</button>
                         </div>
                     </div>
                 `;
             }
-            else if (t === 'scan') {
+            else if (t === 'scan' || t === 'gift') {
+                const isGift = t === 'gift';
                 root.innerHTML = `
                     <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
-                        <h3 class="font-bold text-center text-slate-800 mb-4">Scan QR Code Kehadiran</h3>
+                        <h3 class="font-bold text-center text-slate-800 mb-4">${isGift ? 'Ambil Berkat' : 'Scan Kehadiran'}</h3>
                         <div id="scanMsg" class="hidden p-3 rounded-lg text-center font-bold mb-3 text-sm"></div>
-                        <div class="rounded-xl overflow-hidden bg-black border-4 border-emerald-500 relative">
+                        <div class="rounded-xl overflow-hidden bg-black border-4 ${isGift ? 'border-amber-500' : 'border-emerald-500'} relative shadow-inner">
                             <div id="reader"></div>
                         </div>
+                        ${state.isAdmin ? `<button onclick="alert('Fitur Manual Hanya di Admin Panel')" class="w-full mt-4 py-2 text-xs text-slate-400 font-bold border border-slate-200 rounded-lg">Mode Manual (Khusus Panitia)</button>` : ''}
                     </div>
                 `;
                 setTimeout(initScanner, 300);
             }
             else if (t === 'data') {
-                // RENDER CONTAINER GRAFIK
                 root.innerHTML = `
                     <div class="space-y-6">
                         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-700 mb-4 border-b pb-2">Ringkasan Acara</h4>
-                            <div class="chart-wrapper">
-                                <canvas id="chartOverview"></canvas>
-                            </div>
+                            <h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-chart-bar text-emerald-600"></i> Ringkasan Acara</h4>
+                            <div class="chart-wrapper"><canvas id="chartOverview"></canvas></div>
                         </div>
-
                         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-700 mb-4 border-b pb-2">Kehadiran Berdasarkan Marga</h4>
-                            <div class="chart-wrapper">
-                                <canvas id="chartMarga"></canvas>
-                            </div>
+                            <h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-users text-emerald-600"></i> Kehadiran per Marga</h4>
+                            <div class="chart-wrapper"><canvas id="chartMarga"></canvas></div>
                         </div>
-
                         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-700 mb-4 border-b pb-2">Kehadiran Berdasarkan Status</h4>
-                            <div class="chart-wrapper">
-                                <canvas id="chartStatus"></canvas>
+                            <h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-user-tag text-emerald-600"></i> Kehadiran per Status</h4>
+                            <div class="chart-wrapper"><canvas id="chartStatus"></canvas></div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 text-center">
+                            <h4 class="font-bold text-slate-700 mb-4">Export Data</h4>
+                            <div class="flex gap-2 justify-center">
+                                <button onclick="exportData('p')" class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow hover:bg-emerald-700">Master Data</button>
+                                <button onclick="exportData('a')" class="px-4 py-2 bg-slate-600 text-white rounded-lg text-xs font-bold shadow hover:bg-slate-700">Absensi</button>
                             </div>
                         </div>
                     </div>
                 `;
-                // PENTING: Render grafik setelah HTML disuntikkan ke DOM
                 setTimeout(renderCharts, 100); 
             }
         };
 
-        // --- REGISTER LOGIC ---
+        // --- LOGIC ---
         window.processRegister = () => {
             const name = document.getElementById('inName').value.trim();
             const status = document.getElementById('inStatus').value;
             const marga = document.getElementById('inMarga').value;
 
-            if(!name || !status || !marga) {
-                alert("Mohon lengkapi semua data!");
-                return;
-            }
+            if(!name || !status || !marga) { alert("Mohon lengkapi semua data!"); return; }
 
             const id = Date.now().toString();
-            const qrCode = `BONA-${id.slice(-6)}`;
+            const qrCode = `MN-${id.slice(-6)}`;
 
             push(ref(db, 'participants'), {
                 id, name, status, marga, qrCode,
@@ -454,27 +463,18 @@
         function renderParticipantList() {
             const list = document.getElementById('participantList');
             if(!list) return;
-            
             const items = state.participants.slice().reverse().map(p => `
                 <div class="bg-white p-3 rounded-xl border border-slate-100 mb-2 flex justify-between items-center shadow-sm">
-                    <div>
-                        <div class="font-bold text-slate-700">${p.name}</div>
-                        <div class="text-[10px] text-slate-400 uppercase font-bold">${p.marga} • ${p.status}</div>
-                    </div>
+                    <div><div class="font-bold text-slate-700">${p.name}</div><div class="text-[10px] text-slate-400 uppercase font-bold">${p.marga} • ${p.status}</div></div>
                     <i class="fas fa-qrcode text-emerald-200 text-xl"></i>
-                </div>
-            `).join('');
-            
-            list.innerHTML = items || '<div class="text-center text-slate-400 text-sm py-4">Belum ada data</div>';
+                </div>`).join('');
+            list.innerHTML = items || '<div class="text-center text-slate-400 text-sm py-8 italic">Belum ada keluarga yang terdaftar</div>';
         }
 
-        // --- TICKET LOGIC ---
         window.findTicket = () => {
             const name = document.getElementById('findName').value.trim().toLowerCase();
             const marga = document.getElementById('findMarga').value;
-            
             const found = state.participants.find(p => p.name.toLowerCase().includes(name) && p.marga === marga);
-            
             if(found) showTicket(found.name, found.status, found.marga, found.qrCode);
             else alert("Data tidak ditemukan.");
         };
@@ -485,181 +485,130 @@
             document.getElementById('ticMargaDisp').innerText = marga;
             document.getElementById('ticCode').innerText = code;
             document.getElementById('ticQR').src = getQR(code);
-            
-            const modal = document.getElementById('ticketModal');
-            modal.classList.remove('hidden');
+            document.getElementById('ticketModal').classList.remove('hidden');
         };
 
-        // --- SCANNER LOGIC ---
         window.initScanner = () => {
             if(state.scanner) return;
             const config = { fps: 10, qrbox: 250, aspectRatio: 1.0 };
             state.scanner = new Html5QrcodeScanner("reader", config, false);
-            
             state.scanner.render((decodedText) => {
                 if(state.scanner) state.scanner.pause();
-                
                 const p = state.participants.find(x => x.qrCode === decodedText);
                 const msgEl = document.getElementById('scanMsg');
                 
                 if(p) {
-                    // Check Duplicate
-                    const exists = state.attendance.find(a => a.participantId === p.id);
-                    if(exists) {
-                        beep('fail');
-                        msgEl.innerText = `Sudah Hadir: ${p.name}`;
-                        msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-amber-100 text-amber-700";
+                    if (state.tab === 'gift') {
+                        // Gift Logic
+                        if(state.gifts.find(g => g.participantId === p.id)) {
+                            beep('fail'); msgEl.innerText = `Sudah Ambil Berkat: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-amber-100 text-amber-700";
+                        } else {
+                            push(ref(db, 'gifts'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() });
+                            beep('success'); msgEl.innerText = `Berkat Diserahkan: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-emerald-100 text-emerald-700";
+                        }
                     } else {
-                        // Record Attendance
-                        push(ref(db, 'attendance'), {
-                            id: Date.now().toString(),
-                            participantId: p.id,
-                            name: p.name,
-                            status: p.status, // Penting untuk grafik
-                            marga: p.marga,   // Penting untuk grafik
-                            timestamp: fmtDate()
-                        });
-                        beep('success');
-                        msgEl.innerText = `Selamat Datang: ${p.name}`;
-                        msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-emerald-100 text-emerald-700";
+                        // Attendance Logic
+                        if(state.attendance.find(a => a.participantId === p.id)) {
+                            beep('fail'); msgEl.innerText = `Sudah Hadir: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-amber-100 text-amber-700";
+                        } else {
+                            push(ref(db, 'attendance'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() });
+                            beep('success'); msgEl.innerText = `Horas! Selamat Datang: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-emerald-100 text-emerald-700";
+                        }
                     }
                 } else {
-                    beep('fail');
-                    msgEl.innerText = "QR Code Tidak Dikenali";
-                    msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-red-100 text-red-700";
+                    beep('fail'); msgEl.innerText = "QR Code Tidak Dikenali"; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-red-100 text-red-700";
                 }
-                
                 msgEl.classList.remove('hidden');
-                setTimeout(() => {
-                    if(state.scanner) state.scanner.resume();
-                    msgEl.classList.add('hidden');
-                }, 2500);
+                setTimeout(() => { if(state.scanner) state.scanner.resume(); msgEl.classList.add('hidden'); }, 2500);
             });
         };
 
-        window.stopScanner = () => {
-            if(state.scanner) {
-                state.scanner.clear().then(() => state.scanner = null);
-            }
-        };
+        window.stopScanner = () => { if(state.scanner) { state.scanner.clear().then(() => state.scanner = null); }};
 
-        // --- CHART LOGIC (THE FIX) ---
-        let charts = {}; // Store chart instances
+        // --- CHART LOGIC (ROBUST) ---
+        let charts = {}; 
 
         window.renderCharts = () => {
-            // Pastikan elemen canvas ada
             const ctxOverview = document.getElementById('chartOverview');
             const ctxMarga = document.getElementById('chartMarga');
             const ctxStatus = document.getElementById('chartStatus');
 
             if (!ctxOverview || !ctxMarga || !ctxStatus) return;
 
-            // Destroy old charts
-            ['overview', 'marga', 'status'].forEach(k => {
-                if (charts[k]) charts[k].destroy();
-            });
+            // Destroy previous instances
+            ['overview', 'marga', 'status'].forEach(k => { if (charts[k]) charts[k].destroy(); });
 
-            // 1. DATA PREPARATION (Hitung dari data Attendance yang masuk)
-            // Kita ingin grafik berdasarkan "Yang Hadir"
-            
-            // Hitung Marga yang Hadir
+            // DATA CALCULATION (Real-time from Attendance)
             const margaCount = { 'Marga Manihuruk': 0, 'Boru': 0, 'Bere / Panagolan': 0 };
-            // Hitung Status yang Hadir
             const statusCount = { 'Orangtua': 0, 'Pemuda': 0, 'Sekolah Minggu': 0, 'Tamu Undangan': 0, 'Pengurus Tupuan': 0 };
 
             state.attendance.forEach(att => {
-                // Normalisasi string agar cocok dengan key object
                 if (margaCount[att.marga] !== undefined) margaCount[att.marga]++;
                 if (statusCount[att.status] !== undefined) statusCount[att.status]++;
             });
 
-            // CHART 1: Overview (Bar Chart)
+            // CHART 1: Overview
             charts['overview'] = new Chart(ctxOverview, {
                 type: 'bar',
                 data: {
                     labels: ['Terdaftar', 'Hadir', 'Ambil Kado'],
                     datasets: [{
-                        label: 'Total',
+                        label: 'Jiwa',
                         data: [state.participants.length, state.attendance.length, state.gifts.length],
-                        backgroundColor: ['#94a3b8', '#059669', '#f59e0b'],
-                        borderRadius: 8,
-                        barThickness: 40
+                        backgroundColor: ['#cbd5e1', '#059669', '#f59e0b'],
+                        borderRadius: 8, barThickness: 40
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, grid: { display: true, color: '#f1f5f9' } }, x: { grid: { display: false } } }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
             });
 
-            // CHART 2: Marga (Pie Chart)
+            // CHART 2: Marga (Pie)
             charts['marga'] = new Chart(ctxMarga, {
-                type: 'pie', // Pie chart lebih cocok untuk distribusi marga
+                type: 'pie',
                 data: {
                     labels: Object.keys(margaCount),
                     datasets: [{
                         data: Object.values(margaCount),
-                        backgroundColor: ['#064e3b', '#10b981', '#f59e0b'], // Dark Green, Light Green, Amber
-                        borderWidth: 0
+                        backgroundColor: ['#064e3b', '#10b981', '#f59e0b'],
+                        borderWidth: 2, borderColor: '#ffffff'
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { position: 'bottom', labels: { font: { size: 11, family: "'Plus Jakarta Sans'" } } } 
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
             });
 
-            // CHART 3: Status (Bar Chart Horizontal)
+            // CHART 3: Status (Horizontal Bar)
             charts['status'] = new Chart(ctxStatus, {
                 type: 'bar',
                 data: {
                     labels: Object.keys(statusCount),
                     datasets: [{
-                        label: 'Jemaat Hadir',
+                        label: 'Hadir',
                         data: Object.values(statusCount),
                         backgroundColor: '#059669',
                         borderRadius: 6
                     }]
                 },
-                options: {
-                    indexAxis: 'y', // Horizontal bar
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { x: { beginAtZero: true } }
-                }
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
             });
         };
 
-        // --- GLOBAL HELPERS ---
-        window.closeModal = (id) => {
-            document.getElementById(id).classList.add('hidden');
-        };
-        
-        window.adminLogin = () => {
-            document.getElementById('adminModal').classList.remove('hidden');
-        };
-
+        // --- GLOBAL & ADMIN ---
+        window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
+        window.adminLogin = () => document.getElementById('adminModal').classList.remove('hidden');
         window.verifyAdmin = () => {
             if(document.getElementById('adminPassword').value === ADMIN_PASS) {
-                state.isAdmin = true;
-                alert("Login Admin Berhasil");
-                closeModal('adminModal');
-            } else {
-                alert("PIN Salah");
-            }
+                state.isAdmin = true; alert("Login Admin Berhasil"); closeModal('adminModal');
+            } else { alert("PIN Salah"); }
+        };
+        window.exportData = (type) => {
+            let data = type === 'p' ? state.participants : (type === 'a' ? state.attendance : state.gifts);
+            let csv = "Nama,Status,Marga,Waktu\n" + data.map(r => `"${r.name}","${r.status}","${r.marga}","${r.timestamp || r.registeredAt}"`).join("\n");
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' }));
+            link.download = `Bonataon_${type}.csv`; link.click();
         };
 
-        // Start App
-        setTimeout(() => {
-            setTab('register');
-        }, 1500);
-
+        setTimeout(() => { setTab('register'); }, 1500);
     </script>
 </body>
 </html>
