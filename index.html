@@ -699,6 +699,9 @@
 
                 let actionBtn = '';
 
+                const hasGift = state.gifts.find(g => g.participantId === p.id);
+                const hasAttended = state.attendance.find(a => a.participantId === p.id);
+
 
 
                 if (isGiftMode) {
@@ -713,9 +716,13 @@
 
                     const present = state.attendance.find(a => a.participantId === p.id);
 
-                    if (present) statusBadge = `<span class="text-green-600 font-bold text-xs bg-green-50 px-3 py-1 rounded-lg">HADIR</span>`;
-
-                    else actionBtn = `<button onclick="adminManualAction('${p.id}')" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-700">CHECK-IN</button>`;
+                    if (present) {
+                        if (hasGift) {
+                            statusBadge = `<span class="text-yellow-600 font-bold text-xs bg-yellow-100 px-3 py-1 rounded-lg">🎁 Ambil</span>`;
+                        } else {
+                            statusBadge = `<span class="text-green-600 font-bold text-xs bg-green-50 px-3 py-1 rounded-lg">HADIR</span>`;
+                        }
+                    } else actionBtn = `<button onclick="adminManualAction('${p.id}')" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-700">CHECK-IN</button>`;
 
                 }
 
@@ -723,7 +730,7 @@
 
                 return `
 
-                <div class="flex items-center justify-between p-3 border-b border-gray-100 hover:bg-gray-50">
+                <div class="flex items-center justify-between p-3 border-b border-gray-100 hover:bg-gray-50 ${hasGift ? 'border-l-4 border-l-yellow-500' : hasAttended ? 'border-l-4 border-l-green-500' : ''}">
 
                     <div>
 
@@ -784,10 +791,11 @@
                 listContainer.innerHTML = state.participants.slice().reverse().map(p => {
 
                     const active = state.attendance.find(a => a.participantId === p.id);
+                    const hasGift = state.gifts.find(g => g.participantId === p.id);
 
                     return `
 
-                    <div class="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center border-l-4 ${active ? 'border-green-500 bg-green-50' : 'border-gray-200'}">
+                    <div class="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center border-l-4 ${hasGift ? 'border-yellow-500 bg-yellow-50' : active ? 'border-green-500 bg-green-50' : 'border-gray-200'}">
 
                         <div>
 
@@ -803,7 +811,10 @@
 
                         </div>
 
-                        <button onclick="window.showTicket('${p.name}', '${p.classGrade}', '${p.sector}', '${p.qrCode}')" class="text-xs font-bold bg-gray-100 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-200">TIKET</button>
+                        <div class="flex gap-1">
+                            ${active ? '<span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded font-bold">HADIR</span>' : ''}
+                            ${hasGift ? '<span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-bold">🎁 Ambil</span>' : ''}
+                        </div>
 
                     </div>`;
 
@@ -869,21 +880,56 @@
         // --- EXPORT/IMPORT/RESET ---
 
         window.exportData = (type) => {
-
-            let csv = "data:text/csv;charset=utf-8," + (type === 'p' ? "Nama,Kategori,Marga,QR\n" : "Nama,Kategori,Marga,Waktu\n");
-
-            const data = type === 'p' ? state.participants : (type === 'g' ? state.gifts : state.attendance);
-
-            data.forEach(x => csv += `"${x.name}","${x.classGrade}","${x.sector}","${type==='p'?x.qrCode:x.timestamp}"\n`);
-
-            const link = document.createElement("a");
-
-            link.href = encodeURI(csv);
-
-            link.download = `Data_BONATAON_${type}.csv`;
-
-            link.click();
-
+            try {
+                let csv = "\uFEFF"; // BOM untuk Excel
+                const headers = type === 'p' ? "Nama,Kategori,Marga,QR\n" : 
+                              type === 'g' ? "Nama,Kategori,Marga,Waktu\n" : 
+                              "Nama,Kategori,Marga,Waktu\n";
+                csv += headers;
+                
+                const data = type === 'p' ? state.participants : 
+                           (type === 'g' ? state.gifts : state.attendance);
+                
+                data.forEach(x => {
+                    const name = x.name || '';
+                    const classGrade = x.classGrade || '';
+                    const sector = x.sector || '';
+                    const value = type === 'p' ? (x.qrCode || '') : (x.timestamp || '');
+                    
+                    // Escape quotes and wrap in quotes
+                    const escapedName = name.replace(/"/g, '""');
+                    const escapedClass = classGrade.replace(/"/g, '""');
+                    const escapedSector = sector.replace(/"/g, '""');
+                    const escapedValue = value.replace(/"/g, '""');
+                    
+                    csv += `"${escapedName}","${escapedClass}","${escapedSector}","${escapedValue}"\n`;
+                });
+                
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const fileName = `Data_BONATAON_${type}_${new Date().toISOString().slice(0,10)}.csv`;
+                
+                // For IE
+                if (window.navigator && window.navigator.msSaveBlob) {
+                    window.navigator.msSaveBlob(blob, fileName);
+                } else {
+                    const link = document.createElement("a");
+                    if (link.download !== undefined) {
+                        const url = URL.createObjectURL(blob);
+                        link.setAttribute("href", url);
+                        link.setAttribute("download", fileName);
+                        link.style.visibility = 'hidden';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    } else {
+                        alert("Browser Anda tidak mendukung download file.");
+                    }
+                }
+            } catch (error) {
+                console.error("Export error:", error);
+                alert("Terjadi kesalahan saat mengekspor data: " + error.message);
+            }
         };
 
 
