@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensi Event Natal 2025 - GKPS Tangerang</title>
+    <title>Absensi Event Bonataon 2025 - MANIHURUK</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -60,6 +60,19 @@
         .participant-list::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+        
+        /* Admin button styles */
+        .admin-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .admin-button:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-50 text-gray-800 font-sans">
@@ -73,33 +86,33 @@
         
         <div id="loading" class="absolute inset-0 z-[9999] bg-white flex flex-col justify-center items-center">
             <div class="text-5xl mb-4 animate-bounce">❄️</div>
-            <div class="font-bold text-gray-500">Memuat Sistem GKPS...</div>
+            <div class="font-bold text-gray-500">Memuat Sistem MANIHURUK...</div>
         </div>
 
-        <header class="bg-gradient-to-r from-red-800 to-red-600 text-white p-6 pb-14 shadow-lg">
+        <header class="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-6 pb-14 shadow-lg">
             <div class="flex justify-between items-start">
                 <div>
-                    <h1 class="text-3xl font-extrabold tracking-tight">NATAL 2025</h1>
-                    <p class="text-red-100 text-xs font-medium tracking-wider uppercase opacity-90">GKPS Tangerang</p>
+                    <h1 class="text-3xl font-extrabold tracking-tight">BONATAON 2025</h1>
+                    <p class="text-blue-100 text-xs font-medium tracking-wider uppercase opacity-90">MANIHURUK</p>
                 </div>
                 <div class="text-right">
                     <div id="liveClock" class="text-xl font-mono font-bold">00:00</div>
-                    <div id="liveDate" class="text-[10px] text-red-200 uppercase font-semibold">...</div>
+                    <div id="liveDate" class="text-[10px] text-blue-200 uppercase font-semibold">...</div>
                 </div>
             </div>
             
             <div class="flex gap-2 mt-6 overflow-x-auto pb-2 no-scrollbar">
                 <div class="bg-black/20 backdrop-blur-md rounded-xl p-3 min-w-[90px] border border-white/10">
                     <div class="text-2xl font-bold" id="statRegistered">0</div>
-                    <div class="text-[9px] uppercase font-bold text-red-100">Jemaat</div>
+                    <div class="text-[9px] uppercase font-bold text-blue-100">Jemaat</div>
                 </div>
                 <div class="bg-black/20 backdrop-blur-md rounded-xl p-3 min-w-[90px] border border-white/10">
                     <div class="text-2xl font-bold text-green-300" id="statPresent">0</div>
-                    <div class="text-[9px] uppercase font-bold text-red-100">Hadir</div>
+                    <div class="text-[9px] uppercase font-bold text-blue-100">Hadir</div>
                 </div>
                 <div class="bg-yellow-500/30 backdrop-blur-md rounded-xl p-3 min-w-[90px] border border-white/10">
                     <div class="text-2xl font-bold text-yellow-300" id="statGifts">0</div>
-                    <div class="text-[10px] uppercase font-bold text-red-100">Hadiah</div>
+                    <div class="text-[10px] uppercase font-bold text-blue-100">Hadiah</div>
                 </div>
             </div>
         </header>
@@ -110,6 +123,7 @@
             <button onclick="setTab('scan')" id="tab-scan" class="flex-1 py-3 px-4 rounded-xl shadow-lg text-xs font-bold transition-all transform hover:-translate-y-1 bg-white text-gray-400 whitespace-nowrap">📷 Absen</button>
             <button onclick="setTab('gift')" id="tab-gift" class="flex-1 py-3 px-4 rounded-xl shadow-lg text-xs font-bold transition-all transform hover:-translate-y-1 bg-white text-gray-400 whitespace-nowrap">🎁 Hadiah</button>
             <button onclick="setTab('data')" id="tab-data" class="flex-1 py-3 px-4 rounded-xl shadow-lg text-xs font-bold transition-all transform hover:-translate-y-1 bg-white text-gray-400 whitespace-nowrap">📊 Laporan</button>
+            <button onclick="window.adminLogin()" id="tab-admin" class="py-3 px-4 rounded-xl shadow-lg text-xs font-bold transition-all transform hover:-translate-y-1 bg-purple-600 text-white whitespace-nowrap admin-button">🔐 Admin</button>
         </nav>
 
         <main class="flex-1 p-6 overflow-y-auto bg-gray-50 pb-24">
@@ -117,6 +131,78 @@
         </main>
     </div>
 
+    <!-- Admin Modal -->
+    <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center bg-black/90 hidden backdrop-blur-sm transition-opacity opacity-0">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 text-center transform scale-95 transition-transform relative border-t-8 border-purple-600">
+            <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-purple-500 hover:bg-gray-100 rounded-full transition-colors">
+                ✕
+            </button>
+            
+            <div class="mb-6">
+                <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-3xl">🔐</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Admin Panel</h3>
+                <p class="text-sm text-gray-500">Masukkan password admin</p>
+            </div>
+            
+            <input type="password" id="adminPassword" 
+                   placeholder="Password Admin" 
+                   class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-xl font-bold focus:border-purple-500 outline-none mb-4">
+            
+            <div class="space-y-3">
+                <button onclick="window.verifyAdmin()" 
+                        class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-bold rounded-xl shadow-lg hover:from-purple-700 hover:to-purple-800 transition-all">
+                    🔓 Masuk
+                </button>
+                
+                <button onclick="closeModal('adminModal')" 
+                        class="w-full py-3 text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Check-in Modal -->
+    <div id="manualCheckinModal" class="fixed inset-0 z-[8000] flex items-center justify-center bg-black/80 hidden backdrop-blur-sm transition-opacity opacity-0">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Check-in Manual</h3>
+            <p class="text-sm text-gray-500 mb-4">Pilih peserta untuk check-in manual:</p>
+            
+            <div class="space-y-2 mb-4 max-h-60 overflow-y-auto">
+                <input type="text" id="manualSearch" placeholder="Cari nama..." 
+                       class="w-full p-3 bg-gray-50 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                <div id="manualCheckinList"></div>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="closeModal('manualCheckinModal')" class="flex-1 py-3 rounded-lg font-bold text-gray-600 bg-gray-100 hover:bg-gray-200">Batal</button>
+                <button onclick="processManualCheckin()" class="flex-1 py-3 rounded-lg font-bold text-white bg-green-600 hover:bg-green-700 shadow-lg" disabled id="manualCheckinBtn">Check-in</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Gift Claim Modal -->
+    <div id="manualGiftModal" class="fixed inset-0 z-[8000] flex items-center justify-center bg-black/80 hidden backdrop-blur-sm transition-opacity opacity-0">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Ambil Hadiah Manual</h3>
+            <p class="text-sm text-gray-500 mb-4">Pilih peserta untuk ambil hadiah manual:</p>
+            
+            <div class="space-y-2 mb-4 max-h-60 overflow-y-auto">
+                <input type="text" id="manualGiftSearch" placeholder="Cari nama..." 
+                       class="w-full p-3 bg-gray-50 border rounded-lg text-sm focus:outline-none focus:border-red-500">
+                <div id="manualGiftList"></div>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="closeModal('manualGiftModal')" class="flex-1 py-3 rounded-lg font-bold text-gray-600 bg-gray-100 hover:bg-gray-200">Batal</button>
+                <button onclick="processManualGift()" class="flex-1 py-3 rounded-lg font-bold text-white bg-red-600 hover:bg-red-700 shadow-lg" disabled id="manualGiftBtn">Ambil Hadiah</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Existing modals remain -->
     <div id="confirmModal" class="fixed inset-0 z-[8000] flex items-center justify-center bg-black/80 hidden backdrop-blur-sm transition-opacity opacity-0">
         <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform">
             <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Konfirmasi Data</h3>
@@ -135,13 +221,13 @@
     </div>
 
     <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 hidden backdrop-blur-sm transition-opacity opacity-0">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-6 text-center transform scale-95 transition-transform relative border-t-8 border-red-600">
-            <button onclick="closeModal('ticketModal')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-gray-100 rounded-full transition-colors">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 text-center transform scale-95 transition-transform relative border-t-8 border-blue-600">
+            <button onclick="closeModal('ticketModal')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-blue-500 hover:bg-gray-100 rounded-full transition-colors">
                 ✕
             </button>
             
             <div class="mb-4">
-                <div class="text-red-600 font-bold tracking-widest text-xs mb-1 uppercase">Tiket Natal 2025</div>
+                <div class="text-blue-600 font-bold tracking-widest text-xs mb-1 uppercase">Tiket Bonataon 2025</div>
                 <h2 id="ticName" class="text-2xl font-black text-gray-800 leading-tight mb-2">Nama Peserta</h2>
                 <div class="flex justify-center gap-2 mb-4">
                     <span id="ticClass" class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full">Kelas</span>
@@ -154,7 +240,7 @@
             </div>
             
             <div class="space-y-3">
-                <a id="btnDownloadTicket" href="#" download="Tiket_Natal_GKPS.png" 
+                <a id="btnDownloadTicket" href="#" download="Tiket_Bonataon_MANIHURUK.png" 
                    class="block w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all flex items-center justify-center gap-2">
                     📥 Simpan Tiket
                 </a>
@@ -202,7 +288,10 @@
             dataViewMode: 'attendance', 
             scanner: null,
             tempData: null,
-            searchTerm: ''
+            searchTerm: '',
+            isAdmin: false,
+            selectedManualCheckin: null,
+            selectedManualGift: null
         };
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -273,7 +362,7 @@
             if(!state.tempData) return;
             const { name, cls, sec } = state.tempData;
             const id = Date.now().toString();
-            const qr = `NATAL-${id.slice(-6)}`;
+            const qr = `BONATAON-${id.slice(-6)}`;
             push(ref(db, 'participants'), {
                 id, name, classGrade: cls, sector: sec, qrCode: qr,
                 registeredAt: fmtDate(), timestamp: Date.now()
@@ -285,7 +374,171 @@
             window.showTicket(name, cls, sec, qr);
         };
 
-        // --- FUNGSI CARI TIKET YANG DIPERBAIKI ---
+        // --- ADMIN FUNCTIONS ---
+        window.adminLogin = () => {
+            const modal = document.getElementById('adminModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => { 
+                modal.classList.remove('opacity-0'); 
+                modal.children[0].classList.replace('scale-95','scale-100');
+                document.getElementById('adminPassword').focus();
+            }, 10);
+        };
+
+        window.verifyAdmin = () => {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASS) {
+                state.isAdmin = true;
+                beep('success');
+                document.getElementById('tab-admin').innerHTML = '👑 Admin';
+                document.getElementById('tab-admin').classList.add('bg-gradient-to-r', 'from-purple-700', 'to-purple-800');
+                closeModal('adminModal');
+                alert("Login admin berhasil! Fitur manual sekarang aktif.");
+            } else {
+                beep('fail');
+                alert("Password salah!");
+            }
+            document.getElementById('adminPassword').value = '';
+        };
+
+        window.adminLogout = () => {
+            state.isAdmin = false;
+            document.getElementById('tab-admin').innerHTML = '🔐 Admin';
+            document.getElementById('tab-admin').classList.remove('bg-gradient-to-r', 'from-purple-700', 'to-purple-800');
+            alert("Logout admin berhasil.");
+        };
+
+        window.openManualCheckin = () => {
+            if (!state.isAdmin) {
+                alert("Hanya admin yang bisa melakukan check-in manual!");
+                window.adminLogin();
+                return;
+            }
+            
+            const modal = document.getElementById('manualCheckinModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => { 
+                modal.classList.remove('opacity-0'); 
+                modal.children[0].classList.replace('scale-95','scale-100');
+                renderManualCheckinList();
+                document.getElementById('manualSearch').focus();
+            }, 10);
+        };
+
+        window.openManualGift = () => {
+            if (!state.isAdmin) {
+                alert("Hanya admin yang bisa mengambil hadiah manual!");
+                window.adminLogin();
+                return;
+            }
+            
+            const modal = document.getElementById('manualGiftModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => { 
+                modal.classList.remove('opacity-0'); 
+                modal.children[0].classList.replace('scale-95','scale-100');
+                renderManualGiftList();
+                document.getElementById('manualGiftSearch').focus();
+            }, 10);
+        };
+
+        function renderManualCheckinList() {
+            const searchTerm = document.getElementById('manualSearch').value.toLowerCase();
+            const listEl = document.getElementById('manualCheckinList');
+            const btn = document.getElementById('manualCheckinBtn');
+            
+            // Filter participants who haven't checked in
+            const filtered = state.participants.filter(p => {
+                const alreadyPresent = state.attendance.find(a => a.participantId === p.id);
+                return !alreadyPresent && p.name.toLowerCase().includes(searchTerm);
+            });
+            
+            if (filtered.length === 0) {
+                listEl.innerHTML = '<div class="text-center text-gray-400 py-4 text-sm">Tidak ada peserta yang belum check-in</div>';
+                btn.disabled = true;
+                return;
+            }
+            
+            listEl.innerHTML = filtered.map(p => `
+                <div class="p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer rounded-lg ${state.selectedManualCheckin?.id === p.id ? 'bg-blue-50 border-blue-200' : ''}" 
+                     onclick="selectManualCheckin(${JSON.stringify(p)})">
+                    <div class="font-bold text-gray-800 text-sm">${p.name}</div>
+                    <div class="flex gap-2 mt-1">
+                        <span class="text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded font-bold">${p.classGrade}</span>
+                        <span class="text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded font-bold">${p.sector}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            btn.disabled = !state.selectedManualCheckin;
+        }
+
+        function renderManualGiftList() {
+            const searchTerm = document.getElementById('manualGiftSearch').value.toLowerCase();
+            const listEl = document.getElementById('manualGiftList');
+            const btn = document.getElementById('manualGiftBtn');
+            
+            // Filter participants who haven't claimed gift
+            const filtered = state.participants.filter(p => {
+                const alreadyClaimed = state.gifts.find(g => g.participantId === p.id);
+                return !alreadyClaimed && p.name.toLowerCase().includes(searchTerm);
+            });
+            
+            if (filtered.length === 0) {
+                listEl.innerHTML = '<div class="text-center text-gray-400 py-4 text-sm">Tidak ada peserta yang belum ambil hadiah</div>';
+                btn.disabled = true;
+                return;
+            }
+            
+            listEl.innerHTML = filtered.map(p => `
+                <div class="p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer rounded-lg ${state.selectedManualGift?.id === p.id ? 'bg-red-50 border-red-200' : ''}" 
+                     onclick="selectManualGift(${JSON.stringify(p)})">
+                    <div class="font-bold text-gray-800 text-sm">${p.name}</div>
+                    <div class="flex gap-2 mt-1">
+                        <span class="text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded font-bold">${p.classGrade}</span>
+                        <span class="text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded font-bold">${p.sector}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            btn.disabled = !state.selectedManualGift;
+        }
+
+        window.selectManualCheckin = (p) => {
+            state.selectedManualCheckin = p;
+            const btn = document.getElementById('manualCheckinBtn');
+            btn.disabled = false;
+            btn.innerHTML = `Check-in ${p.name}`;
+            renderManualCheckinList(); // Re-render to update selection
+        };
+
+        window.selectManualGift = (p) => {
+            state.selectedManualGift = p;
+            const btn = document.getElementById('manualGiftBtn');
+            btn.disabled = false;
+            btn.innerHTML = `Ambil Hadiah ${p.name}`;
+            renderManualGiftList(); // Re-render to update selection
+        };
+
+        window.processManualCheckin = () => {
+            if (!state.selectedManualCheckin || !state.isAdmin) return;
+            
+            const p = state.selectedManualCheckin;
+            window.doCheckIn(p);
+            state.selectedManualCheckin = null;
+            closeModal('manualCheckinModal');
+        };
+
+        window.processManualGift = () => {
+            if (!state.selectedManualGift || !state.isAdmin) return;
+            
+            const p = state.selectedManualGift;
+            window.claimGift(p);
+            state.selectedManualGift = null;
+            closeModal('manualGiftModal');
+        };
+
+        // --- FUNGSI CARI TIKET ---
         window.findMyTicket = () => {
             const nameInput = document.getElementById('findName');
             const sectorInput = document.getElementById('findSector');
@@ -303,25 +556,21 @@
                 return;
             }
 
-            // Pencarian yang lebih fleksibel
             const found = state.participants.find(p => {
                 const pName = p.name?.trim().toLowerCase() || "";
                 const pSector = p.sector || "";
                 
-                // Cocokkan nama (partial match) DAN sektor (exact match)
                 return pName.includes(name) && pSector === sector;
             });
 
             if (found) {
-                // Data fallback untuk menghindari error
                 const safeName = found.name || "Peserta";
                 const safeClass = found.classGrade || "-";
                 const safeSector = found.sector || "-";
-                const safeQR = found.qrCode || `NATAL-${found.id?.slice(-6) || "000000"}`;
+                const safeQR = found.qrCode || `BONATAON-${found.id?.slice(-6) || "000000"}`;
 
                 window.showTicket(safeName, safeClass, safeSector, safeQR);
             } else {
-                // Pesan error yang lebih informatif
                 const participantsInSector = state.participants.filter(p => p.sector === sector);
                 
                 let errorMsg = "❌ Data tidak ditemukan!\n\n";
@@ -436,14 +685,12 @@
                     if (claimedGift) {
                         statusBadge = `<span class="text-red-600 font-bold text-xs bg-red-50 border border-red-200 px-3 py-1 rounded-lg">DIAMBIL</span>`;
                     } else {
-                        // TOMBOL AMBIL DILOCK - hanya tersedia melalui scanner
                         statusBadge = `<span class="text-gray-400 font-bold text-xs bg-gray-100 border border-gray-200 px-3 py-1 rounded-lg">SCAN QR UNTUK AMBIL</span>`;
                     }
                 } else {
                     if (present) {
                         statusBadge = `<span class="text-green-600 font-bold text-xs bg-green-50 px-3 py-1 rounded-lg">HADIR</span>`;
                     } else {
-                        // TOMBOL CHECK-IN DILOCK - hanya tersedia melalui scanner
                         statusBadge = `<span class="text-gray-400 font-bold text-xs bg-gray-100 border border-gray-200 px-3 py-1 rounded-lg">SCAN QR UNTUK CHECK-IN</span>`;
                     }
                 }
@@ -474,10 +721,10 @@
                 const btn = document.getElementById(`tab-${x}`);
                 if(x === t) {
                     btn.classList.remove('bg-white','text-gray-400');
-                    btn.classList.add('bg-red-600','text-white','shadow-xl','-translate-y-1');
+                    btn.classList.add('bg-blue-600','text-white','shadow-xl','-translate-y-1');
                 } else {
                     btn.classList.add('bg-white','text-gray-400');
-                    btn.classList.remove('bg-red-600','text-white','shadow-xl','-translate-y-1');
+                    btn.classList.remove('bg-blue-600','text-white','shadow-xl','-translate-y-1');
                 }
             });
             render();
@@ -503,7 +750,7 @@
                             <h3 class="font-bold text-gray-700">Daftar Peserta Terdaftar</h3>
                             <p class="text-xs text-gray-400">${state.participants.length} peserta</p>
                         </div>
-                        <div class="text-xs font-bold bg-red-100 text-red-700 px-3 py-1 rounded-full">
+                        <div class="text-xs font-bold bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
                             🎫 Semua Tiket
                         </div>
                     </div>
@@ -522,7 +769,6 @@
                                         ${claimedGift ? '<span class="text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded font-bold">🎁 Ambil</span>' : ''}
                                     </div>
                                 </div>
-                                <!-- HAPUS TOMBOL LIHAT TIKET DI TAB DAFTAR -->
                             </div>`;
                         }).join('')}
                     </div>
@@ -538,7 +784,7 @@
                     root.innerHTML = `
                         <div id="registration-form" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
                             <h3 class="font-bold text-gray-700 mb-4">Input Peserta Baru</h3>
-                            <input id="inName" type="text" placeholder="Nama Lengkap..." class="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl font-bold focus:border-red-500 outline-none mb-3">
+                            <input id="inName" type="text" placeholder="Nama Lengkap..." class="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl font-bold focus:border-blue-500 outline-none mb-3">
                             <div class="flex gap-3 mb-4">
                                 <select id="inClass" class="flex-1 p-3 bg-gray-50 border-2 border-gray-100 rounded-xl font-bold text-gray-600 outline-none">
                                     <option value="" disabled selected>Pilih Kelas</option>
@@ -551,14 +797,13 @@
                                     ${[...Array(12)].map((_,i)=>`<option value="Sektor ${i+1}">Sektor ${i+1}</option>`).join('')}
                                 </select>
                             </div>
-                            <button onclick="preRegister()" class="w-full py-4 bg-red-600 text-white font-extrabold rounded-xl shadow-lg hover:bg-red-700 active:scale-95 transition-transform">LANJUT KONFIRMASI</button>
+                            <button onclick="preRegister()" class="w-full py-4 bg-blue-600 text-white font-extrabold rounded-xl shadow-lg hover:bg-blue-700 active:scale-95 transition-transform">LANJUT KONFIRMASI</button>
                         </div>
                         <div id="participant-list-container" class="space-y-3"></div>
                     `;
                 }
                 renderParticipantListOnly();
             } else if (state.tab === 'find') {
-                // FORM CARI TIKET YANG DIOPTIMALKAN
                 root.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
                         <div class="flex items-center gap-3 mb-6">
@@ -604,7 +849,6 @@
                         </div>
                     </div>
                     
-                    <!-- INFO STATISTIK -->
                     <div class="bg-white p-4 rounded-2xl shadow-sm">
                         <div class="text-xs font-bold text-gray-400 mb-2 uppercase">Informasi</div>
                         <div class="grid grid-cols-2 gap-3 text-center">
@@ -634,12 +878,22 @@
                         <div id="scanRes" class="hidden"></div>
                         <div id="reader" class="mb-4"></div>
                         <p class="text-[10px] text-gray-400">${hint}</p>
+                        
+                        ${state.isAdmin ? `
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <button onclick="${isGift ? 'openManualGift()' : 'openManualCheckin()'}" 
+                                    class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-bold rounded-xl shadow-lg hover:from-purple-700 hover:to-purple-800 transition-all">
+                                ${isGift ? '🎁 Ambil Hadiah Manual (Admin)' : '✅ Check-in Manual (Admin)'}
+                            </button>
+                            <p class="text-[10px] text-purple-500 mt-1">Mode Admin Aktif</p>
+                        </div>
+                        ` : ''}
                     </div>
                     <div class="bg-white p-4 rounded-2xl shadow-sm">
                         <div class="text-sm font-bold text-gray-400 mb-2 uppercase">${isGift ? 'Daftar Peserta' : 'Daftar Peserta'}</div>
                         <input oninput="window.handleSearch(this)" type="text" placeholder="Cari nama..." class="w-full p-3 bg-gray-50 border rounded-xl mb-2 text-sm focus:outline-none focus:border-blue-500 transition-colors">
                         <div class="text-xs text-gray-500 mb-3 p-2 bg-blue-50 rounded-lg text-center">
-                            ⚠️ Manual ${isGift ? 'Ambil Hadiah' : 'Check-In'} terkunci. Hanya tersedia melalui scanner QR code.
+                            ⚠️ Manual ${isGift ? 'Ambil Hadiah' : 'Check-In'} hanya untuk admin.
                         </div>
                         <div id="manual-list" class="max-h-48 overflow-y-auto"></div>
                     </div>
@@ -685,6 +939,15 @@
                         <button onclick="triggerImport()" class="w-full py-3 bg-gray-50 text-gray-600 rounded-xl text-xs font-bold border border-gray-200 border-dashed hover:bg-gray-50">
                             📂 Import Data Peserta (CSV)
                         </button>
+                        
+                        <div class="mt-4 text-center">
+                            ${state.isAdmin ? 
+                                `<div class="text-green-600 text-sm font-bold mb-2">👑 Mode Admin Aktif</div>
+                                 <button onclick="adminLogout()" class="text-xs bg-red-100 text-red-700 px-4 py-2 rounded-full font-bold hover:bg-red-200">Logout Admin</button>`
+                                :
+                                `<button onclick="adminLogin()" class="text-xs bg-gray-100 text-gray-700 px-4 py-2 rounded-full font-bold hover:bg-gray-200">Login Admin</button>`
+                            }
+                        </div>
                     </div>
 
                     <div class="flex justify-between items-center px-2 mb-2">
@@ -727,13 +990,11 @@
         };
 
         window.showTicket = (n, c, s, q) => {
-            // Validasi input
             if (!n || !q) {
                 alert("Data tiket tidak valid!");
                 return;
             }
             
-            // Update modal content
             document.getElementById('ticName').innerText = n || "Peserta";
             document.getElementById('ticClass').innerText = c || "-";
             document.getElementById('ticSector').innerText = s || "-";
@@ -742,7 +1003,6 @@
             document.getElementById('ticQR').src = qrUrl;
             document.getElementById('btnDownloadTicket').href = qrUrl;
             
-            // Show modal with animation
             const t = document.getElementById('ticketModal');
             t.classList.remove('hidden');
             setTimeout(() => {
@@ -761,7 +1021,7 @@
             printWindow.document.write(`
                 <html>
                     <head>
-                        <title>Tiket Natal 2025 - GKPS Tangerang</title>
+                        <title>Tiket Bonataon 2025 - MANIHURUK</title>
                         <style>
                             body { 
                                 font-family: Arial, sans-serif; 
@@ -772,11 +1032,11 @@
                             .ticket { 
                                 max-width: 400px; 
                                 margin: 0 auto; 
-                                border: 2px solid #dc2626; 
+                                border: 2px solid #2563eb; 
                                 border-radius: 12px; 
                                 padding: 20px;
                             }
-                            h1 { color: #dc2626; margin: 10px 0; }
+                            h1 { color: #2563eb; margin: 10px 0; }
                             .qr-code { width: 250px; height: 250px; margin: 15px auto; }
                             @media print { 
                                 body { padding: 0; }
@@ -805,32 +1065,31 @@
                 if (type === 'p') {
                     csv += "Nama,Kelas,Sektor,QR_Code,Waktu_Daftar\n";
                     data = state.participants;
-                    filename = "Data_Jemaat_Natal_2025.csv";
+                    filename = "Data_Jemaat_Bonataon_2025_MANIHURUK.csv";
                     data.forEach(x => { 
                         csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.qrCode || ''}","${x.registeredAt || ''}"\n`; 
                     });
                 } else if (type === 'a') {
                     csv += "Nama,Kelas,Sektor,Waktu_Hadir\n";
                     data = state.attendance;
-                    filename = "Laporan_Absensi_Natal_2025.csv";
+                    filename = "Laporan_Absensi_Bonataon_2025_MANIHURUK.csv";
                     data.forEach(x => { 
                         csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.timestamp || ''}"\n`; 
                     });
                 } else if (type === 'g') {
                     csv += "Nama,Kelas,Sektor,Waktu_Ambil_Hadiah\n";
                     data = state.gifts;
-                    filename = "Laporan_Hadiah_Natal_2025.csv";
+                    filename = "Laporan_Hadiah_Bonataon_2025_MANIHURUK.csv";
                     data.forEach(x => { 
                         csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.timestamp || ''}"\n`; 
                     });
                 }
 
-                // Buat blob dengan BOM untuk Excel
                 const BOM = "\uFEFF";
                 const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement("a");
                 
-                if (navigator.msSaveBlob) { // IE 10+
+                if (navigator.msSaveBlob) {
                     navigator.msSaveBlob(blob, filename);
                 } else {
                     link.href = URL.createObjectURL(blob);
@@ -859,7 +1118,7 @@
                          const id = (Date.now()+i).toString();
                          push(ref(db, 'participants'), {
                              id, name: n, classGrade: cl||'Daud', sector: sc||'Sektor 1',
-                             qrCode: `NATAL-${id.slice(-6)}`, registeredAt: fmtDate(), timestamp: Date.now()
+                             qrCode: `BONATAON-${id.slice(-6)}`, registeredAt: fmtDate(), timestamp: Date.now()
                          });
                          c++;
                      }
@@ -884,6 +1143,9 @@
             m.classList.add('opacity-0');
             m.children[0].classList.replace('scale-100','scale-95');
             setTimeout(() => m.classList.add('hidden'), 300);
+            // Reset selections
+            if (id === 'manualCheckinModal') state.selectedManualCheckin = null;
+            if (id === 'manualGiftModal') state.selectedManualGift = null;
         };
 
         // Init
