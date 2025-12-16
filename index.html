@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Absensi Event Natal 2025 - GKPS Tangerang</title>
+    <title>Absensi Event BONATAON 2025 - Manihuruk</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -98,7 +98,7 @@
 
             <div class="text-5xl mb-4 animate-bounce">❄️</div>
 
-            <div class="font-bold text-gray-500">Memuat Sistem GKPS...</div>
+            <div class="font-bold text-gray-500">Memuat Sistem Manihuruk...</div>
 
         </div>
 
@@ -110,9 +110,9 @@
 
                 <div>
 
-                    <h1 class="text-3xl font-extrabold tracking-tight">NATAL 2025</h1>
+                    <h1 class="text-3xl font-extrabold tracking-tight">BONATAON 2025</h1>
 
-                    <p class="text-red-100 text-xs font-medium tracking-wider uppercase opacity-90">GKPS Tangerang</p>
+                    <p class="text-red-100 text-xs font-medium tracking-wider uppercase opacity-90">Manihuruk</p>
 
                 </div>
 
@@ -198,7 +198,7 @@
 
                     <div class="flex-1"><div class="text-xs text-gray-400 font-bold uppercase">Kategori</div><div id="confClass" class="font-bold text-purple-600"></div></div>
 
-                    <div class="flex-1"><div class="text-xs text-gray-400 font-bold uppercase">Golongan</div><div id="confSector" class="font-bold text-blue-600"></div></div>
+                    <div class="flex-1"><div class="text-xs text-gray-400 font-bold uppercase">Marga</div><div id="confSector" class="font-bold text-blue-600"></div></div>
 
                 </div>
 
@@ -224,7 +224,7 @@
 
             <button onclick="closeModal('ticketModal')" class="absolute top-4 right-4 text-2xl text-gray-400 hover:text-red-500">×</button>
 
-            <div class="text-red-600 font-bold tracking-widest text-xs mb-1 uppercase">Tiket Natal</div>
+            <div class="text-red-600 font-bold tracking-widest text-xs mb-1 uppercase">Tiket BONATAON</div>
 
             <h2 id="ticName" class="text-2xl font-black text-gray-800 leading-tight mb-2">Nama</h2>
 
@@ -232,7 +232,7 @@
 
                 <span id="ticClass" class="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded">Kategori</span>
 
-                <span id="ticSector" class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded">Golongan</span>
+                <span id="ticSector" class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded">Marga</span>
 
             </div>
 
@@ -248,6 +248,21 @@
 
         </div>
 
+    </div>
+
+
+
+    <!-- Modal Login Admin -->
+    <div id="adminLoginModal" class="fixed inset-0 z-[80] flex items-center justify-center bg-black/80 hidden backdrop-blur-sm transition-opacity opacity-0">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Login Admin</h3>
+            <p class="text-sm text-gray-600 mb-4">Masukkan password admin untuk akses manual check-in</p>
+            <input type="password" id="adminPassword" placeholder="Password Admin" class="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl font-bold focus:border-red-500 outline-none mb-4">
+            <div class="flex gap-3">
+                <button onclick="closeModal('adminLoginModal')" class="flex-1 py-3 rounded-lg font-bold text-gray-600 bg-gray-100 hover:bg-gray-200">Batal</button>
+                <button onclick="adminLogin()" class="flex-1 py-3 rounded-lg font-bold text-white bg-red-600 hover:bg-red-700 shadow-lg">Login</button>
+            </div>
+        </div>
     </div>
 
 
@@ -308,7 +323,9 @@
 
             tempData: null,
 
-            searchTerm: ''
+            searchTerm: '',
+
+            isAdminLoggedIn: false
 
         };
 
@@ -456,7 +473,7 @@
 
             const id = Date.now().toString();
 
-            const qr = `NATAL-${id.slice(-6)}`;
+            const qr = `BONATAON-${id.slice(-6)}`;
 
             push(ref(db, 'participants'), {
 
@@ -690,7 +707,7 @@
 
                     if (claimed) statusBadge = `<span class="text-purple-600 font-bold text-xs bg-purple-100 px-3 py-1 rounded-lg">🎁 DIAMBIL</span>`;
 
-                    else actionBtn = `<button onclick="window.processScannedID('${p.id}')" class="bg-purple-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-purple-700">AMBIL</button>`;
+                    else actionBtn = `<button onclick="adminManualAction('${p.id}')" class="bg-purple-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-purple-700">AMBIL</button>`;
 
                 } else {
 
@@ -698,7 +715,7 @@
 
                     if (present) statusBadge = `<span class="text-green-600 font-bold text-xs bg-green-50 px-3 py-1 rounded-lg">HADIR</span>`;
 
-                    else actionBtn = `<button onclick="window.processScannedID('${p.id}')" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-700">CHECK-IN</button>`;
+                    else actionBtn = `<button onclick="adminManualAction('${p.id}')" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-700">CHECK-IN</button>`;
 
                 }
 
@@ -729,6 +746,32 @@
             }).join('');
 
         }
+
+
+
+        // Fungsi untuk admin manual action (check-in atau ambil hadiah)
+        window.adminManualAction = (pid) => {
+            if (!state.isAdminLoggedIn) {
+                showScanResult(false, "⚠️ Hanya admin yang bisa melakukan ini!");
+                return;
+            }
+
+            const p = state.participants.find(x => x.id === pid);
+            if(!p) return;
+
+            if (state.tab === 'gift') {
+                window.claimGift(p);
+            } else {
+                window.doCheckIn(p);
+            }
+            
+            // Update UI secara langsung
+            setTimeout(() => {
+                if (state.searchTerm) {
+                    window.handleSearch(document.getElementById('adminSearchInput'));
+                }
+            }, 500);
+        };
 
 
 
@@ -792,11 +835,42 @@
 
 
 
+        // --- ADMIN LOGIN SYSTEM ---
+        window.showAdminLogin = () => {
+            const m = document.getElementById('adminLoginModal');
+            document.getElementById('adminPassword').value = '';
+            m.classList.remove('hidden');
+            setTimeout(() => { m.classList.remove('opacity-0'); m.children[0].classList.replace('scale-95','scale-100'); }, 10);
+        };
+
+        window.adminLogin = () => {
+            const password = document.getElementById('adminPassword').value;
+            if(password === ADMIN_PASS) {
+                state.isAdminLoggedIn = true;
+                closeModal('adminLoginModal');
+                beep('success');
+                showScanResult(true, "✅ Login Admin Berhasil!", 'bg-blue-500');
+                render();
+            } else {
+                alert("Password salah!");
+            }
+        };
+
+        window.adminLogout = () => {
+            state.isAdminLoggedIn = false;
+            state.searchTerm = '';
+            beep('fail');
+            showScanResult(false, "❌ Logout Admin", 'bg-gray-500');
+            render();
+        };
+
+
+
         // --- EXPORT/IMPORT/RESET ---
 
         window.exportData = (type) => {
 
-            let csv = "data:text/csv;charset=utf-8," + (type === 'p' ? "Nama,Kategori,Golongan,QR\n" : "Nama,Kategori,Golongan,Waktu\n");
+            let csv = "data:text/csv;charset=utf-8," + (type === 'p' ? "Nama,Kategori,Marga,QR\n" : "Nama,Kategori,Marga,Waktu\n");
 
             const data = type === 'p' ? state.participants : (type === 'g' ? state.gifts : state.attendance);
 
@@ -806,7 +880,7 @@
 
             link.href = encodeURI(csv);
 
-            link.download = `Data_Natal_${type}.csv`;
+            link.download = `Data_BONATAON_${type}.csv`;
 
             link.click();
 
@@ -840,7 +914,7 @@
 
                             id, name: n, classGrade: cl||'Orang Tua', sector: sc||'Marga Manihuruk',
 
-                            qrCode: `NATAL-${id.slice(-6)}`, registeredAt: fmtDate(), timestamp: Date.now()
+                            qrCode: `BONATAON-${id.slice(-6)}`, registeredAt: fmtDate(), timestamp: Date.now()
 
                         });
 
@@ -966,7 +1040,7 @@
 
                                 <select id="inSector" class="flex-1 p-3 bg-gray-50 border-2 border-gray-100 rounded-xl font-bold text-gray-600 outline-none">
 
-                                    <option value="" disabled selected>Pilih Golongan</option>
+                                    <option value="" disabled selected>Pilih Marga</option>
 
                                     <option value="Marga Manihuruk">Marga Manihuruk</option>
 
@@ -1022,12 +1096,30 @@
 
                     <div class="bg-white p-4 rounded-2xl shadow-sm">
 
-                        <div class="text-sm font-bold text-gray-400 mb-2 uppercase">Manual ${isGift ? 'Ambil Hadiah' : 'Check-In'}</div>
-
-                        <input oninput="window.handleSearch(this)" type="text" placeholder="Cari nama..." class="w-full p-3 bg-gray-50 border rounded-xl mb-2 text-sm focus:outline-none focus:border-blue-500 transition-colors">
-
-                        <div id="manual-list" class="max-h-48 overflow-y-auto"></div>
-
+                        <div class="text-sm font-bold text-gray-400 mb-2 uppercase">Manual ${isGift ? 'Ambil Hadiah' : 'Check-In'} 
+                            ${state.isAdminLoggedIn ? 
+                                '<span class="text-green-600 text-xs ml-2">(Admin Mode)</span>' : 
+                                ''}
+                        </div>
+                        
+                        ${state.isAdminLoggedIn ? 
+                            `
+                            <div class="mb-3">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs text-gray-500">Anda login sebagai admin</span>
+                                    <button onclick="adminLogout()" class="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-lg font-bold hover:bg-red-200">Logout</button>
+                                </div>
+                                <input id="adminSearchInput" oninput="window.handleSearch(this)" type="text" placeholder="Cari nama..." class="w-full p-3 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:border-blue-500 transition-colors">
+                            </div>
+                            <div id="manual-list" class="max-h-48 overflow-y-auto"></div>
+                            ` : 
+                            `
+                            <div class="text-center p-4 border-2 border-dashed border-gray-200 rounded-xl">
+                                <div class="text-gray-400 mb-3">⛔</div>
+                                <p class="text-sm text-gray-600 mb-3">Manual check-in hanya untuk admin</p>
+                                <button onclick="showAdminLogin()" class="w-full py-3 bg-gray-800 text-white font-bold rounded-xl hover:bg-gray-900">Login sebagai Admin</button>
+                            </div>
+                            `}
                     </div>
 
                 `;
@@ -1048,7 +1140,7 @@
 
                         </div>
 
-                        <button onclick="triggerImport()" class="w-full py-3 bg-gray-50 text-gray-600 rounded-xl text-xs font-bold border border-gray-200">Import CSV (Nama,Kategori,Golongan)</button>
+                        <button onclick="triggerImport()" class="w-full py-3 bg-gray-50 text-gray-600 rounded-xl text-xs font-bold border border-gray-200">Import CSV (Nama,Kategori,Marga)</button>
 
                     </div>
 
