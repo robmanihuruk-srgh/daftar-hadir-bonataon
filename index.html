@@ -23,10 +23,10 @@
          
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #0f172a; /* Fallback */
+            background: #0f172a;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.2) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.1) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.15) 0px, transparent 50%);
             background-attachment: fixed;
             min-height: 100vh;
             color: #1e293b;
@@ -58,7 +58,9 @@
         }
 
         /* Interactive Elements */
-        .nav-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
         .nav-btn.active {
             background-color: var(--emerald-50);
             color: var(--emerald-900);
@@ -77,6 +79,8 @@
             display: flex; align-items: center; justify-content: center;
         }
         
+        .chart-wrapper { position: relative; height: 250px; width: 100%; }
+        
         .form-input {
             background-color: #f8fafc;
             border: 1px solid #cbd5e1;
@@ -88,8 +92,11 @@
             box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
             outline: none;
         }
-        
+
         .ornament { position: absolute; z-index: 0; opacity: 0.6; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); pointer-events: none; }
+        
+        /* Animasi Modal */
+        @keyframes modalUp { from { opacity: 0; transform: translateY(40px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
     </style>
 </head>
 <body class="antialiased">
@@ -102,13 +109,13 @@
     <div id="app" class="relative z-10 max-w-md mx-auto md:max-w-4xl min-h-screen md:my-8 md:rounded-[2rem] overflow-hidden flex flex-col glass-panel transition-all duration-500">
          
         <div id="loading" class="absolute inset-0 z-[9999] bg-slate-50 flex flex-col justify-center items-center">
-            <div class="logo-frame w-32 h-32 p-4 mb-6 animate-bounce">
-                <img src="logo tugu manihuruk.png" alt="Logo Tugu" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/200x200?text=LOGO+MISSING'">
+            <div class="logo-frame w-32 h-32 p-3 mb-6 animate-bounce">
+                <img src="logo tugu manihuruk.png" alt="Logo" class="w-full h-full object-contain" 
+                     onerror="this.parentElement.innerHTML='<div class=\'text-center leading-none text-xs font-bold text-emerald-800\'>TUGU<br>RAJA<br>MANIHURUK</div>'">
             </div>
             <h2 class="text-2xl font-bold text-emerald-900 mb-2 serif-font tracking-wide">BONATAON 2026</h2>
             <div class="flex items-center gap-2 text-emerald-600 text-sm font-semibold">
-                <i class="fas fa-circle-notch fa-spin"></i> Menyiapkan Sistem...
+                <i class="fas fa-circle-notch fa-spin"></i> Memuat Sistem...
             </div>
         </div>
 
@@ -116,7 +123,7 @@
             <div class="flex justify-between items-start relative z-10">
                 <div class="flex items-center gap-4">
                     <div class="logo-frame w-16 h-16 p-1 border-2 border-white/20">
-                        <img src="logo tugu manihuruk.png" alt="Logo" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/100x100?text=Logo'">
+                        <img src="logo tugu manihuruk.png" alt="Logo" class="w-full h-full object-contain">
                     </div>
                     <div>
                         <h1 class="text-2xl md:text-3xl font-bold text-white serif-font tracking-wide drop-shadow-md">TUGU RAJA<br>MANIHURUK</h1>
@@ -146,7 +153,7 @@
         <nav class="flex px-4 -mt-12 relative z-30 gap-2 overflow-x-auto pb-4 custom-scrollbar">
             <button onclick="setTab('register')" id="tab-register" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-user-plus text-lg text-slate-400"></i>
-                <span class="text-[10px] font-bold uppercase">Daftar</span>
+                <span class="text-[10px] font-bold uppercase">Registrasi</span>
             </button>
             <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-search-location text-lg text-slate-400"></i>
@@ -186,11 +193,9 @@
 
     <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" onclick="closeModal('adminModal')"></div>
-        <div class="card max-w-xs w-full mx-4 relative z-10 p-6 animate-[modalUp_0.3s_ease-out]">
+        <div class="card max-w-xs w-full mx-4 relative z-10 p-6 bg-white rounded-2xl animate-[modalUp_0.3s_ease-out]">
             <div class="text-center mb-6">
-                <div class="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3 text-emerald-700 text-xl">
-                    <i class="fas fa-lock"></i>
-                </div>
+                <div class="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3 text-emerald-700 text-xl"><i class="fas fa-lock"></i></div>
                 <h3 class="text-lg font-bold text-slate-800">Akses Panitia</h3>
             </div>
             <div class="space-y-4">
@@ -203,9 +208,61 @@
         </div>
     </div>
 
+    <div id="manualCheckinModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('manualCheckinModal')"></div>
+        <div class="card max-w-sm w-full mx-4 relative z-10 p-6 bg-white rounded-2xl animate-[modalUp_0.3s_ease-out]">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2"><i class="fas fa-check-double text-emerald-500"></i> Absensi Manual</h3>
+            <div class="relative mb-4">
+                <input type="text" id="manualSearch" placeholder="Cari nama jemaat..." class="form-input w-full rounded-xl pl-10">
+                <i class="fas fa-search absolute left-4 top-3 text-slate-400"></i>
+            </div>
+            <div id="manualCheckinList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100"></div>
+            <div class="flex gap-3">
+                <button onclick="closeModal('manualCheckinModal')" class="btn-secondary w-full rounded-xl py-2">Tutup</button>
+                <button onclick="processManualCheckin()" class="btn-primary w-full rounded-xl py-2" disabled id="manualCheckinBtn">Konfirmasi</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="manualGiftModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('manualGiftModal')"></div>
+        <div class="card max-w-sm w-full mx-4 relative z-10 p-6 bg-white rounded-2xl animate-[modalUp_0.3s_ease-out]">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2"><i class="fas fa-gift text-amber-500"></i> Serah Terima Berkat</h3>
+            <div class="relative mb-4">
+                <input type="text" id="manualGiftSearch" placeholder="Cari nama jemaat..." class="form-input w-full rounded-xl pl-10">
+                <i class="fas fa-search absolute left-4 top-3 text-slate-400"></i>
+            </div>
+            <div id="manualGiftList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100"></div>
+            <div class="flex gap-3">
+                <button onclick="closeModal('manualGiftModal')" class="btn-secondary w-full rounded-xl py-2">Tutup</button>
+                <button onclick="processManualGift()" class="btn-primary w-full rounded-xl py-2 bg-gradient-to-r from-amber-500 to-orange-600" disabled id="manualGiftBtn">Serahkan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('confirmModal')"></div>
+        <div class="card max-w-sm w-full mx-4 relative z-10 p-6 bg-white rounded-2xl border-t-4 border-emerald-500 animate-[modalUp_0.3s_ease-out]">
+            <h3 class="text-xl font-bold text-slate-800 mb-1 serif-font text-center">Validasi Data</h3>
+            <p class="text-center text-slate-500 text-sm mb-6">Mohon periksa kembali data sebelum dicetak</p>
+            <div class="space-y-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <div><label class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Nama Lengkap</label><div id="confName" class="font-bold text-lg text-slate-800 leading-tight"></div></div>
+                <div class="h-px bg-slate-200"></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status</label><div id="confStatus" class="font-semibold text-slate-700"></div></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Marga</label><div id="confMarga" class="font-semibold text-slate-700"></div></div>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeModal('confirmModal')" class="btn-secondary w-full rounded-xl py-3">Ubah</button>
+                <button onclick="processSave()" class="btn-primary w-full rounded-xl py-3 shadow-lg shadow-emerald-200"><i class="fas fa-save mr-2"></i> Simpan</button>
+            </div>
+        </div>
+    </div>
+    
     <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeModal('ticketModal')"></div>
-        <div class="card max-w-sm w-full mx-4 relative z-10 p-0 overflow-hidden shadow-2xl animate-[modalUp_0.4s_ease-out]">
+        <div class="card max-w-sm w-full mx-4 relative z-10 p-0 overflow-hidden shadow-2xl bg-white rounded-2xl animate-[modalUp_0.4s_ease-out]">
             <div class="bg-gradient-to-r from-emerald-700 to-emerald-500 p-6 text-center text-white relative">
                 <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
                 <img src="logo tugu manihuruk.png" class="w-12 h-12 mx-auto mb-2 object-contain bg-white/20 rounded-lg p-1 backdrop-blur-sm">
@@ -213,25 +270,18 @@
                 <p class="text-emerald-100 text-xs relative z-10 uppercase tracking-widest">Bonataon 2026</p>
                 <button onclick="closeModal('ticketModal')" class="absolute top-4 right-4 text-white/70 hover:text-white"><i class="fas fa-times-circle text-xl"></i></button>
             </div>
-            <div class="p-6 text-center bg-white relative">
-                <div class="absolute -top-3 left-0 w-full h-4 bg-white" style="mask-image: radial-gradient(circle, transparent 6px, black 7px); mask-size: 20px 20px; mask-repeat: repeat-x; mask-position: bottom;"></div>
-                
-                <h2 id="ticName" class="text-2xl font-black text-slate-800 leading-tight mb-3 mt-4">Nama Peserta</h2>
-                
+            <div class="p-6 text-center relative">
+                <h2 id="ticName" class="text-2xl font-black text-slate-800 leading-tight mb-3 mt-2">Nama Peserta</h2>
                 <div class="flex justify-center gap-2 mb-6">
                     <span class="px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase rounded-full border border-emerald-100 tracking-wide" id="ticStatusDisp">STATUS</span>
                     <span class="px-3 py-1 bg-amber-50 text-amber-700 text-[10px] font-bold uppercase rounded-full border border-amber-100 tracking-wide" id="ticMargaDisp">MARGA</span>
                 </div>
-
                 <div class="bg-slate-50 p-4 rounded-xl border-2 border-dashed border-slate-200 inline-block mb-4">
                     <img id="ticQR" src="" class="w-40 h-40 object-contain mix-blend-multiply mx-auto" alt="QR Code">
                     <div class="text-xs font-mono text-slate-400 mt-2 font-bold tracking-widest" id="ticCode">CODE</div>
                 </div>
-
                 <div class="space-y-2">
-                    <a id="btnDownloadTicket" href="#" download class="btn-primary w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm">
-                        <i class="fas fa-download"></i> Simpan Gambar
-                    </a>
+                    <a id="btnDownloadTicket" href="#" download class="btn-primary w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm"><i class="fas fa-download"></i> Simpan Gambar</a>
                 </div>
             </div>
         </div>
@@ -265,11 +315,14 @@
             gifts: [],
             tab: 'register',
             scanner: null,
-            isAdmin: false
+            isAdmin: false,
+            selectedManualCheckin: null,
+            selectedManualGift: null
         };
 
-        // --- AUDIO ---
+        let charts = {}; 
         let audioCtx = null;
+
         function beep(type = 'success') {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -282,122 +335,68 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.15);
         }
 
-        // --- HELPERS ---
         const getQR = (txt) => `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=20&ecc=H&color=064e3b&bgcolor=ffffff&format=png&data=${encodeURIComponent(txt)}`;
         const fmtDate = () => new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
 
-        // --- FIREBASE LISTENERS ---
-        onValue(ref(db, 'participants'), s => {
-            state.participants = s.val() ? Object.values(s.val()) : [];
-            updateDashboard();
-        });
-        onValue(ref(db, 'attendance'), s => {
-            state.attendance = s.val() ? Object.values(s.val()) : [];
-            updateDashboard();
-        });
-        onValue(ref(db, 'gifts'), s => {
-            state.gifts = s.val() ? Object.values(s.val()) : [];
-            updateDashboard();
-        });
+        // --- LISTENERS ---
+        onValue(ref(db, 'participants'), s => { state.participants = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
+        onValue(ref(db, 'attendance'), s => { state.attendance = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
+        onValue(ref(db, 'gifts'), s => { state.gifts = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
 
         function updateDashboard() {
             document.getElementById('statRegistered').innerText = state.participants.length;
             document.getElementById('statPresent').innerText = state.attendance.length;
             document.getElementById('statGifts').innerText = state.gifts.length;
-            
             if (state.tab === 'data') renderCharts();
             if (state.tab === 'register') renderParticipantList();
-            
             document.getElementById('loading').style.display = 'none';
         }
 
-        // --- NAVIGATION & RENDERING ---
+        // --- NAVIGATION ---
         window.setTab = (t) => {
             if ((state.tab === 'scan') && t !== 'scan') window.stopScanner();
             state.tab = t;
             
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                if (btn.id === `tab-${t}`) btn.classList.add('active');
-                else btn.classList.remove('active');
+                if (btn.id === `tab-${t}`) btn.classList.add('active'); else btn.classList.remove('active');
             });
 
             const root = document.getElementById('content-area');
             
-            // --- TAB CONTENT ---
             if (t === 'register') {
                 root.innerHTML = `
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-6 relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none"><i class="fas fa-pen-fancy text-6xl"></i></div>
-                        <div class="flex items-center gap-3 mb-4 relative z-10">
-                            <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600"><i class="fas fa-user-plus"></i></div>
-                            <h3 class="font-bold text-slate-800">Registrasi Keluarga</h3>
-                        </div>
+                        <div class="flex items-center gap-3 mb-4 relative z-10"><div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600"><i class="fas fa-user-plus"></i></div><h3 class="font-bold text-slate-800">Registrasi Keluarga</h3></div>
                         <div class="space-y-4 relative z-10">
-                            <div>
-                                <label class="text-xs font-bold text-slate-400 uppercase">Nama Lengkap</label>
-                                <input id="inName" type="text" class="form-input w-full rounded-xl mt-1" placeholder="Masukkan nama...">
-                            </div>
+                            <div><label class="text-xs font-bold text-slate-400 uppercase">Nama Lengkap</label><input id="inName" type="text" class="form-input w-full rounded-xl mt-1" placeholder="Masukkan nama..."></div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-xs font-bold text-slate-400 uppercase">Status</label>
-                                    <select id="inStatus" class="form-input w-full rounded-xl mt-1">
-                                        <option value="" disabled selected>Pilih...</option>
-                                        <option value="Orangtua">Orangtua</option>
-                                        <option value="Pemuda">Pemuda</option>
-                                        <option value="Sekolah Minggu">Sekolah Minggu</option>
-                                        <option value="Tamu Undangan">Tamu Undangan</option>
-                                        <option value="Pengurus Tupuan">Pengurus Tupuan</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="text-xs font-bold text-slate-400 uppercase">Marga</label>
-                                    <select id="inMarga" class="form-input w-full rounded-xl mt-1">
-                                        <option value="" disabled selected>Pilih...</option>
-                                        <option value="Marga Manihuruk">Manihuruk</option>
-                                        <option value="Boru">Boru</option>
-                                        <option value="Bere / Panagolan">Bere/Panagolan</option>
-                                    </select>
-                                </div>
+                                <div><label class="text-xs font-bold text-slate-400 uppercase">Status</label><select id="inStatus" class="form-input w-full rounded-xl mt-1"><option value="" disabled selected>Pilih...</option><option value="Orangtua">Orangtua</option><option value="Pemuda">Pemuda</option><option value="Sekolah Minggu">Sekolah Minggu</option><option value="Tamu Undangan">Tamu Undangan</option><option value="Pengurus Tupuan">Pengurus Tupuan</option></select></div>
+                                <div><label class="text-xs font-bold text-slate-400 uppercase">Marga</label><select id="inMarga" class="form-input w-full rounded-xl mt-1"><option value="" disabled selected>Pilih...</option><option value="Marga Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere / Panagolan">Bere/Panagolan</option></select></div>
                             </div>
-                            <button onclick="processRegister()" class="btn-primary w-full rounded-xl py-3 mt-2 shadow-lg shadow-emerald-200">
-                                <i class="fas fa-save mr-2"></i> Simpan Data
-                            </button>
+                            <button onclick="processRegister()" class="btn-primary w-full rounded-xl py-3 mt-2 shadow-lg shadow-emerald-200"><i class="fas fa-save mr-2"></i> Simpan Data</button>
                         </div>
                     </div>
-                    <div id="participantList"></div>
-                `;
+                    <div id="participantList"></div>`;
                 renderParticipantList();
             } 
             else if (t === 'find') {
                 root.innerHTML = `
-                    <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center relative overflow-hidden">
-                        <div class="absolute -top-10 -left-10 w-32 h-32 bg-amber-100 rounded-full blur-2xl opacity-50"></div>
+                    <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center relative">
                         <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4 text-amber-500 text-2xl shadow-inner"><i class="fas fa-search"></i></div>
                         <h3 class="font-bold text-lg text-slate-800 mb-2">Cari Undangan</h3>
                         <p class="text-slate-400 text-sm mb-6">Cari tiket berdasarkan nama dan marga.</p>
-                        <div class="space-y-3 text-left">
-                            <input id="findName" type="text" placeholder="Nama Lengkap..." class="form-input w-full rounded-xl text-center">
-                            <select id="findMarga" class="form-input w-full rounded-xl text-center">
-                                <option value="" disabled selected>Pilih Marga</option>
-                                <option value="Marga Manihuruk">Manihuruk</option>
-                                <option value="Boru">Boru</option>
-                                <option value="Bere / Panagolan">Bere/Panagolan</option>
-                            </select>
-                            <button onclick="findTicket()" class="btn-primary w-full rounded-xl py-3 shadow-lg shadow-emerald-200">Cari Tiket Saya</button>
-                        </div>
-                    </div>
-                `;
+                        <div class="space-y-3 text-left"><input id="findName" type="text" placeholder="Nama Lengkap..." class="form-input w-full rounded-xl text-center"><select id="findMarga" class="form-input w-full rounded-xl text-center"><option value="" disabled selected>Pilih Marga</option><option value="Marga Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere / Panagolan">Bere/Panagolan</option></select><button onclick="findTicket()" class="btn-primary w-full rounded-xl py-3 shadow-lg shadow-emerald-200">Cari Tiket Saya</button></div>
+                    </div>`;
             }
             else if (t === 'scan') {
                 root.innerHTML = `
                     <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
                         <h3 class="font-bold text-center text-slate-800 mb-4">Scan QR Code Kehadiran</h3>
                         <div id="scanMsg" class="hidden p-3 rounded-lg text-center font-bold mb-3 text-sm"></div>
-                        <div class="rounded-xl overflow-hidden bg-black border-4 border-emerald-500 relative shadow-inner">
-                            <div id="reader"></div>
-                        </div>
-                    </div>
-                `;
+                        <div class="rounded-xl overflow-hidden bg-black border-4 border-emerald-500 relative shadow-inner"><div id="reader"></div></div>
+                        ${state.isAdmin ? `<button onclick="openManualCheckin()" class="w-full mt-4 py-3 bg-slate-100 text-emerald-700 rounded-xl text-sm font-bold hover:bg-slate-200 transition-colors border border-slate-200 flex items-center justify-center gap-2"><i class="fas fa-keyboard"></i> Input Manual (Admin)</button>` : ''}
+                    </div>`;
                 setTimeout(initScanner, 300);
             }
             else if (t === 'gift') {
@@ -405,157 +404,119 @@
                     <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
                         <h3 class="font-bold text-center text-slate-800 mb-4">Scan Pengambilan Berkat</h3>
                         <div id="scanMsg" class="hidden p-3 rounded-lg text-center font-bold mb-3 text-sm"></div>
-                        <div class="rounded-xl overflow-hidden bg-black border-4 border-amber-500 relative shadow-inner">
-                            <div id="reader"></div>
-                        </div>
-                    </div>
-                `;
+                        <div class="rounded-xl overflow-hidden bg-black border-4 border-amber-500 relative shadow-inner"><div id="reader"></div></div>
+                        ${state.isAdmin ? `<button onclick="openManualGift()" class="w-full mt-4 py-3 bg-slate-100 text-amber-700 rounded-xl text-sm font-bold hover:bg-slate-200 transition-colors border border-slate-200 flex items-center justify-center gap-2"><i class="fas fa-gift"></i> Input Manual (Admin)</button>` : ''}
+                    </div>`;
                 setTimeout(initScanner, 300);
             }
             else if (t === 'data') {
-                // RENDER GRAFIK & DATA
                 root.innerHTML = `
                     <div class="space-y-6">
-                        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-chart-bar text-emerald-600"></i> Ringkasan Acara</h4>
-                            <div class="chart-wrapper">
-                                <canvas id="chartOverview"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-users text-emerald-600"></i> Kehadiran per Marga</h4>
-                            <div class="chart-wrapper">
-                                <canvas id="chartMarga"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-user-tag text-emerald-600"></i> Kehadiran per Status</h4>
-                            <div class="chart-wrapper">
-                                <canvas id="chartStatus"></canvas>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 text-center">
-                            <h4 class="font-bold text-slate-700 mb-4">Export Data</h4>
-                            <div class="flex gap-2 justify-center">
-                                <button onclick="exportData('p')" class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow hover:bg-emerald-700">Master Data</button>
-                                <button onclick="exportData('a')" class="px-4 py-2 bg-slate-600 text-white rounded-lg text-xs font-bold shadow hover:bg-slate-700">Absensi</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                // PENTING: Tunggu DOM render sebelum inisialisasi Chart
+                        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100"><h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-chart-bar text-emerald-600"></i> Ringkasan Acara</h4><div class="chart-wrapper"><canvas id="chartOverview"></canvas></div></div>
+                        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100"><h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-users text-emerald-600"></i> Kehadiran per Marga</h4><div class="chart-wrapper"><canvas id="chartMarga"></canvas></div></div>
+                        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100"><h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-user-tag text-emerald-600"></i> Kehadiran per Status</h4><div class="chart-wrapper"><canvas id="chartStatus"></canvas></div></div>
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 text-center"><h4 class="font-bold text-slate-700 mb-4">Export Data</h4><div class="flex gap-2 justify-center"><button onclick="exportData('p')" class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow hover:bg-emerald-700">Master Data</button><button onclick="exportData('a')" class="px-4 py-2 bg-slate-600 text-white rounded-lg text-xs font-bold shadow hover:bg-slate-700">Absensi</button></div></div>
+                    </div>`;
                 setTimeout(renderCharts, 150); 
             }
         };
 
-        // --- REGISTER LOGIC ---
+        // --- FUNCTIONS ---
         window.processRegister = () => {
             const name = document.getElementById('inName').value.trim();
             const status = document.getElementById('inStatus').value;
             const marga = document.getElementById('inMarga').value;
-
-            if(!name || !status || !marga) {
-                alert("Mohon lengkapi semua data!");
-                return;
-            }
-
-            const id = Date.now().toString();
-            const qrCode = `MN-${id.slice(-6)}`;
-
-            push(ref(db, 'participants'), {
-                id, name, status, marga, qrCode,
-                registeredAt: fmtDate(), timestamp: Date.now()
-            }).then(() => {
-                showTicket(name, status, marga, qrCode);
-                document.getElementById('inName').value = '';
-            });
+            if(!name || !status || !marga) { alert("Mohon lengkapi semua data!"); return; }
+            const id = Date.now().toString(); const qrCode = `MN-${id.slice(-6)}`;
+            push(ref(db, 'participants'), { id, name, status, marga, qrCode, registeredAt: fmtDate(), timestamp: Date.now() }).then(() => { showTicket(name, status, marga, qrCode); document.getElementById('inName').value = ''; });
         };
 
         function renderParticipantList() {
-            const list = document.getElementById('participantList');
-            if(!list) return;
-            const items = state.participants.slice().reverse().map(p => `
-                <div class="bg-white p-3 rounded-xl border border-slate-100 mb-2 flex justify-between items-center shadow-sm">
-                    <div><div class="font-bold text-slate-700">${p.name}</div><div class="text-[10px] text-slate-400 uppercase font-bold">${p.marga} • ${p.status}</div></div>
-                    <i class="fas fa-qrcode text-emerald-200 text-xl"></i>
-                </div>`).join('');
+            const list = document.getElementById('participantList'); if(!list) return;
+            const items = state.participants.slice().reverse().map(p => `<div class="bg-white p-3 rounded-xl border border-slate-100 mb-2 flex justify-between items-center shadow-sm"><div><div class="font-bold text-slate-700">${p.name}</div><div class="text-[10px] text-slate-400 uppercase font-bold">${p.marga} • ${p.status}</div></div><i class="fas fa-qrcode text-emerald-200 text-xl"></i></div>`).join('');
             list.innerHTML = items || '<div class="text-center text-slate-400 text-sm py-8 italic">Belum ada keluarga yang terdaftar</div>';
         }
 
-        // --- TICKET LOGIC ---
         window.findTicket = () => {
             const name = document.getElementById('findName').value.trim().toLowerCase();
             const marga = document.getElementById('findMarga').value;
             const found = state.participants.find(p => p.name.toLowerCase().includes(name) && p.marga === marga);
-            if(found) showTicket(found.name, found.status, found.marga, found.qrCode);
-            else alert("Data tidak ditemukan.");
+            if(found) showTicket(found.name, found.status, found.marga, found.qrCode); else alert("Data tidak ditemukan.");
         };
 
         window.showTicket = (name, status, marga, code) => {
-            document.getElementById('ticName').innerText = name;
-            document.getElementById('ticStatusDisp').innerText = status;
-            document.getElementById('ticMargaDisp').innerText = marga;
-            document.getElementById('ticCode').innerText = code;
-            document.getElementById('ticQR').src = getQR(code);
-            document.getElementById('ticketModal').classList.remove('hidden');
+            document.getElementById('ticName').innerText = name; document.getElementById('ticStatusDisp').innerText = status; document.getElementById('ticMargaDisp').innerText = marga; document.getElementById('ticCode').innerText = code; document.getElementById('ticQR').src = getQR(code); document.getElementById('ticketModal').classList.remove('hidden');
         };
 
-        // --- SCANNER LOGIC ---
         window.initScanner = () => {
             if(state.scanner) return;
             const config = { fps: 10, qrbox: 250, aspectRatio: 1.0 };
             state.scanner = new Html5QrcodeScanner("reader", config, false);
-            
             state.scanner.render((decodedText) => {
                 if(state.scanner) state.scanner.pause();
-                
                 const p = state.participants.find(x => x.qrCode === decodedText);
                 const msgEl = document.getElementById('scanMsg');
-                
                 if(p) {
                     if (state.tab === 'gift') {
-                        // Logic Gift
-                        if(state.gifts.find(g => g.participantId === p.id)) {
-                            beep('fail'); msgEl.innerText = `Sudah Ambil Berkat: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-amber-100 text-amber-700";
-                        } else {
-                            push(ref(db, 'gifts'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() });
-                            beep('success'); msgEl.innerText = `Berkat Diserahkan: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-emerald-100 text-emerald-700";
-                        }
+                        if(state.gifts.find(g => g.participantId === p.id)) { beep('fail'); msgEl.innerText = `Sudah Ambil: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-amber-100 text-amber-700"; }
+                        else { push(ref(db, 'gifts'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() }); beep('success'); msgEl.innerText = `Berkat Diserahkan: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-emerald-100 text-emerald-700"; }
                     } else {
-                        // Logic Attendance
-                        if(state.attendance.find(a => a.participantId === p.id)) {
-                            beep('fail'); msgEl.innerText = `Sudah Hadir: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-amber-100 text-amber-700";
-                        } else {
-                            push(ref(db, 'attendance'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() });
-                            beep('success'); msgEl.innerText = `Horas! Selamat Datang: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-emerald-100 text-emerald-700";
-                        }
+                        if(state.attendance.find(a => a.participantId === p.id)) { beep('fail'); msgEl.innerText = `Sudah Hadir: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-amber-100 text-amber-700"; }
+                        else { push(ref(db, 'attendance'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() }); beep('success'); msgEl.innerText = `Horas! Selamat Datang: ${p.name}`; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-emerald-100 text-emerald-700"; }
                     }
-                } else {
-                    beep('fail'); msgEl.innerText = "QR Code Tidak Dikenali"; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-red-100 text-red-700";
-                }
-                msgEl.classList.remove('hidden');
-                setTimeout(() => { if(state.scanner) state.scanner.resume(); msgEl.classList.add('hidden'); }, 2500);
+                } else { beep('fail'); msgEl.innerText = "QR Code Tidak Dikenali"; msgEl.className = "block p-3 rounded-lg text-center font-bold mb-3 text-sm bg-red-100 text-red-700"; }
+                msgEl.classList.remove('hidden'); setTimeout(() => { if(state.scanner) state.scanner.resume(); msgEl.classList.add('hidden'); }, 2500);
             });
         };
-
         window.stopScanner = () => { if(state.scanner) { state.scanner.clear().then(() => state.scanner = null); }};
 
-        // --- CHART LOGIC (THE FIX) ---
-        let charts = {}; 
+        // --- MANUAL HANDLERS ---
+        window.openManualCheckin = () => { document.getElementById('manualCheckinModal').classList.remove('hidden'); renderManualList('checkin'); };
+        window.openManualGift = () => { document.getElementById('manualGiftModal').classList.remove('hidden'); renderManualList('gift'); };
+        
+        function renderManualList(type) {
+            const listEl = document.getElementById(type === 'checkin' ? 'manualCheckinList' : 'manualGiftList');
+            const searchEl = document.getElementById(type === 'checkin' ? 'manualSearch' : 'manualGiftSearch');
+            const term = searchEl.value.toLowerCase();
+            
+            // Filter: Nama match AND (Belum Hadir OR Belum Ambil Kado)
+            const filtered = state.participants.filter(p => {
+                const isDone = type === 'checkin' ? state.attendance.find(a => a.participantId === p.id) : state.gifts.find(g => g.participantId === p.id);
+                return !isDone && p.name.toLowerCase().includes(term);
+            });
 
+            listEl.innerHTML = filtered.length === 0 ? `<div class="text-center py-4 text-slate-400 text-sm">Data tidak ditemukan / sudah selesai</div>` : 
+                filtered.map(p => `
+                    <div class="p-3 border-b border-slate-100 hover:bg-emerald-50 cursor-pointer flex justify-between items-center transition-colors" onclick="selectManual('${type}', ${JSON.stringify(p).replace(/"/g, '&quot;')})">
+                        <div><div class="font-bold text-slate-700">${p.name}</div><div class="text-xs text-slate-400">${p.marga}</div></div>
+                        <i class="fas fa-chevron-right text-slate-300"></i>
+                    </div>
+                `).join('');
+                
+            // Setup Search Listener
+            searchEl.oninput = () => renderManualList(type);
+        }
+
+        window.selectManual = (type, p) => {
+            if(type === 'checkin') { state.selectedManualCheckin = p; document.getElementById('manualCheckinBtn').disabled = false; document.getElementById('manualCheckinBtn').innerText = `Konfirmasi: ${p.name}`; }
+            else { state.selectedManualGift = p; document.getElementById('manualGiftBtn').disabled = false; document.getElementById('manualGiftBtn').innerText = `Serahkan: ${p.name}`; }
+        };
+
+        window.processManualCheckin = () => { if(state.selectedManualCheckin) { window.doCheckInManual(state.selectedManualCheckin); closeModal('manualCheckinModal'); } };
+        window.processManualGift = () => { if(state.selectedManualGift) { window.doGiftManual(state.selectedManualGift); closeModal('manualGiftModal'); } };
+
+        window.doCheckInManual = (p) => { push(ref(db, 'attendance'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() }).then(() => alert(`Berhasil Check-in: ${p.name}`)); };
+        window.doGiftManual = (p) => { push(ref(db, 'gifts'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() }).then(() => alert(`Berkat diserahkan ke: ${p.name}`)); };
+
+        // --- CHARTS ---
         window.renderCharts = () => {
             const ctxOverview = document.getElementById('chartOverview');
             const ctxMarga = document.getElementById('chartMarga');
             const ctxStatus = document.getElementById('chartStatus');
-
             if (!ctxOverview || !ctxMarga || !ctxStatus) return;
 
             ['overview', 'marga', 'status'].forEach(k => { if (charts[k]) charts[k].destroy(); });
 
-            // 1. DATA PREPARATION (Hitung dari data Attendance yang masuk)
             const margaCount = { 'Marga Manihuruk': 0, 'Boru': 0, 'Bere / Panagolan': 0 };
             const statusCount = { 'Orangtua': 0, 'Pemuda': 0, 'Sekolah Minggu': 0, 'Tamu Undangan': 0, 'Pengurus Tupuan': 0 };
 
@@ -564,69 +525,22 @@
                 if (statusCount[att.status] !== undefined) statusCount[att.status]++;
             });
 
-            // CHART 1: Overview
-            charts['overview'] = new Chart(ctxOverview, {
-                type: 'bar',
-                data: {
-                    labels: ['Terdaftar', 'Hadir', 'Ambil Kado'],
-                    datasets: [{
-                        label: 'Jiwa',
-                        data: [state.participants.length, state.attendance.length, state.gifts.length],
-                        backgroundColor: ['#94a3b8', '#059669', '#f59e0b'],
-                        borderRadius: 8, barThickness: 40
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
-            });
-
-            // CHART 2: Marga (Pie)
-            charts['marga'] = new Chart(ctxMarga, {
-                type: 'pie',
-                data: {
-                    labels: Object.keys(margaCount),
-                    datasets: [{
-                        data: Object.values(margaCount),
-                        backgroundColor: ['#064e3b', '#10b981', '#f59e0b'],
-                        borderWidth: 2, borderColor: '#ffffff'
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
-
-            // CHART 3: Status (Horizontal Bar)
-            charts['status'] = new Chart(ctxStatus, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(statusCount),
-                    datasets: [{
-                        label: 'Hadir',
-                        data: Object.values(statusCount),
-                        backgroundColor: '#059669',
-                        borderRadius: 6
-                    }]
-                },
-                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
-            });
+            charts['overview'] = new Chart(ctxOverview, { type: 'bar', data: { labels: ['Terdaftar', 'Hadir', 'Kado'], datasets: [{ label: 'Jiwa', data: [state.participants.length, state.attendance.length, state.gifts.length], backgroundColor: ['#94a3b8', '#059669', '#f59e0b'], borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } } });
+            charts['marga'] = new Chart(ctxMarga, { type: 'pie', data: { labels: Object.keys(margaCount), datasets: [{ data: Object.values(margaCount), backgroundColor: ['#064e3b', '#10b981', '#f59e0b'], borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
+            charts['status'] = new Chart(ctxStatus, { type: 'bar', data: { labels: Object.keys(statusCount), datasets: [{ label: 'Hadir', data: Object.values(statusCount), backgroundColor: '#059669', borderRadius: 6 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } } });
         };
 
-        // --- GLOBAL & ADMIN ---
+        // --- GLOBAL ---
         window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
         window.adminLogin = () => document.getElementById('adminModal').classList.remove('hidden');
-        window.verifyAdmin = () => {
-            if(document.getElementById('adminPassword').value === ADMIN_PASS) {
-                state.isAdmin = true; alert("Login Admin Berhasil"); closeModal('adminModal');
-            } else { alert("PIN Salah"); }
-        };
+        window.verifyAdmin = () => { if(document.getElementById('adminPassword').value === ADMIN_PASS) { state.isAdmin = true; alert("Login Berhasil"); closeModal('adminModal'); updateDashboard(); } else { alert("PIN Salah"); } };
         window.exportData = (type) => {
             let data = type === 'p' ? state.participants : (type === 'a' ? state.attendance : state.gifts);
             let csv = "Nama,Status,Marga,Waktu\n" + data.map(r => `"${r.name}","${r.status}","${r.marga}","${r.timestamp || r.registeredAt}"`).join("\n");
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' }));
-            link.download = `Bonataon_${type}.csv`; link.click();
+            const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' })); link.download = `Data_${type}.csv`; link.click();
         };
 
         setTimeout(() => { setTab('register'); }, 1500);
-
     </script>
 </body>
 </html>
