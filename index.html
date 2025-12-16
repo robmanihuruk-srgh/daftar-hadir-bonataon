@@ -305,7 +305,6 @@
     </style>
 </head>
 <body class="min-h-screen text-gray-800">
-    <!-- Background Ornaments -->
     <div class="ornament" style="top: 5%; left: 5%; width: 100px; height: 100px;">
         <i class="fas fa-star text-white text-5xl"></i>
     </div>
@@ -323,7 +322,6 @@
         
         <div id="loading" class="absolute inset-0 z-[9999] bg-white flex flex-col justify-center items-center">
             <div class="logo-container mb-6">
-                <!-- Tugu Raja Manihuruk Logo -->
                 <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 13px; padding: 8px;">
                     <div style="background: white; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px;">
                         <div style="font-family: 'Poppins', sans-serif; font-weight: 800; text-align: center; line-height: 1; color: #3a0ca3; font-size: 10px;">
@@ -342,14 +340,12 @@
         </div>
 
         <header class="gradient-header text-white p-6 pb-20 shadow-lg relative overflow-hidden">
-            <!-- Animated background elements -->
             <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
             <div class="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl"></div>
             
             <div class="flex justify-between items-start relative z-10">
                 <div class="flex items-center gap-4">
                     <div class="logo-container floating-element">
-                        <!-- Tugu Raja Manihuruk Logo -->
                         <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 13px; padding: 8px;">
                             <div style="background: white; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px;">
                                 <div style="font-family: 'Poppins', sans-serif; font-weight: 800; text-align: center; line-height: 1; color: #3a0ca3; font-size: 9px;">
@@ -428,7 +424,6 @@
             <div id="content-area"></div>
         </main>
         
-        <!-- Footer -->
         <footer class="py-4 px-6 border-t border-gray-100 text-center text-gray-500 text-sm bg-white">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
@@ -443,7 +438,6 @@
         </footer>
     </div>
 
-    <!-- Admin Modal -->
     <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('adminModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-8">
@@ -453,7 +447,6 @@
             
             <div class="mb-6 text-center">
                 <div class="logo-container mx-auto mb-4">
-                    <!-- Tugu Raja Manihuruk Logo -->
                     <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 13px; padding: 8px;">
                         <div style="background: white; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px;">
                             <div style="font-family: 'Poppins', sans-serif; font-weight: 800; text-align: center; line-height: 1; color: #3a0ca3; font-size: 9px;">
@@ -494,7 +487,6 @@
         </div>
     </div>
 
-    <!-- Manual Check-in Modal -->
     <div id="manualCheckinModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('manualCheckinModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6">
@@ -521,7 +513,6 @@
         </div>
     </div>
 
-    <!-- Manual Gift Claim Modal -->
     <div id="manualGiftModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('manualGiftModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6">
@@ -548,7 +539,6 @@
         </div>
     </div>
 
-    <!-- Confirm Modal -->
     <div id="confirmModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('confirmModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6">
@@ -562,11 +552,11 @@
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-gray-50 p-4 rounded-xl">
-                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Kelas</div>
+                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Status</div>
                         <div id="confClass" class="font-bold text-purple-600"></div>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-xl">
-                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Sektor</div>
+                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Group</div>
                         <div id="confSector" class="font-bold text-blue-600"></div>
                     </div>
                 </div>
@@ -580,7 +570,6 @@
         </div>
     </div>
 
-    <!-- Ticket Modal -->
     <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeModal('ticketModal')"></div>
         <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6 text-center border-t-4" style="border-image: linear-gradient(to right, var(--primary), var(--secondary)) 1;">
@@ -595,10 +584,10 @@
                 <h2 id="ticName" class="text-2xl font-black text-gray-800 leading-tight mb-3">Nama Peserta</h2>
                 <div class="flex justify-center gap-3 mb-6">
                     <span id="ticClass" class="badge badge-primary flex items-center gap-1">
-                        <i class="fas fa-graduation-cap"></i> <span class="ticClassText">Kelas</span>
+                        <i class="fas fa-id-badge"></i> <span class="ticClassText">Status</span>
                     </span>
                     <span id="ticSector" class="badge badge-success flex items-center gap-1">
-                        <i class="fas fa-map-marker-alt"></i> <span class="ticSectorText">Sektor</span>
+                        <i class="fas fa-users"></i> <span class="ticSectorText">Group</span>
                     </span>
                 </div>
             </div>
@@ -998,7 +987,7 @@
             const sector = sectorInput.value;
 
             if(!name || !sector) {
-                showToast('Mohon isi Nama Lengkap dan Pilih Sektor!', 'warning');
+                showToast('Mohon isi Nama Lengkap dan Pilih Group!', 'warning');
                 return;
             }
 
@@ -1021,15 +1010,15 @@
                 
                 let errorMsg = "Data tidak ditemukan!\n";
                 errorMsg += `\nNama: ${nameInput.value.trim()}`;
-                errorMsg += `\nSektor: ${sector}`;
+                errorMsg += `\nGroup: ${sector}`;
                 
                 if (participantsInSector.length === 0) {
-                    errorMsg += "\n\nTidak ada peserta terdaftar di sektor ini.";
+                    errorMsg += "\n\nTidak ada peserta terdaftar di group ini.";
                 } else {
                     errorMsg += "\n\nTips:";
                     errorMsg += "\n- Cek ejaan nama";
                     errorMsg += "\n- Gunakan nama lengkap";
-                    errorMsg += `\n\nTotal ${participantsInSector.length} peserta di sektor ${sector}`;
+                    errorMsg += `\n\nTotal ${participantsInSector.length} peserta di group ${sector}`;
                 }
                 
                 showToast(errorMsg, 'warning');
@@ -1260,23 +1249,23 @@
                                 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                                         <select id="inClass" class="input-field w-full">
-                                            <option value="" disabled selected>Pilih Kelas</option>
-                                            <option value="Daud">Kelas Daud</option>
-                                            <option value="Daniel">Kelas Daniel</option>
-                                            <option value="Paulus">Kelas Paulus</option>
-                                            <option value="Ester">Kelas Ester</option>
-                                            <option value="GSM">GSM</option>
+                                            <option value="" disabled selected>Pilih Status</option>
                                             <option value="Orang Tua">Orang Tua</option>
+                                            <option value="Sekolah Minggu">Sekolah Minggu</option>
+                                            <option value="Pemuda">Pemuda</option>
                                             <option value="Tamu Undangan">Tamu Undangan</option>
+                                            <option value="Pengurus Jabodetabek">Pengurus Jabodetabek</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Sektor</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Group</label>
                                         <select id="inSector" class="input-field w-full">
-                                            <option value="" disabled selected>Pilih Sektor</option>
-                                            ${[...Array(12)].map((_,i)=>`<option value="Sektor ${i+1}">Sektor ${i+1}</option>`).join('')}
+                                            <option value="" disabled selected>Pilih Group</option>
+                                            <option value="Marga Manihuruk">Marga Manihuruk</option>
+                                            <option value="Boru">Boru</option>
+                                            <option value="Bere / Panagolan">Bere / Panagolan</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1315,12 +1304,14 @@
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Sektor</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Group</label>
                                 <div class="relative">
                                     <select id="findSector" 
                                             class="input-field w-full appearance-none pr-10">
-                                        <option value="" disabled selected>Pilih Sektor Anda</option>
-                                        ${[...Array(12)].map((_,i)=>`<option value="Sektor ${i+1}">Sektor ${i+1}</option>`).join('')}
+                                        <option value="" disabled selected>Pilih Group Anda</option>
+                                        <option value="Marga Manihuruk">Marga Manihuruk</option>
+                                        <option value="Boru">Boru</option>
+                                        <option value="Bere / Panagolan">Bere / Panagolan</option>
                                     </select>
                                     <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                                 </div>
@@ -1541,9 +1532,9 @@
             
             document.getElementById('ticName').innerText = n || "Peserta";
             document.getElementById('ticClass').innerText = c || "-";
-            document.querySelector('.ticClassText').innerText = c || "Kelas";
+            document.querySelector('.ticClassText').innerText = c || "Status";
             document.getElementById('ticSector').innerText = s || "-";
-            document.querySelector('.ticSectorText').innerText = s || "Sektor";
+            document.querySelector('.ticSectorText').innerText = s || "Group";
             document.getElementById('ticCode').innerText = q;
             
             const qrUrl = getQR(q);
@@ -1685,21 +1676,21 @@
                 let data = [];
 
                 if (type === 'p') {
-                    csv += "Nama,Kelas,Sektor,QR_Code,Waktu_Daftar\n";
+                    csv += "Nama,Status,Group,QR_Code,Waktu_Daftar\n";
                     data = state.participants;
                     filename = "Data_Jemaat_Bonataon_2026_MANIHURUK.csv";
                     data.forEach(x => { 
                         csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.qrCode || ''}","${x.registeredAt || ''}"\n`; 
                     });
                 } else if (type === 'a') {
-                    csv += "Nama,Kelas,Sektor,Waktu_Hadir\n";
+                    csv += "Nama,Status,Group,Waktu_Hadir\n";
                     data = state.attendance;
                     filename = "Laporan_Absensi_Bonataon_2026_MANIHURUK.csv";
                     data.forEach(x => { 
                         csv += `"${x.name || ''}","${x.classGrade || ''}","${x.sector || ''}","${x.timestamp || ''}"\n`; 
                     });
                 } else if (type === 'g') {
-                    csv += "Nama,Kelas,Sektor,Waktu_Ambil_Hadiah\n";
+                    csv += "Nama,Status,Group,Waktu_Ambil_Hadiah\n";
                     data = state.gifts;
                     filename = "Laporan_Hadiah_Bonataon_2026_MANIHURUK.csv";
                     data.forEach(x => { 
@@ -1741,7 +1732,7 @@
                      if(n) {
                          const id = (Date.now()+i).toString();
                          push(ref(db, 'participants'), {
-                             id, name: n, classGrade: cl||'Daud', sector: sc||'Sektor 1',
+                             id, name: n, classGrade: cl||'Orang Tua', sector: sc||'Marga Manihuruk',
                              qrCode: `BONATAON-${id.slice(-6)}`, registeredAt: fmtDate(), timestamp: Date.now()
                          });
                          c++;
@@ -1776,4 +1767,3 @@
     </script>
 </body>
 </html>
-
