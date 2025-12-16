@@ -28,7 +28,7 @@
         h1, h2, h3, .serif-font { font-family: 'Playfair Display', serif; }
          
         .glass-effect {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
@@ -119,8 +119,15 @@
         }
 
         .logo-box {
-            background: white; border-radius: 16px; padding: 4px;
+            background: white; border-radius: 16px; padding: 0;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2); overflow: hidden;
+        }
+        
+        /* Agar Chart Responsif */
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
         }
     </style>
 </head>
@@ -135,8 +142,8 @@
     <div id="app" class="relative z-10 max-w-md mx-auto md:max-w-4xl min-h-screen md:my-8 md:rounded-[2rem] overflow-hidden flex flex-col glass-effect transition-all duration-500">
          
         <div id="loading" class="absolute inset-0 z-[9999] bg-slate-50 flex flex-col justify-center items-center">
-            <div class="logo-box mb-6 w-24 h-24 flex items-center justify-center bg-white">
-                <img src="logo tugu manihuruk.png" alt="Logo Tugu" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/100x100?text=Tugu+Raja';">
+            <div class="logo-box mb-6 w-28 h-28 flex items-center justify-center bg-white p-2">
+                <img src="logo tugu manihuruk.png" alt="Logo Tugu" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/100x100?text=Tugu+Manihuruk'">
             </div>
             <h2 class="text-2xl font-bold text-emerald-800 mb-2 serif-font">Bonataon 2026</h2>
             <div class="text-slate-500 text-sm font-medium animate-pulse">Menyiapkan sukacita...</div>
@@ -148,8 +155,8 @@
              
             <div class="flex justify-between items-start relative z-10">
                 <div class="flex items-center gap-4">
-                    <div class="logo-box w-16 h-16 flex items-center justify-center shadow-lg transform rotate-3 bg-white">
-                        <img src="logo tugu manihuruk.png" alt="Logo Tugu" class="w-full h-full object-contain p-1" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-center leading-none text-[8px] font-bold text-emerald-800\'>TUGU<br>RAJA</div>';">
+                    <div class="logo-box w-16 h-16 flex items-center justify-center shadow-lg transform rotate-3 bg-white p-1">
+                        <img src="logo tugu manihuruk.png" alt="Logo Tugu" class="w-full h-full object-contain" onerror="this.parentElement.innerHTML='<div class=\'text-[8px] font-bold text-emerald-800\'>TUGU<br>MANIHURUK</div>';">
                     </div>
                     <div>
                         <h1 class="text-3xl font-bold tracking-tight title-text drop-shadow-sm">BONATAON 2026</h1>
@@ -225,11 +232,8 @@
     </div>
 
     <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden"><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('adminModal')"></div><div class="card max-w-sm w-full mx-4 relative z-10 modal p-8"><div class="text-center mb-6"><div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3 text-emerald-600 text-2xl"><i class="fas fa-user-shield"></i></div><h3 class="text-xl font-bold text-slate-800 serif-font">Akses Panitia</h3></div><div class="space-y-4"><input type="password" id="adminPassword" placeholder="Kode Keamanan" class="input-field w-full text-center tracking-widest pl-4 pr-4"><div class="grid grid-cols-2 gap-3"><button onclick="closeModal('adminModal')" class="btn-secondary w-full">Batal</button><button onclick="window.verifyAdmin()" class="btn-primary w-full shadow-lg shadow-emerald-200">Masuk</button></div></div></div></div>
-    
     <div id="manualCheckinModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden"><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('manualCheckinModal')"></div><div class="card max-w-sm w-full mx-4 relative z-10 modal p-6"><h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2"><i class="fas fa-check-double text-emerald-500"></i> Absensi Manual</h3><div class="relative mb-4"><input type="text" id="manualSearch" placeholder="Cari nama jemaat..." class="input-field w-full pl-10"><i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i></div><div id="manualCheckinList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2 mb-4 bg-slate-50 p-2 rounded-lg"></div><div class="flex gap-3"><button onclick="closeModal('manualCheckinModal')" class="btn-secondary flex-1">Tutup</button><button onclick="processManualCheckin()" class="btn-primary flex-1" disabled id="manualCheckinBtn">Konfirmasi</button></div></div></div>
-    
     <div id="manualGiftModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden"><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('manualGiftModal')"></div><div class="card max-w-sm w-full mx-4 relative z-10 modal p-6"><h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2"><i class="fas fa-gift text-amber-500"></i> Serah Terima Berkat</h3><div class="relative mb-4"><input type="text" id="manualGiftSearch" placeholder="Cari nama jemaat..." class="input-field w-full pl-10"><i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i></div><div id="manualGiftList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2 mb-4 bg-slate-50 p-2 rounded-lg"></div><div class="flex gap-3"><button onclick="closeModal('manualGiftModal')" class="btn-secondary flex-1">Tutup</button><button onclick="processManualGift()" class="btn-primary flex-1 bg-gradient-to-r from-amber-500 to-orange-600" disabled id="manualGiftBtn">Serahkan</button></div></div></div>
-    
     <div id="confirmModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden"><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('confirmModal')"></div><div class="card max-w-sm w-full mx-4 relative z-10 modal p-6 border-t-4 border-emerald-500"><h3 class="text-xl font-bold text-slate-800 mb-1 serif-font text-center">Validasi Data</h3><p class="text-center text-slate-500 text-sm mb-6">Mohon periksa kembali data sebelum dicetak</p><div class="space-y-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100"><div><label class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Nama Lengkap</label><div id="confName" class="font-bold text-lg text-slate-800 leading-tight"></div></div><div class="h-px bg-slate-200"></div><div class="grid grid-cols-2 gap-4"><div><label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status</label><div id="confStatus" class="font-semibold text-slate-700"></div></div><div><label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Marga</label><div id="confMarga" class="font-semibold text-slate-700"></div></div></div></div><div class="flex gap-3"><button onclick="closeModal('confirmModal')" class="btn-secondary flex-1">Ubah</button><button onclick="processSave()" class="btn-primary flex-1 shadow-lg shadow-emerald-200"><i class="fas fa-save mr-2"></i> Simpan</button></div></div></div>
     
     <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden">
@@ -300,6 +304,7 @@
         // Chart Instances
         let chartInstance1 = null;
         let chartInstance2 = null;
+        let chartInstance3 = null;
 
         let audioCtx = null;
         function beep(type = 'success') {
@@ -329,7 +334,7 @@
             state.participants = s.val() ? Object.values(s.val()) : [];
             updateStats();
             if (state.tab === 'register') renderParticipantListOnly();
-            if (state.tab === 'data') renderCharts(); // Update charts if data changes
+            if (state.tab === 'data') renderCharts(); 
         });
          
         onValue(ref(db, 'attendance'), s => {
@@ -337,7 +342,7 @@
             updateStats();
             if (state.tab === 'data') {
                 if (state.dataViewMode === 'attendance') render();
-                renderCharts(); // Update charts
+                renderCharts(); 
             }
             document.getElementById('loading').style.display = 'none';
         });
@@ -345,7 +350,10 @@
         onValue(ref(db, 'gifts'), s => {
             state.gifts = s.val() ? Object.values(s.val()) : [];
             updateStats();
-            if (state.tab === 'data' && state.dataViewMode === 'gifts') render();
+            if (state.tab === 'data') {
+                if (state.dataViewMode === 'gifts') render();
+                renderCharts(); // Update charts when gifts change
+            }
         });
 
         function updateStats() {
@@ -354,7 +362,98 @@
             document.getElementById('statGifts').innerText = state.gifts.length;
         }
 
-        // --- CORE FUNCTIONS (Register, Save, etc.) ---
+        // --- LOGIC GRAFIK (CHARTS) ---
+        window.renderCharts = () => {
+            const ctx1 = document.getElementById('chartOverview');
+            const ctx2 = document.getElementById('chartMarga');
+            const ctx3 = document.getElementById('chartStatus');
+            
+            // Hapus chart lama agar tidak bertumpuk
+            if (chartInstance1) chartInstance1.destroy();
+            if (chartInstance2) chartInstance2.destroy();
+            if (chartInstance3) chartInstance3.destroy();
+
+            // 1. Grafik Overview (Kehadiran & Berkat)
+            if (ctx1) {
+                chartInstance1 = new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Terdaftar', 'Hadir', 'Sudah Ambil Berkat'],
+                        datasets: [{
+                            label: 'Jumlah Jiwa',
+                            data: [state.participants.length, state.attendance.length, state.gifts.length],
+                            backgroundColor: ['#cbd5e1', '#059669', '#d97706'], // Slate, Emerald, Amber
+                            borderRadius: 6,
+                            barPercentage: 0.6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false }, title: { display: true, text: 'Ringkasan Acara', font: { size: 14, family: "'Plus Jakarta Sans'", weight: 'bold' } } },
+                        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                    }
+                });
+            }
+
+            // Hitung Data Kehadiran berdasarkan Marga & Status
+            const attendIds = state.attendance.map(a => a.participantId);
+            const presentParticipants = state.participants.filter(p => attendIds.includes(p.id));
+
+            const margaCounts = { 'Marga Manihuruk': 0, 'Boru': 0, 'Bere / Panagolan': 0 };
+            const statusCounts = { 'Orangtua': 0, 'Pemuda': 0, 'Sekolah Minggu': 0, 'Tamu Undangan': 0, 'Pengurus Tupuan': 0 };
+
+            presentParticipants.forEach(p => {
+                if (margaCounts[p.marga] !== undefined) margaCounts[p.marga]++;
+                if (statusCounts[p.status] !== undefined) statusCounts[p.status]++;
+            });
+
+            // 2. Grafik Kehadiran per Marga
+            if (ctx2) {
+                chartInstance2 = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Manihuruk', 'Boru', 'Bere'],
+                        datasets: [{
+                            label: 'Hadir',
+                            data: [margaCounts['Marga Manihuruk'], margaCounts['Boru'], margaCounts['Bere / Panagolan']],
+                            backgroundColor: '#064e3b',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false }, title: { display: true, text: 'Kehadiran per Marga', font: { size: 14, family: "'Plus Jakarta Sans'", weight: 'bold' } } },
+                        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                    }
+                });
+            }
+
+            // 3. Grafik Kehadiran per Status
+            if (ctx3) {
+                chartInstance3 = new Chart(ctx3, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(statusCounts),
+                        datasets: [{
+                            label: 'Hadir',
+                            data: Object.values(statusCounts),
+                            backgroundColor: '#059669',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false }, title: { display: true, text: 'Kehadiran per Status', font: { size: 14, family: "'Plus Jakarta Sans'", weight: 'bold' } } },
+                        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                    }
+                });
+            }
+        };
+
+        // --- CORE FUNCTIONS ---
         window.preRegister = () => {
             const name = document.getElementById('inName').value.trim();
             const st = document.getElementById('inStatus').value;
@@ -415,9 +514,8 @@
         window.openManualCheckin = () => { if (!state.isAdmin) { showToast('Akses khusus Panitia.', 'warning'); window.adminLogin(); return; } showModal('manualCheckinModal'); setTimeout(() => { renderManualCheckinList(); document.getElementById('manualSearch').focus(); }, 100); };
         window.openManualGift = () => { if (!state.isAdmin) { showToast('Akses khusus Panitia.', 'warning'); window.adminLogin(); return; } showModal('manualGiftModal'); setTimeout(() => { renderManualGiftList(); document.getElementById('manualGiftSearch').focus(); }, 100); };
 
-        // ... (Manual Checkin/Gift List logic same as before, omitted for brevity but fully functional in logic) ...
-        function renderManualCheckinList() { /* ... */ const listEl = document.getElementById('manualCheckinList'); const searchTerm = document.getElementById('manualSearch').value.toLowerCase(); const filtered = state.participants.filter(p => !state.attendance.find(a => a.participantId === p.id) && p.name.toLowerCase().includes(searchTerm)); listEl.innerHTML = filtered.length === 0 ? `<div class="text-center py-6 text-slate-400 text-sm italic">Data tidak ditemukan / sudah hadir</div>` : filtered.map(p => `<div class="p-3 border-b border-slate-100 hover:bg-emerald-50 cursor-pointer rounded-lg transition-colors flex justify-between items-center ${state.selectedManualCheckin?.id === p.id ? 'bg-emerald-50 border-emerald-200' : ''}" onclick="selectManualCheckin(${JSON.stringify(p).replace(/"/g, '&quot;')})"><div><div class="font-bold text-slate-700">${p.name}</div><div class="text-xs text-slate-400">${p.marga}</div></div></div>`).join(''); document.getElementById('manualCheckinBtn').disabled = !state.selectedManualCheckin; }
-        function renderManualGiftList() { /* ... */ const listEl = document.getElementById('manualGiftList'); const searchTerm = document.getElementById('manualGiftSearch').value.toLowerCase(); const filtered = state.participants.filter(p => !state.gifts.find(g => g.participantId === p.id) && p.name.toLowerCase().includes(searchTerm)); listEl.innerHTML = filtered.length === 0 ? `<div class="text-center py-6 text-slate-400 text-sm italic">Semua sudah terima berkat</div>` : filtered.map(p => `<div class="p-3 border-b border-slate-100 hover:bg-amber-50 cursor-pointer rounded-lg transition-colors flex justify-between items-center ${state.selectedManualGift?.id === p.id ? 'bg-amber-50 border-amber-200' : ''}" onclick="selectManualGift(${JSON.stringify(p).replace(/"/g, '&quot;')})"><div><div class="font-bold text-slate-700">${p.name}</div><div class="text-xs text-slate-400">${p.marga}</div></div></div>`).join(''); document.getElementById('manualGiftBtn').disabled = !state.selectedManualGift; }
+        function renderManualCheckinList() { const listEl = document.getElementById('manualCheckinList'); const searchTerm = document.getElementById('manualSearch').value.toLowerCase(); const filtered = state.participants.filter(p => !state.attendance.find(a => a.participantId === p.id) && p.name.toLowerCase().includes(searchTerm)); listEl.innerHTML = filtered.length === 0 ? `<div class="text-center py-6 text-slate-400 text-sm italic">Data tidak ditemukan / sudah hadir</div>` : filtered.map(p => `<div class="p-3 border-b border-slate-100 hover:bg-emerald-50 cursor-pointer rounded-lg transition-colors flex justify-between items-center ${state.selectedManualCheckin?.id === p.id ? 'bg-emerald-50 border-emerald-200' : ''}" onclick="selectManualCheckin(${JSON.stringify(p).replace(/"/g, '&quot;')})"><div><div class="font-bold text-slate-700">${p.name}</div><div class="text-xs text-slate-400">${p.marga}</div></div></div>`).join(''); document.getElementById('manualCheckinBtn').disabled = !state.selectedManualCheckin; }
+        function renderManualGiftList() { const listEl = document.getElementById('manualGiftList'); const searchTerm = document.getElementById('manualGiftSearch').value.toLowerCase(); const filtered = state.participants.filter(p => !state.gifts.find(g => g.participantId === p.id) && p.name.toLowerCase().includes(searchTerm)); listEl.innerHTML = filtered.length === 0 ? `<div class="text-center py-6 text-slate-400 text-sm italic">Semua sudah terima berkat</div>` : filtered.map(p => `<div class="p-3 border-b border-slate-100 hover:bg-amber-50 cursor-pointer rounded-lg transition-colors flex justify-between items-center ${state.selectedManualGift?.id === p.id ? 'bg-amber-50 border-amber-200' : ''}" onclick="selectManualGift(${JSON.stringify(p).replace(/"/g, '&quot;')})"><div><div class="font-bold text-slate-700">${p.name}</div><div class="text-xs text-slate-400">${p.marga}</div></div></div>`).join(''); document.getElementById('manualGiftBtn').disabled = !state.selectedManualGift; }
         
         window.selectManualCheckin = (p) => { state.selectedManualCheckin = p; document.getElementById('manualCheckinBtn').disabled = false; document.getElementById('manualCheckinBtn').innerHTML = `Konfirmasi: ${p.name}`; renderManualCheckinList(); };
         window.selectManualGift = (p) => { state.selectedManualGift = p; document.getElementById('manualGiftBtn').disabled = false; document.getElementById('manualGiftBtn').innerHTML = `Serahkan ke: ${p.name}`; renderManualGiftList(); };
@@ -510,72 +608,6 @@
             }
         }
 
-        // --- NEW: Chart Rendering Logic ---
-        window.renderCharts = () => {
-            const ctx1 = document.getElementById('chartAttendance');
-            const ctx2 = document.getElementById('chartDemographics');
-            
-            if (ctx1 && ctx2) {
-                // Destroy old charts to avoid overlap
-                if (chartInstance1) chartInstance1.destroy();
-                if (chartInstance2) chartInstance2.destroy();
-
-                // 1. Data for Attendance (Doughnut)
-                const total = state.participants.length;
-                const present = state.attendance.length;
-                const absent = total - present;
-
-                chartInstance1 = new Chart(ctx1, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Hadir', 'Belum Hadir'],
-                        datasets: [{
-                            data: [present, absent],
-                            backgroundColor: ['#059669', '#cbd5e1'], // Emerald vs Slate
-                            borderWidth: 0,
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom', labels: { font: { size: 10, family: "'Plus Jakarta Sans'" } } },
-                            title: { display: true, text: 'Persentase Kehadiran', font: { size: 14, family: "'Plus Jakarta Sans'", weight: 'bold' } }
-                        }
-                    }
-                });
-
-                // 2. Data for Demographics (Bar Chart - Marga)
-                const margaCounts = { 'Marga Manihuruk': 0, 'Boru': 0, 'Bere / Panagolan': 0 };
-                state.participants.forEach(p => {
-                    if (margaCounts[p.marga] !== undefined) margaCounts[p.marga]++;
-                });
-
-                chartInstance2 = new Chart(ctx2, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Manihuruk', 'Boru', 'Bere'],
-                        datasets: [{
-                            label: 'Jumlah Jiwa',
-                            data: [margaCounts['Marga Manihuruk'], margaCounts['Boru'], margaCounts['Bere / Panagolan']],
-                            backgroundColor: ['#064e3b', '#059669', '#d97706'], // Dark Emerald, Emerald, Amber
-                            borderRadius: 6,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { grid: { display: false } } },
-                        plugins: {
-                            legend: { display: false },
-                            title: { display: true, text: 'Distribusi Jemaat', font: { size: 14, family: "'Plus Jakarta Sans'", weight: 'bold' } }
-                        }
-                    }
-                });
-            }
-        };
-
         window.render = () => {
             const root = document.getElementById('content-area');
              
@@ -593,20 +625,23 @@
                 const isGiftView = state.dataViewMode === 'gifts';
                 const data = isGiftView ? state.gifts : state.attendance;
                 
-                // UPDATED: Include Chart Canvas
+                // UPDATED: Chart Area (3 Charts)
                 root.innerHTML = `
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <div class="card p-4 h-64 relative">
-                            <canvas id="chartAttendance"></canvas>
+                        <div class="card p-4 h-64 relative md:col-span-2">
+                            <canvas id="chartOverview"></canvas>
                         </div>
                         <div class="card p-4 h-64 relative">
-                            <canvas id="chartDemographics"></canvas>
+                            <canvas id="chartMarga"></canvas>
+                        </div>
+                        <div class="card p-4 h-64 relative">
+                            <canvas id="chartStatus"></canvas>
                         </div>
                     </div>
 
                     <div class="card p-6 mb-6">
-                        <h3 class="font-bold text-xl text-slate-800 mb-1 serif-font">Pusat Data</h3>
-                        <p class="text-slate-500 text-sm mb-6">Rekapitulasi acara Bonataon.</p>
+                        <h3 class="font-bold text-xl text-slate-800 mb-1 serif-font">Tabel Data</h3>
+                        <p class="text-slate-500 text-sm mb-6">Rekapitulasi data peserta.</p>
                         
                         <div class="flex p-1 bg-slate-100 rounded-xl mb-6">
                             <button onclick="switchDataView('attendance')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all ${!isGiftView ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-400'}">Kehadiran</button>
