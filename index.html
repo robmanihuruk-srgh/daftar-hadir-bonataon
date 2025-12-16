@@ -3,264 +3,732 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bonataon 2026 - Tugu Raja Manihuruk</title>
-    
+    <title>Absensi Event Bonataon 2026 - MANIHURUK</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-     
+    
     <style>
         :root {
-            --primary: #059669; /* Emerald 600 */
-            --secondary: #064e3b; /* Emerald 900 */
-            --accent: #d97706; /* Amber 600 */
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
         }
-         
+        
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at top right, #065f46 0%, #0f172a 60%, #020617 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: #1e293b;
         }
-
-        h1, h2, h3, .serif-font { font-family: 'Playfair Display', serif; }
-         
+        
         .glass-effect {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-         
+        
+        .glass-effect-dark {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
         .gradient-header {
-            background: linear-gradient(135deg, #064e3b 0%, #10b981 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             position: relative;
             overflow: hidden;
         }
-
+        
         .gradient-header::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px);
-            opacity: 0.3;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-         
+        
         .card {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-         
-        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-         
-        .btn-primary {
-            background: linear-gradient(to right, #059669, #047857);
-            color: white; font-weight: 600; border-radius: 12px; padding: 14px 24px;
-            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
-        }
-        .btn-primary:hover { background: linear-gradient(to right, #047857, #064e3b); transform: translateY(-1px); }
-         
-        .btn-secondary {
-            background: #f1f5f9; color: #334155; font-weight: 600; border-radius: 12px; padding: 14px 24px; transition: all 0.3s ease;
-        }
-        .btn-secondary:hover { background: #e2e8f0; color: #0f172a; }
-         
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px);
-            border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 16px; text-align: center;
-        }
-         
-        .nav-tab {
-            background: transparent; border-radius: 12px; padding: 12px 10px;
-            font-weight: 600; color: #64748b; transition: all 0.3s ease; border: 1px solid transparent;
-        }
-        .nav-tab.active {
-            background: #ecfdf5; color: #047857; border-color: #a7f3d0; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .nav-tab:hover:not(.active) { background: #f8fafc; color: #334155; }
-         
-        .input-field {
-            background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px;
-            padding: 14px; font-weight: 500; transition: all 0.2s ease; color: #0f172a;
-        }
-        .input-field:focus {
-            background: white; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); outline: none;
-        }
-         
-        .badge {
-            display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 9999px;
-            font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
-        }
-        .badge-primary { background: #d1fae5; color: #065f46; }
-        .badge-success { background: #dcfce7; color: #14532d; }
-        .badge-warning { background: #fef3c7; color: #92400e; }
-         
-        .modal { animation: modalUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        @keyframes modalUp { from { opacity: 0; transform: translateY(40px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-         
-        #reader { border-radius: 16px; border: 4px solid #059669; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
-        #reader video { border-radius: 12px; transform: scaleX(-1); }
-        #reader__dashboard_section_csr button { background: #059669; color: white; border-radius: 8px; padding: 8px 16px; border: none; font-weight: 600; }
-         
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .ornament { position: absolute; z-index: 0; opacity: 0.6; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
-
-        .title-text {
-            background: linear-gradient(to bottom, #fde68a, #d97706);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
-        }
-
-        .logo-box {
-            background: white; border-radius: 16px; padding: 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2); overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
-        /* Agar Chart Responsif */
-        .chart-container {
-            position: relative;
-            height: 250px;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #6c757d, #495057);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(to right, #dc3545, #c82333);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.4);
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 18px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .nav-tab {
+            background: white;
+            border-radius: 14px;
+            padding: 14px 16px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .nav-tab:hover:not(.active) {
+            background: #f8f9fa;
+            transform: translateY(-3px);
+        }
+        
+        .input-field {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            outline: none;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .badge-primary {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+        
+        .badge-success {
+            background: rgba(76, 201, 240, 0.1);
+            color: #4cc9f0;
+        }
+        
+        .badge-warning {
+            background: rgba(247, 37, 133, 0.1);
+            color: #f72585;
+        }
+        
+        .badge-danger {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        
+        .badge-group {
+            background: rgba(114, 9, 183, 0.1);
+            color: #7209b7;
+        }
+        
+        .badge-marga {
+            background: rgba(58, 12, 163, 0.1);
+            color: #3a0ca3;
+        }
+        
+        .modal {
+            animation: modalFadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .pulse-soft {
+            animation: pulseSoft 2s infinite;
+        }
+        
+        @keyframes pulseSoft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* CSS Scanner */
+        #reader { 
+            width: 100%; 
+            background: #000; 
+            border-radius: 16px;
+            border: none;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        #reader video { 
+            object-fit: cover; 
+            border-radius: 16px;
+            transform: scaleX(-1); 
+        }
+        #reader__dashboard_section_csr span, 
+        #reader__dashboard_section_swaplink { display: none !important; }
+        #reader__filescan_input_label { display: none; } 
+        #reader__dashboard_section_csr button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white; 
+            padding: 12px 24px;
+            border-radius: 10px; 
+            border: none; 
+            font-weight: bold; 
+            margin-top: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+        
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, var(--secondary), var(--accent));
+        }
+        
+        .ornament {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        .title-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            background: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+        }
+        
+        .logo-img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 13px;
+        }
+        
+        /* Logo Tugu Raja Manihuruk styling */
+        .tugu-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
+            border-radius: 13px;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-emerald-200 selection:text-emerald-900">
-    
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="ornament top-10 left-10 opacity-10"><i class="fas fa-leaf text-emerald-400 text-6xl transform -rotate-12"></i></div>
-        <div class="ornament bottom-20 right-10 opacity-10"><i class="fas fa-church text-emerald-300 text-8xl"></i></div>
-        <div class="ornament top-1/4 right-20 opacity-5"><i class="fas fa-music text-amber-200 text-5xl"></i></div>
+<body class="min-h-screen text-gray-800">
+    <!-- Background Ornaments -->
+    <div class="ornament" style="top: 5%; left: 5%; width: 100px; height: 100px;">
+        <i class="fas fa-star text-white text-5xl"></i>
+    </div>
+    <div class="ornament" style="top: 10%; right: 10%; width: 80px; height: 80px;">
+        <i class="fas fa-heart text-white text-4xl"></i>
+    </div>
+    <div class="ornament" style="bottom: 15%; left: 10%; width: 120px; height: 120px;">
+        <i class="fas fa-gift text-white text-6xl"></i>
+    </div>
+    <div class="ornament" style="bottom: 10%; right: 5%; width: 90px; height: 90px;">
+        <i class="fas fa-music text-white text-5xl"></i>
     </div>
 
-    <div id="app" class="relative z-10 max-w-md mx-auto md:max-w-4xl min-h-screen md:my-8 md:rounded-[2rem] overflow-hidden flex flex-col glass-effect transition-all duration-500">
-         
-        <div id="loading" class="absolute inset-0 z-[9999] bg-slate-50 flex flex-col justify-center items-center">
-            <div class="logo-box mb-6 w-28 h-28 flex items-center justify-center bg-white p-2">
-                <img src="logo tugu manihuruk.png" alt="Logo Tugu" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/100x100?text=Tugu+Manihuruk'">
+    <div id="app" class="relative z-10 max-w-md mx-auto md:max-w-4xl min-h-screen md:my-8 md:rounded-3xl overflow-hidden flex flex-col glass-effect">
+        
+        <div id="loading" class="absolute inset-0 z-[9999] bg-white flex flex-col justify-center items-center">
+            <div class="logo-container mb-6">
+                <!-- Tugu Raja Manihuruk Logo -->
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 13px; padding: 8px;">
+                    <div style="background: white; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px;">
+                        <div style="font-family: 'Poppins', sans-serif; font-weight: 800; text-align: center; line-height: 1; color: #3a0ca3; font-size: 10px;">
+                            <div>TUGU</div>
+                            <div>RAJA</div>
+                            <div style="color: #4361ee; margin-top: 2px;">MANIHURUK</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h2 class="text-2xl font-bold text-emerald-800 mb-2 serif-font">Bonataon 2026</h2>
-            <div class="text-slate-500 text-sm font-medium animate-pulse">Menyiapkan sukacita...</div>
+            <div class="text-2xl font-bold mb-2" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MANIHURUK</div>
+            <div class="text-gray-500 font-medium">Memuat sistem absensi...</div>
+            <div class="mt-6 w-48 h-1 bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-pulse" style="width: 70%;"></div>
+            </div>
         </div>
 
-        <header class="gradient-header p-6 pb-20 shadow-2xl relative">
-            <div class="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-emerald-400/20 blur-3xl"></div>
-            <div class="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-amber-400/10 blur-3xl"></div>
-             
+        <header class="gradient-header text-white p-6 pb-20 shadow-lg relative overflow-hidden">
+            <!-- Animated background elements -->
+            <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
+            <div class="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl"></div>
+            
             <div class="flex justify-between items-start relative z-10">
                 <div class="flex items-center gap-4">
-                    <div class="logo-box w-16 h-16 flex items-center justify-center shadow-lg transform rotate-3 bg-white p-1">
-                        <img src="logo tugu manihuruk.png" alt="Logo Tugu" class="w-full h-full object-contain" onerror="this.parentElement.innerHTML='<div class=\'text-[8px] font-bold text-emerald-800\'>TUGU<br>MANIHURUK</div>';">
+                    <div class="logo-container floating-element">
+                        <!-- Tugu Raja Manihuruk Logo -->
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 13px; padding: 8px;">
+                            <div style="background: white; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px;">
+                                <div style="font-family: 'Poppins', sans-serif; font-weight: 800; text-align: center; line-height: 1; color: #3a0ca3; font-size: 9px;">
+                                    <div>TUGU</div>
+                                    <div>RAJA</div>
+                                    <div style="color: #4361ee; margin-top: 2px; font-size: 8px;">MANIHURUK</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div>
-                        <h1 class="text-3xl font-bold tracking-tight title-text drop-shadow-sm">BONATAON 2026</h1>
-                        <p class="text-emerald-100/90 text-xs font-medium tracking-widest uppercase flex items-center gap-1.5 mt-1">
-                            <i class="fas fa-map-pin text-amber-400"></i> Punguan Raja Manihuruk
+                        <h1 class="text-3xl font-extrabold tracking-tight title-text">BONATAON 2026</h1>
+                        <p class="text-blue-100 text-sm font-medium tracking-wider uppercase opacity-90 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt"></i> MANIHURUK
                         </p>
                     </div>
                 </div>
-                <div class="text-right hidden md:block">
-                    <div id="liveClock" class="text-xl font-mono font-bold text-white/90">00:00</div>
-                    <div id="liveDate" class="text-xs text-emerald-200/80 font-medium mt-1">...</div>
+                <div class="text-right">
+                    <div id="liveClock" class="text-2xl font-mono font-bold bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl">00:00:00</div>
+                    <div id="liveDate" class="text-xs text-blue-200 uppercase font-semibold mt-2 flex items-center justify-end gap-1">
+                        <i class="fas fa-calendar-alt"></i> <span>...</span>
+                    </div>
                 </div>
             </div>
-             
-            <div class="flex gap-3 mt-8 overflow-x-auto pb-2 custom-scrollbar no-scrollbar">
-                <div class="stat-card flex-1 min-w-[100px] border-emerald-400/30">
-                    <div class="text-2xl font-bold text-white" id="statRegistered">0</div>
-                    <div class="text-[10px] uppercase font-bold text-emerald-200 mt-1">Terdaftar</div>
+            
+            <div class="flex gap-4 mt-8 overflow-x-auto pb-2 custom-scrollbar">
+                <div class="stat-card flex-1 min-w-[100px]">
+                    <div class="text-3xl font-bold" id="statRegistered">0</div>
+                    <div class="text-xs uppercase font-bold text-blue-100 mt-1 flex items-center justify-center gap-1">
+                        <i class="fas fa-users"></i> Jemaat
+                    </div>
                 </div>
-                <div class="stat-card flex-1 min-w-[100px] bg-emerald-500/20 border-emerald-400/50">
-                    <div class="text-2xl font-bold text-emerald-100" id="statPresent">0</div>
-                    <div class="text-[10px] uppercase font-bold text-emerald-200 mt-1">Hadir</div>
+                <div class="stat-card flex-1 min-w-[100px]">
+                    <div class="text-3xl font-bold text-green-300" id="statPresent">0</div>
+                    <div class="text-xs uppercase font-bold text-blue-100 mt-1 flex items-center justify-center gap-1">
+                        <i class="fas fa-user-check"></i> Hadir
+                    </div>
                 </div>
-                <div class="stat-card flex-1 min-w-[100px] border-amber-400/30">
-                    <div class="text-2xl font-bold text-amber-100" id="statGifts">0</div>
-                    <div class="text-[10px] uppercase font-bold text-amber-200 mt-1">Berkat</div>
+                <div class="stat-card flex-1 min-w-[100px]">
+                    <div class="text-3xl font-bold text-yellow-300" id="statGifts">0</div>
+                    <div class="text-xs uppercase font-bold text-blue-100 mt-1 flex items-center justify-center gap-1">
+                        <i class="fas fa-gift"></i> Hadiah
+                    </div>
                 </div>
             </div>
         </header>
 
-        <nav class="flex px-4 -mt-12 relative z-20 gap-2 overflow-x-auto pb-4 custom-scrollbar bg-transparent">
-            <button onclick="setTab('register')" id="tab-register" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1 bg-white shadow-sm">
-                <i class="fas fa-user-plus text-lg mb-0.5"></i>
-                <span class="text-[10px] font-bold uppercase tracking-wide">Registrasi</span>
+        <nav class="flex px-4 -mt-12 relative z-20 gap-3 overflow-x-auto pb-4 custom-scrollbar">
+            <button onclick="setTab('register')" id="tab-register" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1">
+                <i class="fas fa-user-plus text-lg"></i>
+                <span class="text-xs">Daftar</span>
             </button>
-            <button onclick="setTab('find')" id="tab-find" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1 bg-white shadow-sm">
-                <i class="fas fa-search-location text-lg mb-0.5"></i>
-                <span class="text-[10px] font-bold uppercase tracking-wide">Cari Tiket</span>
+            <button onclick="setTab('find')" id="tab-find" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1">
+                <i class="fas fa-ticket-alt text-lg"></i>
+                <span class="text-xs">Cari Tiket</span>
             </button>
-            <button onclick="setTab('scan')" id="tab-scan" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1 bg-white shadow-sm">
-                <i class="fas fa-qrcode text-lg mb-0.5"></i>
-                <span class="text-[10px] font-bold uppercase tracking-wide">Scan Masuk</span>
+            <button onclick="setTab('scan')" id="tab-scan" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1">
+                <i class="fas fa-qrcode text-lg"></i>
+                <span class="text-xs">Absen</span>
             </button>
-            <button onclick="setTab('gift')" id="tab-gift" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1 bg-white shadow-sm">
-                <i class="fas fa-gift text-lg mb-0.5"></i>
-                <span class="text-[10px] font-bold uppercase tracking-wide">Ambil Berkat</span>
+            <button onclick="setTab('gift')" id="tab-gift" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1">
+                <i class="fas fa-gift text-lg"></i>
+                <span class="text-xs">Hadiah</span>
             </button>
-            <button onclick="setTab('data')" id="tab-data" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1 bg-white shadow-sm">
-                <i class="fas fa-chart-pie text-lg mb-0.5"></i>
-                <span class="text-[10px] font-bold uppercase tracking-wide">Data & Grafik</span>
+            <button onclick="setTab('data')" id="tab-data" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1">
+                <i class="fas fa-chart-bar text-lg"></i>
+                <span class="text-xs">Laporan</span>
             </button>
-            <button onclick="window.adminLogin()" id="tab-admin" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1 bg-white shadow-sm">
-                <i class="fas fa-user-lock text-lg mb-0.5"></i>
-                <span class="text-[10px] font-bold uppercase tracking-wide">Admin</span>
+            <button onclick="window.adminLogin()" id="tab-admin" class="nav-tab flex-1 whitespace-nowrap flex flex-col items-center gap-1">
+                <i class="fas fa-user-shield text-lg"></i>
+                <span class="text-xs">Admin</span>
             </button>
         </nav>
 
-        <main class="flex-1 p-6 overflow-y-auto bg-slate-50 pb-24">
+        <main class="flex-1 p-6 overflow-y-auto bg-gradient-to-b from-gray-50 to-white pb-24">
             <div id="content-area"></div>
         </main>
-         
-        <footer class="py-5 px-6 border-t border-slate-200 text-center text-slate-400 text-xs bg-white/80 backdrop-blur-sm">
+        
+        <!-- Footer -->
+        <footer class="py-4 px-6 border-t border-gray-100 text-center text-gray-500 text-sm bg-white">
             <div class="flex justify-between items-center">
-                <div class="font-medium">
-                    &copy; 2026 Tugu Raja Manihuruk
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-copyright"></i>
+                    <span>MANIHURUK 2026</span>
                 </div>
-                <div class="flex items-center gap-1.5 text-emerald-600 font-bold">
-                    <span>Sukacita Bersama</span>
-                    <i class="fas fa-hands-praying"></i>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-heart text-red-500"></i>
+                    <span>Bonataon Penuh Sukacita</span>
                 </div>
             </div>
         </footer>
     </div>
 
-    <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden"><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('adminModal')"></div><div class="card max-w-sm w-full mx-4 relative z-10 modal p-8"><div class="text-center mb-6"><div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3 text-emerald-600 text-2xl"><i class="fas fa-user-shield"></i></div><h3 class="text-xl font-bold text-slate-800 serif-font">Akses Panitia</h3></div><div class="space-y-4"><input type="password" id="adminPassword" placeholder="Kode Keamanan" class="input-field w-full text-center tracking-widest pl-4 pr-4"><div class="grid grid-cols-2 gap-3"><button onclick="closeModal('adminModal')" class="btn-secondary w-full">Batal</button><button onclick="window.verifyAdmin()" class="btn-primary w-full shadow-lg shadow-emerald-200">Masuk</button></div></div></div></div>
-    <div id="manualCheckinModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden"><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('manualCheckinModal')"></div><div class="card max-w-sm w-full mx-4 relative z-10 modal p-6"><h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2"><i class="fas fa-check-double text-emerald-500"></i> Absensi Manual</h3><div class="relative mb-4"><input type="text" id="manualSearch" placeholder="Cari nama jemaat..." class="input-field w-full pl-10"><i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i></div><div id="manualCheckinList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2 mb-4 bg-slate-50 p-2 rounded-lg"></div><div class="flex gap-3"><button onclick="closeModal('manualCheckinModal')" class="btn-secondary flex-1">Tutup</button><button onclick="processManualCheckin()" class="btn-primary flex-1" disabled id="manualCheckinBtn">Konfirmasi</button></div></div></div>
-    <div id="manualGiftModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden"><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('manualGiftModal')"></div><div class="card max-w-sm w-full mx-4 relative z-10 modal p-6"><h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2"><i class="fas fa-gift text-amber-500"></i> Serah Terima Berkat</h3><div class="relative mb-4"><input type="text" id="manualGiftSearch" placeholder="Cari nama jemaat..." class="input-field w-full pl-10"><i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i></div><div id="manualGiftList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2 mb-4 bg-slate-50 p-2 rounded-lg"></div><div class="flex gap-3"><button onclick="closeModal('manualGiftModal')" class="btn-secondary flex-1">Tutup</button><button onclick="processManualGift()" class="btn-primary flex-1 bg-gradient-to-r from-amber-500 to-orange-600" disabled id="manualGiftBtn">Serahkan</button></div></div></div>
-    <div id="confirmModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden"><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('confirmModal')"></div><div class="card max-w-sm w-full mx-4 relative z-10 modal p-6 border-t-4 border-emerald-500"><h3 class="text-xl font-bold text-slate-800 mb-1 serif-font text-center">Validasi Data</h3><p class="text-center text-slate-500 text-sm mb-6">Mohon periksa kembali data sebelum dicetak</p><div class="space-y-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100"><div><label class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Nama Lengkap</label><div id="confName" class="font-bold text-lg text-slate-800 leading-tight"></div></div><div class="h-px bg-slate-200"></div><div class="grid grid-cols-2 gap-4"><div><label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status</label><div id="confStatus" class="font-semibold text-slate-700"></div></div><div><label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Marga</label><div id="confMarga" class="font-semibold text-slate-700"></div></div></div></div><div class="flex gap-3"><button onclick="closeModal('confirmModal')" class="btn-secondary flex-1">Ubah</button><button onclick="processSave()" class="btn-primary flex-1 shadow-lg shadow-emerald-200"><i class="fas fa-save mr-2"></i> Simpan</button></div></div></div>
-    
-    <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeModal('ticketModal')"></div>
-        <div class="card max-w-sm w-full mx-4 relative z-10 modal p-0 overflow-hidden shadow-2xl">
-            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 p-6 text-center text-white relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                <h3 class="text-xl font-bold serif-font relative z-10">Undangan Resmi</h3>
-                <p class="text-emerald-100 text-xs relative z-10">Bonataon Manihuruk 2026</p>
-                <button onclick="closeModal('ticketModal')" class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"><i class="fas fa-times-circle text-xl"></i></button>
+    <!-- Admin Modal -->
+    <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('adminModal')"></div>
+        <div class="card max-w-sm w-full mx-4 relative z-10 modal p-8">
+            <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="mb-6 text-center">
+                <div class="logo-container mx-auto mb-4">
+                    <!-- Tugu Raja Manihuruk Logo -->
+                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 13px; padding: 8px;">
+                        <div style="background: white; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px;">
+                            <div style="font-family: 'Poppins', sans-serif; font-weight: 800; text-align: center; line-height: 1; color: #3a0ca3; font-size: 9px;">
+                                <div>TUGU</div>
+                                <div>RAJA</div>
+                                <div style="color: #4361ee; margin-top: 2px; font-size: 8px;">MANIHURUK</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Panel Admin</h3>
+                <p class="text-sm text-gray-500">Masukkan password untuk akses fitur admin</p>
             </div>
-            <div class="p-6 text-center bg-white relative">
-                <div class="absolute -top-3 left-0 w-full h-3 bg-white" style="mask-image: radial-gradient(circle, transparent 5px, black 6px); mask-size: 15px 15px; mask-repeat: repeat-x; mask-position: bottom;"></div>
-                <h2 id="ticName" class="text-2xl font-black text-slate-800 leading-tight mb-2 mt-2">Nama Peserta</h2>
-                <div class="flex justify-center flex-wrap gap-2 mb-6">
-                    <span class="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full border border-emerald-100"><span class="ticStatusText">Status</span></span>
-                    <span class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-full border border-slate-100"><span class="ticMargaText">Marga</span></span>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password Admin</label>
+                    <div class="relative">
+                        <input type="password" id="adminPassword" 
+                               placeholder="Masukkan password" 
+                               class="input-field w-full pr-10">
+                        <i class="fas fa-lock absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
                 </div>
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 inline-block mb-4 relative group">
-                    <img id="ticQR" src="" class="w-48 h-48 object-contain mix-blend-multiply" alt="QR Code">
-                    <div class="text-[10px] font-mono text-slate-400 mt-2 tracking-widest" id="ticCode">CODE</div>
+                
+                <div class="space-y-3 pt-2">
+                    <button onclick="window.verifyAdmin()" 
+                            class="btn-primary w-full flex items-center justify-center gap-2">
+                        <i class="fas fa-sign-in-alt"></i> Masuk
+                    </button>
+                    
+                    <button onclick="closeModal('adminModal')" 
+                            class="btn-secondary w-full">
+                        Batal
+                    </button>
                 </div>
-                <p class="text-xs text-slate-400 mb-6">Tunjukkan QR Code ini di meja registrasi</p>
-                <div class="space-y-2">
-                    <a id="btnDownloadTicket" href="#" download class="btn-primary w-full flex items-center justify-center gap-2"><i class="fas fa-download"></i> Simpan Gambar</a>
-                    <button onclick="printTicket()" class="w-full py-3 text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors flex items-center justify-center gap-2"><i class="fas fa-print"></i> Cetak Langsung</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset System Modal -->
+    <div id="resetModal" class="fixed inset-0 z-[9500] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('resetModal')"></div>
+        <div class="card max-w-md w-full mx-4 relative z-10 modal p-8">
+            <button onclick="closeModal('resetModal')" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="mb-6 text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
                 </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Reset System</h3>
+                <p class="text-sm text-gray-500">Hati-hati! Tindakan ini akan menghapus data secara permanen</p>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-exclamation-circle text-red-500 text-lg mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-red-700 mb-1">PERINGATAN!</h4>
+                            <p class="text-sm text-red-600">Data yang direset tidak dapat dikembalikan. Pastikan Anda sudah mengekspor data penting.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password Admin</label>
+                        <div class="relative">
+                            <input type="password" id="resetPassword" 
+                                   placeholder="Masukkan password admin" 
+                                   class="input-field w-full pr-10">
+                            <i class="fas fa-key absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Reset</label>
+                        <div class="relative">
+                            <input type="text" id="resetConfirm" 
+                                   placeholder="Ketik 'RESET-BONATAON-2026'" 
+                                   class="input-field w-full pr-10">
+                            <i class="fas fa-check-double absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-3 pt-2">
+                    <button onclick="confirmResetSystem()" 
+                            class="btn-danger w-full flex items-center justify-center gap-2">
+                        <i class="fas fa-trash-alt"></i> Reset Semua Data
+                    </button>
+                    
+                    <button onclick="resetAttendanceOnly()" 
+                            class="btn-secondary w-full flex items-center justify-center gap-2" style="background: linear-gradient(to right, #fd7e14, #e8590c);">
+                        <i class="fas fa-user-times"></i> Reset Absensi Saja
+                    </button>
+                    
+                    <button onclick="resetGiftsOnly()" 
+                            class="btn-secondary w-full flex items-center justify-center gap-2" style="background: linear-gradient(to right, #20c997, #099268);">
+                        <i class="fas fa-gift"></i> Reset Hadiah Saja
+                    </button>
+                    
+                    <button onclick="closeModal('resetModal')" 
+                            class="w-full py-3 text-sm font-medium text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors">
+                        Batalkan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Check-in Modal -->
+    <div id="manualCheckinModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('manualCheckinModal')"></div>
+        <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3 flex items-center gap-2">
+                <i class="fas fa-user-check text-blue-500"></i> Check-in Manual
+            </h3>
+            <p class="text-sm text-gray-500 mb-4">Pilih peserta untuk check-in manual:</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="relative">
+                    <input type="text" id="manualSearch" placeholder="Cari nama peserta..." 
+                           class="input-field w-full pr-10">
+                    <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div id="manualCheckinList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2"></div>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="closeModal('manualCheckinModal')" class="btn-secondary flex-1">Batal</button>
+                <button onclick="processManualCheckin()" class="btn-primary flex-1" disabled id="manualCheckinBtn">
+                    <i class="fas fa-check-circle mr-2"></i> Check-in
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Gift Claim Modal -->
+    <div id="manualGiftModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('manualGiftModal')"></div>
+        <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3 flex items-center gap-2">
+                <i class="fas fa-gift text-purple-500"></i> Ambil Hadiah Manual
+            </h3>
+            <p class="text-sm text-gray-500 mb-4">Pilih peserta untuk ambil hadiah manual:</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="relative">
+                    <input type="text" id="manualGiftSearch" placeholder="Cari nama peserta..." 
+                           class="input-field w-full pr-10">
+                    <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div id="manualGiftList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2"></div>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="closeModal('manualGiftModal')" class="btn-secondary flex-1">Batal</button>
+                <button onclick="processManualGift()" class="btn-primary flex-1" disabled id="manualGiftBtn" style="background: linear-gradient(to right, var(--warning), #b5179e);">
+                    <i class="fas fa-gift mr-2"></i> Ambil Hadiah
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div id="confirmModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('confirmModal')"></div>
+        <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3 flex items-center gap-2">
+                <i class="fas fa-clipboard-check text-green-500"></i> Konfirmasi Data
+            </h3>
+            <div class="space-y-4 mb-6">
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <div class="text-xs text-gray-500 font-bold uppercase mb-1">Nama Lengkap</div>
+                    <div id="confName" class="font-bold text-lg text-gray-800"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Grup</div>
+                        <div id="confGroup" class="font-bold text-purple-600"></div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <div class="text-xs text-gray-500 font-bold uppercase mb-1">Marga</div>
+                        <div id="confMarga" class="font-bold text-blue-600"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeModal('confirmModal')" class="btn-secondary flex-1">Ubah Data</button>
+                <button onclick="processSave()" class="btn-primary flex-1">
+                    <i class="fas fa-save mr-2"></i> Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket Modal -->
+    <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeModal('ticketModal')"></div>
+        <div class="card max-w-sm w-full mx-4 relative z-10 modal p-6 text-center border-t-4" style="border-image: linear-gradient(to right, var(--primary), var(--secondary)) 1;">
+            <button onclick="closeModal('ticketModal')" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="mb-6">
+                <div class="badge badge-primary mx-auto mb-3">
+                    <i class="fas fa-ticket-alt mr-2"></i> Tiket Bonataon 2026
+                </div>
+                <h2 id="ticName" class="text-2xl font-black text-gray-800 leading-tight mb-3">Nama Peserta</h2>
+                <div class="flex justify-center gap-3 mb-6">
+                    <span id="ticGroup" class="badge badge-group flex items-center gap-1">
+                        <i class="fas fa-users"></i> <span class="ticGroupText">Grup</span>
+                    </span>
+                    <span id="ticMarga" class="badge badge-marga flex items-center gap-1">
+                        <i class="fas fa-people-group"></i> <span class="ticMargaText">Marga</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-2xl shadow-inner mb-8 mx-auto max-w-xs">
+                <div class="text-xs text-gray-500 font-bold mb-3">SCAN QR CODE UNTUK ABSENSI</div>
+                <img id="ticQR" src="" class="w-56 h-56 object-contain mx-auto rounded-lg" alt="QR Code Tiket">
+                <div class="text-xs text-gray-400 mt-3 font-mono" id="ticCode">BONATAON-XXXXXX</div>
+            </div>
+            
+            <div class="space-y-3">
+                <a id="btnDownloadTicket" href="#" download="Tiket_Bonataon_2026_MANIHURUK.png" 
+                   class="btn-primary w-full flex items-center justify-center gap-2">
+                    <i class="fas fa-download"></i> Simpan Tiket
+                </a>
+                
+                <button onclick="printTicket()" 
+                        class="btn-secondary w-full flex items-center justify-center gap-2">
+                    <i class="fas fa-print"></i> Cetak Tiket
+                </button>
+                
+                <button onclick="closeModal('ticketModal')" 
+                        class="w-full py-3 text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors">
+                    Tutup
+                </button>
             </div>
         </div>
     </div>
@@ -285,7 +753,23 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const ADMIN_PASS = "ADMIN123"; 
+        const ADMIN_PASS = "ADMIN123";
+        const RESET_CONFIRM_TEXT = "RESET-BONATAON-2026";
+
+        // Data konfigurasi untuk pilihan
+        const GROUPS = [
+            { value: "Orang Tua", label: "Orang Tua" },
+            { value: "Pemuda", label: "Pemuda" },
+            { value: "Sekolah Minggu", label: "Sekolah Minggu" },
+            { value: "Tamu Undangan", label: "Tamu Undangan" },
+            { value: "Pengurus Jabodetabek", label: "Pengurus Jabodetabek" }
+        ];
+
+        const MARGAS = [
+            { value: "Marga Manihuruk", label: "Marga Manihuruk" },
+            { value: "Boru", label: "Boru" },
+            { value: "Bere / Panagolan", label: "Bere / Panagolan" }
+        ];
 
         let state = {
             participants: [],
@@ -301,19 +785,13 @@
             selectedManualGift: null
         };
 
-        // Chart Instances
-        let chartInstance1 = null;
-        let chartInstance2 = null;
-        let chartInstance3 = null;
-
-        let audioCtx = null;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function beep(type = 'success') {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = type === 'success' ? 'sine' : 'square';
-            osc.frequency.setValueAtTime(type === 'success' ? 880 : 200, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(type === 'success' ? 880 : 300, audioCtx.currentTime);
             gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
             osc.connect(gain); gain.connect(audioCtx.destination);
             osc.start(); osc.stop(audioCtx.currentTime + 0.15);
@@ -321,39 +799,37 @@
 
         const getClock = () => {
             const n = new Date();
-            document.getElementById('liveClock').innerText = n.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
-            document.getElementById('liveDate').innerText = n.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long'});
+            document.getElementById('liveClock').innerText = n.toLocaleTimeString('id-ID', {hour12: false});
+            document.getElementById('liveDate').innerHTML = `<span>${n.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'})}</span>`;
         };
         setInterval(getClock, 1000); getClock();
 
         const fmtDate = () => new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
-        const getQR = (txt) => `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=20&ecc=H&color=064e3b&bgcolor=ffffff&format=png&data=${encodeURIComponent(txt)}`;
+        // QR Code Generator (Resolusi Tinggi untuk Download)
+        const getQR = (txt) => `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=20&ecc=L&color=000000&bgcolor=ffffff&format=png&data=${encodeURIComponent(txt)}`;
 
-        // --- DATA HANDLERS ---
+        // --- LISTENERS ---
         onValue(ref(db, 'participants'), s => {
-            state.participants = s.val() ? Object.values(s.val()) : [];
+            const data = s.val();
+            state.participants = data ? Object.values(data) : [];
             updateStats();
             if (state.tab === 'register') renderParticipantListOnly();
-            if (state.tab === 'data') renderCharts(); 
+            console.log('Peserta loaded:', state.participants.length);
         });
-         
+        
         onValue(ref(db, 'attendance'), s => {
-            state.attendance = s.val() ? Object.values(s.val()) : [];
+            const data = s.val();
+            state.attendance = data ? Object.values(data) : [];
             updateStats();
-            if (state.tab === 'data') {
-                if (state.dataViewMode === 'attendance') render();
-                renderCharts(); 
-            }
+            if (state.tab === 'data' && state.dataViewMode === 'attendance') render();
             document.getElementById('loading').style.display = 'none';
         });
 
         onValue(ref(db, 'gifts'), s => {
-            state.gifts = s.val() ? Object.values(s.val()) : [];
+            const data = s.val();
+            state.gifts = data ? Object.values(data) : [];
             updateStats();
-            if (state.tab === 'data') {
-                if (state.dataViewMode === 'gifts') render();
-                renderCharts(); // Update charts when gifts change
-            }
+            if (state.tab === 'data' && state.dataViewMode === 'gifts') render();
         });
 
         function updateStats() {
@@ -362,239 +838,645 @@
             document.getElementById('statGifts').innerText = state.gifts.length;
         }
 
-        // --- LOGIC GRAFIK (CHARTS) ---
-        window.renderCharts = () => {
-            const ctx1 = document.getElementById('chartOverview');
-            const ctx2 = document.getElementById('chartMarga');
-            const ctx3 = document.getElementById('chartStatus');
-            
-            // Hapus chart lama agar tidak bertumpuk
-            if (chartInstance1) chartInstance1.destroy();
-            if (chartInstance2) chartInstance2.destroy();
-            if (chartInstance3) chartInstance3.destroy();
-
-            // 1. Grafik Overview (Kehadiran & Berkat)
-            if (ctx1) {
-                chartInstance1 = new Chart(ctx1, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Terdaftar', 'Hadir', 'Sudah Ambil Berkat'],
-                        datasets: [{
-                            label: 'Jumlah Jiwa',
-                            data: [state.participants.length, state.attendance.length, state.gifts.length],
-                            backgroundColor: ['#cbd5e1', '#059669', '#d97706'], // Slate, Emerald, Amber
-                            borderRadius: 6,
-                            barPercentage: 0.6
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false }, title: { display: true, text: 'Ringkasan Acara', font: { size: 14, family: "'Plus Jakarta Sans'", weight: 'bold' } } },
-                        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
-                    }
-                });
-            }
-
-            // Hitung Data Kehadiran berdasarkan Marga & Status
-            const attendIds = state.attendance.map(a => a.participantId);
-            const presentParticipants = state.participants.filter(p => attendIds.includes(p.id));
-
-            const margaCounts = { 'Marga Manihuruk': 0, 'Boru': 0, 'Bere / Panagolan': 0 };
-            const statusCounts = { 'Orangtua': 0, 'Pemuda': 0, 'Sekolah Minggu': 0, 'Tamu Undangan': 0, 'Pengurus Tupuan': 0 };
-
-            presentParticipants.forEach(p => {
-                if (margaCounts[p.marga] !== undefined) margaCounts[p.marga]++;
-                if (statusCounts[p.status] !== undefined) statusCounts[p.status]++;
-            });
-
-            // 2. Grafik Kehadiran per Marga
-            if (ctx2) {
-                chartInstance2 = new Chart(ctx2, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Manihuruk', 'Boru', 'Bere'],
-                        datasets: [{
-                            label: 'Hadir',
-                            data: [margaCounts['Marga Manihuruk'], margaCounts['Boru'], margaCounts['Bere / Panagolan']],
-                            backgroundColor: '#064e3b',
-                            borderRadius: 6
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false }, title: { display: true, text: 'Kehadiran per Marga', font: { size: 14, family: "'Plus Jakarta Sans'", weight: 'bold' } } },
-                        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
-                    }
-                });
-            }
-
-            // 3. Grafik Kehadiran per Status
-            if (ctx3) {
-                chartInstance3 = new Chart(ctx3, {
-                    type: 'bar',
-                    data: {
-                        labels: Object.keys(statusCounts),
-                        datasets: [{
-                            label: 'Hadir',
-                            data: Object.values(statusCounts),
-                            backgroundColor: '#059669',
-                            borderRadius: 6
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false }, title: { display: true, text: 'Kehadiran per Status', font: { size: 14, family: "'Plus Jakarta Sans'", weight: 'bold' } } },
-                        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
-                    }
-                });
-            }
-        };
-
-        // --- CORE FUNCTIONS ---
+        // --- CORE LOGIC ---
         window.preRegister = () => {
             const name = document.getElementById('inName').value.trim();
-            const st = document.getElementById('inStatus').value;
-            const mg = document.getElementById('inMarga').value;
-            if(!name || !st || !mg) { showToast('Mohon lengkapi seluruh data keluarga.', 'warning'); return; }
-            state.tempData = { name, st, mg };
+            const group = document.getElementById('inGroup').value;
+            const marga = document.getElementById('inMarga').value;
+            
+            if(!name || !group || !marga) {
+                showToast('Mohon lengkapi semua data!', 'warning');
+                return;
+            }
+            
+            state.tempData = { name, group, marga };
             document.getElementById('confName').innerText = name;
-            document.getElementById('confStatus').innerText = st; 
-            document.getElementById('confMarga').innerText = mg; 
+            document.getElementById('confGroup').innerText = group;
+            document.getElementById('confMarga').innerText = marga;
             showModal('confirmModal');
         };
 
         window.processSave = () => {
             if(!state.tempData) return;
-            const { name, st, mg } = state.tempData;
+            const { name, group, marga } = state.tempData;
             const id = Date.now().toString();
-            const qr = `MN-${id.slice(-6)}`;
+            const qr = `BONATAON-${id.slice(-6)}`;
+            
             push(ref(db, 'participants'), {
-                id, name, status: st, marga: mg, qrCode: qr,
-                registeredAt: fmtDate(), timestamp: Date.now()
+                id, 
+                name, 
+                group: group, 
+                marga: marga, 
+                qrCode: qr,
+                registeredAt: fmtDate(), 
+                timestamp: Date.now()
             }).then(() => {
                 closeModal('confirmModal');
                 document.getElementById('inName').value = '';
-                window.showTicket(name, st, mg, qr);
-                showToast('Horas! Data berhasil disimpan.', 'success');
-            }).catch(error => { showToast('Maaf, terjadi gangguan koneksi.', 'error'); });
+                
+                // Langsung tampilkan tiket setelah simpan
+                window.showTicket(name, group, marga, qr);
+                showToast('Pendaftaran berhasil! Tiket telah dibuat.', 'success');
+            }).catch(error => {
+                showToast('Gagal menyimpan data: ' + error.message, 'error');
+            });
         };
 
+        // --- TOAST NOTIFICATION ---
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            toast.className = `fixed top-6 right-6 z-[10000] px-6 py-4 rounded-xl shadow-2xl text-white font-medium transform translate-x-full transition-all duration-300 flex items-center gap-3 backdrop-blur-md`;
-            let bgColor = 'bg-slate-800/90';
+            toast.className = `fixed top-6 right-6 z-[10000] px-6 py-4 rounded-xl shadow-xl text-white font-medium transform translate-x-full transition-transform duration-300`;
+            
+            let bgColor = 'bg-blue-500';
             let icon = 'fas fa-info-circle';
-            if (type === 'success') { bgColor = 'bg-emerald-600/90'; icon = 'fas fa-check-circle'; }
-            else if (type === 'warning') { bgColor = 'bg-amber-500/90'; icon = 'fas fa-exclamation-circle'; }
-            else if (type === 'error') { bgColor = 'bg-red-500/90'; icon = 'fas fa-times-circle'; }
+            
+            if (type === 'success') {
+                bgColor = 'bg-green-500';
+                icon = 'fas fa-check-circle';
+            } else if (type === 'warning') {
+                bgColor = 'bg-yellow-500';
+                icon = 'fas fa-exclamation-triangle';
+            } else if (type === 'error') {
+                bgColor = 'bg-red-500';
+                icon = 'fas fa-times-circle';
+            }
+            
             toast.className += ` ${bgColor}`;
-            toast.innerHTML = `<i class="${icon} text-lg"></i><span>${message}</span>`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <i class="${icon} text-lg"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
             document.body.appendChild(toast);
-            setTimeout(() => { toast.classList.remove('translate-x-full'); toast.classList.add('translate-x-0'); }, 10);
-            setTimeout(() => { toast.classList.remove('translate-x-0'); toast.classList.add('translate-x-full'); setTimeout(() => { if (document.body.contains(toast)) document.body.removeChild(toast); }, 300); }, 3000);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full');
+                toast.classList.add('translate-x-0');
+            }, 10);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-x-0');
+                toast.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
         }
 
-        window.showModal = (id) => { const m = document.getElementById(id); m.classList.remove('hidden'); setTimeout(() => { m.style.opacity = '1'; }, 10); };
-        window.closeModal = (id) => { const m = document.getElementById(id); m.style.opacity = '0'; setTimeout(() => { m.classList.add('hidden'); if(id.includes('Checkin')) state.selectedManualCheckin = null; if(id.includes('Gift')) state.selectedManualGift = null; }, 300); };
+        // --- MODAL FUNCTIONS ---
+        window.showModal = (id) => {
+            const modal = document.getElementById(id);
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        };
 
-        window.adminLogin = () => { showModal('adminModal'); setTimeout(() => { document.getElementById('adminPassword').focus(); }, 100); };
+        window.closeModal = (id) => {
+            const modal = document.getElementById(id);
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+            // Reset selections
+            if (id === 'manualCheckinModal') state.selectedManualCheckin = null;
+            if (id === 'manualGiftModal') state.selectedManualGift = null;
+            if (id === 'resetModal') {
+                document.getElementById('resetPassword').value = '';
+                document.getElementById('resetConfirm').value = '';
+            }
+        };
+
+        // --- ADMIN FUNCTIONS ---
+        window.adminLogin = () => {
+            showModal('adminModal');
+            setTimeout(() => {
+                document.getElementById('adminPassword').focus();
+            }, 100);
+        };
+
         window.verifyAdmin = () => {
-            if (document.getElementById('adminPassword').value === ADMIN_PASS) {
-                state.isAdmin = true; beep('success');
-                document.getElementById('tab-admin').innerHTML = '<i class="fas fa-crown text-lg mb-0.5 text-amber-500"></i><span class="text-[10px] font-bold text-amber-600">Panitia</span>';
-                document.getElementById('tab-admin').classList.add('bg-amber-50');
-                closeModal('adminModal'); showToast('Selamat datang, Panitia.', 'success');
-            } else { beep('fail'); showToast('Kode akses salah.', 'error'); }
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASS) {
+                state.isAdmin = true;
+                beep('success');
+                document.getElementById('tab-admin').innerHTML = '<i class="fas fa-crown text-lg"></i><span class="text-xs">Admin</span>';
+                document.getElementById('tab-admin').classList.add('active');
+                closeModal('adminModal');
+                showToast('Login admin berhasil! Fitur manual dan reset system sekarang aktif.', 'success');
+                
+                // Update render jika di tab data
+                if (state.tab === 'data') render();
+            } else {
+                beep('fail');
+                showToast('Password salah!', 'error');
+            }
             document.getElementById('adminPassword').value = '';
         };
 
-        window.openManualCheckin = () => { if (!state.isAdmin) { showToast('Akses khusus Panitia.', 'warning'); window.adminLogin(); return; } showModal('manualCheckinModal'); setTimeout(() => { renderManualCheckinList(); document.getElementById('manualSearch').focus(); }, 100); };
-        window.openManualGift = () => { if (!state.isAdmin) { showToast('Akses khusus Panitia.', 'warning'); window.adminLogin(); return; } showModal('manualGiftModal'); setTimeout(() => { renderManualGiftList(); document.getElementById('manualGiftSearch').focus(); }, 100); };
+        window.adminLogout = () => {
+            state.isAdmin = false;
+            document.getElementById('tab-admin').innerHTML = '<i class="fas fa-user-shield text-lg"></i><span class="text-xs">Admin</span>';
+            document.getElementById('tab-admin').classList.remove('active');
+            showToast('Logout admin berhasil.', 'info');
+            
+            // Update render jika di tab data
+            if (state.tab === 'data') render();
+        };
 
-        function renderManualCheckinList() { const listEl = document.getElementById('manualCheckinList'); const searchTerm = document.getElementById('manualSearch').value.toLowerCase(); const filtered = state.participants.filter(p => !state.attendance.find(a => a.participantId === p.id) && p.name.toLowerCase().includes(searchTerm)); listEl.innerHTML = filtered.length === 0 ? `<div class="text-center py-6 text-slate-400 text-sm italic">Data tidak ditemukan / sudah hadir</div>` : filtered.map(p => `<div class="p-3 border-b border-slate-100 hover:bg-emerald-50 cursor-pointer rounded-lg transition-colors flex justify-between items-center ${state.selectedManualCheckin?.id === p.id ? 'bg-emerald-50 border-emerald-200' : ''}" onclick="selectManualCheckin(${JSON.stringify(p).replace(/"/g, '&quot;')})"><div><div class="font-bold text-slate-700">${p.name}</div><div class="text-xs text-slate-400">${p.marga}</div></div></div>`).join(''); document.getElementById('manualCheckinBtn').disabled = !state.selectedManualCheckin; }
-        function renderManualGiftList() { const listEl = document.getElementById('manualGiftList'); const searchTerm = document.getElementById('manualGiftSearch').value.toLowerCase(); const filtered = state.participants.filter(p => !state.gifts.find(g => g.participantId === p.id) && p.name.toLowerCase().includes(searchTerm)); listEl.innerHTML = filtered.length === 0 ? `<div class="text-center py-6 text-slate-400 text-sm italic">Semua sudah terima berkat</div>` : filtered.map(p => `<div class="p-3 border-b border-slate-100 hover:bg-amber-50 cursor-pointer rounded-lg transition-colors flex justify-between items-center ${state.selectedManualGift?.id === p.id ? 'bg-amber-50 border-amber-200' : ''}" onclick="selectManualGift(${JSON.stringify(p).replace(/"/g, '&quot;')})"><div><div class="font-bold text-slate-700">${p.name}</div><div class="text-xs text-slate-400">${p.marga}</div></div></div>`).join(''); document.getElementById('manualGiftBtn').disabled = !state.selectedManualGift; }
-        
-        window.selectManualCheckin = (p) => { state.selectedManualCheckin = p; document.getElementById('manualCheckinBtn').disabled = false; document.getElementById('manualCheckinBtn').innerHTML = `Konfirmasi: ${p.name}`; renderManualCheckinList(); };
-        window.selectManualGift = (p) => { state.selectedManualGift = p; document.getElementById('manualGiftBtn').disabled = false; document.getElementById('manualGiftBtn').innerHTML = `Serahkan ke: ${p.name}`; renderManualGiftList(); };
-        
-        window.processManualCheckin = () => { if(state.selectedManualCheckin) { window.doCheckIn(state.selectedManualCheckin); state.selectedManualCheckin = null; closeModal('manualCheckinModal'); }};
-        window.processManualGift = () => { if(state.selectedManualGift) { window.claimGift(state.selectedManualGift); state.selectedManualGift = null; closeModal('manualGiftModal'); }};
+        // --- RESET SYSTEM FUNCTIONS ---
+        window.openResetSystem = () => {
+            if (!state.isAdmin) {
+                showToast('Hanya admin yang bisa melakukan reset system!', 'warning');
+                window.adminLogin();
+                return;
+            }
+            
+            showModal('resetModal');
+            setTimeout(() => {
+                document.getElementById('resetPassword').focus();
+            }, 100);
+        };
 
+        window.confirmResetSystem = () => {
+            const password = document.getElementById('resetPassword').value;
+            const confirmText = document.getElementById('resetConfirm').value;
+            
+            if (password !== ADMIN_PASS) {
+                showToast('Password admin salah!', 'error');
+                beep('fail');
+                return;
+            }
+            
+            if (confirmText !== RESET_CONFIRM_TEXT) {
+                showToast(`Ketik "${RESET_CONFIRM_TEXT}" untuk konfirmasi!`, 'error');
+                beep('fail');
+                return;
+            }
+            
+            if (!confirm("YAKIN ingin menghapus SEMUA data (peserta, absensi, hadiah)?\n\nTindakan ini TIDAK DAPAT DIBATALKAN!")) {
+                return;
+            }
+            
+            // Reset semua data
+            Promise.all([
+                set(ref(db, 'participants'), null),
+                set(ref(db, 'attendance'), null),
+                set(ref(db, 'gifts'), null)
+            ]).then(() => {
+                beep('success');
+                showToast('Semua data berhasil direset!', 'success');
+                closeModal('resetModal');
+                updateStats();
+                if (state.tab === 'data') render();
+            }).catch(error => {
+                showToast('Gagal mereset data: ' + error.message, 'error');
+                beep('fail');
+            });
+        };
+
+        window.resetAttendanceOnly = () => {
+            const password = document.getElementById('resetPassword').value;
+            
+            if (password !== ADMIN_PASS) {
+                showToast('Password admin salah!', 'error');
+                beep('fail');
+                return;
+            }
+            
+            if (!confirm("Reset data absensi saja?\n\nData peserta dan hadiah akan tetap ada.")) {
+                return;
+            }
+            
+            set(ref(db, 'attendance'), null)
+                .then(() => {
+                    beep('success');
+                    showToast('Data absensi berhasil direset!', 'success');
+                    closeModal('resetModal');
+                    updateStats();
+                    if (state.tab === 'data' && state.dataViewMode === 'attendance') render();
+                })
+                .catch(error => {
+                    showToast('Gagal mereset absensi: ' + error.message, 'error');
+                    beep('fail');
+                });
+        };
+
+        window.resetGiftsOnly = () => {
+            const password = document.getElementById('resetPassword').value;
+            
+            if (password !== ADMIN_PASS) {
+                showToast('Password admin salah!', 'error');
+                beep('fail');
+                return;
+            }
+            
+            if (!confirm("Reset data hadiah saja?\n\nData peserta dan absensi akan tetap ada.")) {
+                return;
+            }
+            
+            set(ref(db, 'gifts'), null)
+                .then(() => {
+                    beep('success');
+                    showToast('Data hadiah berhasil direset!', 'success');
+                    closeModal('resetModal');
+                    updateStats();
+                    if (state.tab === 'data' && state.dataViewMode === 'gifts') render();
+                })
+                .catch(error => {
+                    showToast('Gagal mereset hadiah: ' + error.message, 'error');
+                    beep('fail');
+                });
+        };
+
+        window.openManualCheckin = () => {
+            if (!state.isAdmin) {
+                showToast('Hanya admin yang bisa melakukan check-in manual!', 'warning');
+                window.adminLogin();
+                return;
+            }
+            
+            showModal('manualCheckinModal');
+            setTimeout(() => {
+                renderManualCheckinList();
+                document.getElementById('manualSearch').focus();
+            }, 100);
+        };
+
+        window.openManualGift = () => {
+            if (!state.isAdmin) {
+                showToast('Hanya admin yang bisa mengambil hadiah manual!', 'warning');
+                window.adminLogin();
+                return;
+            }
+            
+            showModal('manualGiftModal');
+            setTimeout(() => {
+                renderManualGiftList();
+                document.getElementById('manualGiftSearch').focus();
+            }, 100);
+        };
+
+        function renderManualCheckinList() {
+            const searchTerm = document.getElementById('manualSearch').value.toLowerCase();
+            const listEl = document.getElementById('manualCheckinList');
+            const btn = document.getElementById('manualCheckinBtn');
+            
+            // Filter participants who haven't checked in
+            const filtered = state.participants.filter(p => {
+                const alreadyPresent = state.attendance.find(a => a.participantId === p.id);
+                return !alreadyPresent && p.name.toLowerCase().includes(searchTerm);
+            });
+            
+            if (filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-8 text-gray-400">
+                        <i class="fas fa-users text-3xl mb-3"></i>
+                        <div class="text-sm">Tidak ada peserta yang belum check-in</div>
+                    </div>
+                `;
+                btn.disabled = true;
+                return;
+            }
+            
+            listEl.innerHTML = filtered.map(p => `
+                <div class="p-4 border border-gray-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer rounded-xl transition-all ${state.selectedManualCheckin?.id === p.id ? 'bg-blue-50 border-blue-400' : ''}" 
+                     onclick="selectManualCheckin(${JSON.stringify(p)})">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-gray-800">${p.name}</div>
+                            <div class="flex gap-2 mt-2">
+                                <span class="badge badge-group">${p.group || 'Tidak ada'}</span>
+                                <span class="badge badge-marga">${p.marga || 'Tidak ada'}</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400 ${state.selectedManualCheckin?.id === p.id ? 'text-blue-500' : ''}"></i>
+                    </div>
+                </div>
+            `).join('');
+            
+            btn.disabled = !state.selectedManualCheckin;
+        }
+
+        function renderManualGiftList() {
+            const searchTerm = document.getElementById('manualGiftSearch').value.toLowerCase();
+            const listEl = document.getElementById('manualGiftList');
+            const btn = document.getElementById('manualGiftBtn');
+            
+            // Filter participants who haven't claimed gift
+            const filtered = state.participants.filter(p => {
+                const alreadyClaimed = state.gifts.find(g => g.participantId === p.id);
+                return !alreadyClaimed && p.name.toLowerCase().includes(searchTerm);
+            });
+            
+            if (filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-8 text-gray-400">
+                        <i class="fas fa-gift text-3xl mb-3"></i>
+                        <div class="text-sm">Tidak ada peserta yang belum ambil hadiah</div>
+                    </div>
+                `;
+                btn.disabled = true;
+                return;
+            }
+            
+            listEl.innerHTML = filtered.map(p => `
+                <div class="p-4 border border-gray-200 hover:border-purple-300 hover:bg-purple-50 cursor-pointer rounded-xl transition-all ${state.selectedManualGift?.id === p.id ? 'bg-purple-50 border-purple-400' : ''}" 
+                     onclick="selectManualGift(${JSON.stringify(p)})">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-gray-800">${p.name}</div>
+                            <div class="flex gap-2 mt-2">
+                                <span class="badge badge-group">${p.group || 'Tidak ada'}</span>
+                                <span class="badge badge-marga">${p.marga || 'Tidak ada'}</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400 ${state.selectedManualGift?.id === p.id ? 'text-purple-500' : ''}"></i>
+                    </div>
+                </div>
+            `).join('');
+            
+            btn.disabled = !state.selectedManualGift;
+        }
+
+        window.selectManualCheckin = (p) => {
+            state.selectedManualCheckin = p;
+            const btn = document.getElementById('manualCheckinBtn');
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fas fa-check-circle mr-2"></i> Check-in ${p.name.substring(0, 15)}${p.name.length > 15 ? '...' : ''}`;
+            renderManualCheckinList();
+        };
+
+        window.selectManualGift = (p) => {
+            state.selectedManualGift = p;
+            const btn = document.getElementById('manualGiftBtn');
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fas fa-gift mr-2"></i> Ambil Hadiah ${p.name.substring(0, 15)}${p.name.length > 15 ? '...' : ''}`;
+            renderManualGiftList();
+        };
+
+        window.processManualCheckin = () => {
+            if (!state.selectedManualCheckin || !state.isAdmin) return;
+            
+            const p = state.selectedManualCheckin;
+            window.doCheckIn(p);
+            state.selectedManualCheckin = null;
+            closeModal('manualCheckinModal');
+        };
+
+        window.processManualGift = () => {
+            if (!state.selectedManualGift || !state.isAdmin) return;
+            
+            const p = state.selectedManualGift;
+            window.claimGift(p);
+            state.selectedManualGift = null;
+            closeModal('manualGiftModal');
+        };
+
+        // --- FUNGSI CARI TIKET --- (PERBAIKAN UTAMA)
         window.findMyTicket = () => {
-            const name = document.getElementById('findName').value.trim().toLowerCase();
-            const marga = document.getElementById('findMarga').value;
-            if(!name || !marga) { showToast('Mohon isi Nama dan Marga.', 'warning'); return; }
-            const found = state.participants.find(p => p.name.toLowerCase().includes(name) && p.marga === marga);
-            if (found) window.showTicket(found.name, found.status, found.marga, found.qrCode);
-            else showToast('Data tidak ditemukan.', 'error');
+            const nameInput = document.getElementById('findName');
+            const margaInput = document.getElementById('findMarga');
+            
+            if(!nameInput || !margaInput) {
+                showToast('Form pencarian tidak tersedia!', 'error');
+                return;
+            }
+
+            const name = nameInput.value.trim();
+            const marga = margaInput.value;
+
+            if(!name || !marga) {
+                showToast('Mohon isi Nama Lengkap dan Pilih Marga!', 'warning');
+                return;
+            }
+
+            console.log('Mencari tiket dengan:', { name, marga });
+            console.log('Total peserta:', state.participants.length);
+            console.log('Peserta:', state.participants);
+
+            const found = state.participants.find(p => {
+                const pName = p.name ? p.name.toLowerCase().trim() : "";
+                const pMarga = p.marga ? p.marga.trim() : "";
+                const searchName = name.toLowerCase().trim();
+                
+                console.log('Membandingkan:', {
+                    pName,
+                    pMarga,
+                    searchName,
+                    marga,
+                    matchName: pName.includes(searchName),
+                    matchMarga: pMarga === marga
+                });
+                
+                return pName.includes(searchName) && pMarga === marga;
+            });
+
+            if (found) {
+                console.log('Tiket ditemukan:', found);
+                const safeName = found.name || "Peserta";
+                const safeGroup = found.group || "-";
+                const safeMarga = found.marga || "-";
+                const safeQR = found.qrCode || `BONATAON-${found.id?.slice(-6) || "000000"}`;
+
+                window.showTicket(safeName, safeGroup, safeMarga, safeQR);
+                showToast('Tiket ditemukan!', 'success');
+            } else {
+                console.log('Tiket TIDAK ditemukan');
+                const participantsInMarga = state.participants.filter(p => p.marga === marga);
+                
+                let errorMsg = `Data tidak ditemukan untuk:\n`;
+                errorMsg += `Nama: ${name}\n`;
+                errorMsg += `Marga: ${marga}\n`;
+                
+                if (participantsInMarga.length === 0) {
+                    errorMsg += `\nTidak ada peserta terdaftar di marga ${marga}.`;
+                } else {
+                    errorMsg += `\nTips:\n`;
+                    errorMsg += `- Cek ejaan nama\n`;
+                    errorMsg += `- Gunakan nama lengkap\n`;
+                    errorMsg += `\nTotal ${participantsInMarga.length} peserta di marga ${marga}`;
+                    
+                    // Tampilkan daftar nama di marga tersebut
+                    errorMsg += `\n\nNama di marga ${marga}:\n`;
+                    participantsInMarga.slice(0, 5).forEach(p => {
+                        errorMsg += `- ${p.name}\n`;
+                    });
+                    if (participantsInMarga.length > 5) {
+                        errorMsg += `- ...dan ${participantsInMarga.length - 5} lainnya`;
+                    }
+                }
+                
+                showToast(errorMsg, 'warning');
+            }
         };
 
         window.processScannedID = (pid) => {
             const p = state.participants.find(x => x.id === pid);
-            if(!p) { showToast('QR Code tidak valid!', 'error'); return; }
-            if (state.tab === 'gift') window.claimGift(p); else window.doCheckIn(p);
+            if(!p) {
+                showToast('QR Code tidak dikenali!', 'error');
+                return;
+            }
+            if (state.tab === 'gift') window.claimGift(p);
+            else window.doCheckIn(p);
         };
 
         window.doCheckIn = (p) => {
-            if(state.attendance.find(x => x.participantId === p.id)) { beep('fail'); showScanResult(false, `Sudah hadir: ${p.name}`); }
-            else { push(ref(db, 'attendance'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() }).then(() => { beep('success'); showScanResult(true, `Horas, ${p.name}!`); }); }
+            const exists = state.attendance.find(x => x.participantId === p.id);
+            if(exists) {
+                beep('fail');
+                showScanResult(false, `${p.name} sudah absen!`);
+            } else {
+                beep('success');
+                push(ref(db, 'attendance'), {
+                    id: Date.now().toString(), 
+                    participantId: p.id, 
+                    name: p.name,
+                    group: p.group, 
+                    marga: p.marga, 
+                    timestamp: fmtDate()
+                }).then(() => {
+                    showScanResult(true, `${p.name} berhasil check-in!`);
+                }).catch(error => {
+                    showToast('Gagal menyimpan absensi: ' + error.message, 'error');
+                });
+            }
         };
 
         window.claimGift = (p) => {
-            if(state.gifts.find(x => x.participantId === p.id)) { beep('fail'); showScanResult(false, `Sudah ambil: ${p.name}`, 'warning'); }
-            else { push(ref(db, 'gifts'), { id: Date.now().toString(), participantId: p.id, name: p.name, status: p.status, marga: p.marga, timestamp: fmtDate() }).then(() => { beep('success'); showScanResult(true, `Berkat utk: ${p.name}`, 'success'); }); }
+            const alreadyClaimed = state.gifts.find(x => x.participantId === p.id);
+            if(alreadyClaimed) {
+                beep('fail');
+                showScanResult(false, `${p.name} sudah ambil hadiah!`, 'warning');
+            } else {
+                beep('success');
+                push(ref(db, 'gifts'), {
+                    id: Date.now().toString(), 
+                    participantId: p.id, 
+                    name: p.name,
+                    group: p.group, 
+                    marga: p.marga, 
+                    timestamp: fmtDate()
+                }).then(() => {
+                    showScanResult(true, `${p.name} berhasil ambil hadiah!`, 'success');
+                }).catch(error => {
+                    showToast('Gagal menyimpan hadiah: ' + error.message, 'error');
+                });
+            }
         };
 
+        // --- SCANNER SYSTEM ---
         window.initScanner = () => {
             if(state.scanner) return;
-            const config = { fps: 10, qrbox: 250, aspectRatio: 1.0 };
+            const config = { fps: 10, qrbox: 450, aspectRatio: 1.0, disableFlip: false };
             state.scanner = new Html5QrcodeScanner("reader", config, false);
+            
             state.scanner.render((decodedText) => {
                 if(state.scanner) state.scanner.pause();
                 const p = state.participants.find(x => x.qrCode === decodedText);
-                if(p) window.processScannedID(p.id); else { beep('fail'); showScanResult(false, "QR tidak terdaftar"); }
-                setTimeout(() => { if(state.scanner) state.scanner.resume(); }, 2000);
-            });
+                if(p) window.processScannedID(p.id);
+                else { 
+                    beep('fail'); 
+                    showScanResult(false, "QR Code tidak dikenali!"); 
+                }
+                setTimeout(() => { if(state.scanner) state.scanner.resume(); }, 2500);
+            }, (error) => {});
         };
-        window.stopScanner = () => { if(state.scanner) { state.scanner.clear().then(() => { state.scanner = null; }).catch(console.error); } };
+
+        window.stopScanner = () => {
+            if(state.scanner) {
+                state.scanner.clear().catch(e => console.error(e));
+                state.scanner = null;
+            }
+        };
 
         function showScanResult(success, msg, type = 'success') {
             const el = document.getElementById('scanRes');
             if(el) {
-                const icon = success ? 'check-circle' : 'times-circle';
-                const colorClass = success ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-red-50 text-red-800 border-red-100';
-                el.innerHTML = `<div class="flex items-center gap-3"><i class="fas fa-${icon} text-xl"></i><span class="font-bold">${msg}</span></div>`;
-                el.className = `p-4 rounded-xl border-2 mb-4 animate-bounce ${colorClass}`;
-                el.classList.remove('hidden'); setTimeout(() => { el.classList.add('hidden'); }, 2500);
+                el.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-${success ? 'check-circle' : 'exclamation-triangle'} text-xl"></i>
+                        <span class="font-bold">${msg}</span>
+                    </div>
+                `;
+                const color = success ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200';
+                if (type === 'warning') {
+                    el.className = `p-4 rounded-xl font-bold text-center border-2 mb-4 animate-pulse ${'bg-yellow-100 text-yellow-800 border-yellow-200'}`;
+                } else {
+                    el.className = `p-4 rounded-xl font-bold text-center border-2 mb-4 animate-pulse ${color}`;
+                }
+                el.classList.remove('hidden');
+                setTimeout(() => { el.classList.add('hidden'); }, 2000);
             }
         }
 
+        // --- HELPERS ---
         window.handleSearch = (el) => {
             state.searchTerm = el.value.toLowerCase();
             const container = document.getElementById('manual-list');
             if(!container) return;
-            const filtered = state.participants.filter(p => p.name.toLowerCase().includes(state.searchTerm));
-            if(filtered.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 py-8 text-sm italic">Tidak ada data</div>'; return; }
-            container.innerHTML = filtered.map(p => {
-                const present = state.attendance.find(a => a.participantId === p.id);
-                const claimed = state.gifts.find(g => g.participantId === p.id);
-                const badge = state.tab === 'gift' ? (claimed ? '<span class="badge badge-warning">Sudah</span>' : '<span class="badge badge-primary">Belum</span>') : (present ? '<span class="badge badge-success">Hadir</span>' : '<span class="badge badge-primary">Belum</span>');
-                return `<div class="flex items-center justify-between p-4 border-b border-slate-50 hover:bg-slate-50 transition-colors"><div><div class="font-bold text-slate-700">${p.name}</div><div class="flex gap-2 mt-1"><span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded">${p.marga}</span></div></div>${badge}</div>`;
-            }).join('');
+            const filtered = state.participants.filter(p => {
+                const pName = p.name ? p.name.toLowerCase() : "";
+                return pName.includes(state.searchTerm);
+            });
+            if(filtered.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-400 py-8 text-sm"><i class="fas fa-search text-2xl mb-2"></i><div>Nama tidak ditemukan</div></div>';
+                return;
+            }
+            container.innerHTML = generateListHTML(filtered, state.tab === 'gift');
         };
 
-        window.switchDataView = (mode) => { state.dataViewMode = mode; render(); };
+        function generateListHTML(list, isGiftMode) {
+            return list.map(p => {
+                let statusBadge = '';
+                const claimedGift = state.gifts.find(g => g.participantId === p.id);
+                const present = state.attendance.find(a => a.participantId === p.id);
+                
+                if (isGiftMode) {
+                    if (claimedGift) {
+                        statusBadge = `<span class="badge badge-warning flex items-center gap-1"><i class="fas fa-gift"></i> DIAMBIL</span>`;
+                    } else {
+                        statusBadge = `<span class="badge badge-primary flex items-center gap-1"><i class="fas fa-qrcode"></i> SCAN QR</span>`;
+                    }
+                } else {
+                    if (present) {
+                        statusBadge = `<span class="badge badge-success flex items-center gap-1"><i class="fas fa-check"></i> HADIR</span>`;
+                    } else {
+                        statusBadge = `<span class="badge badge-primary flex items-center gap-1"><i class="fas fa-qrcode"></i> SCAN QR</span>`;
+                    }
+                }
+                return `
+                <div class="flex items-center justify-between p-4 border-b border-gray-100 hover:bg-gray-50 rounded-lg transition-colors">
+                    <div class="flex-1">
+                        <div class="font-bold text-gray-800">${p.name}</div>
+                        <div class="flex gap-2 mt-2">
+                            <span class="badge badge-group">${p.group || 'Tidak ada'}</span>
+                            <span class="badge badge-marga">${p.marga || 'Tidak ada'}</span>
+                            ${claimedGift ? '<span class="badge badge-warning"><i class="fas fa-gift"></i> Hadiah</span>' : ''}
+                        </div>
+                    </div>
+                    ${statusBadge}
+                </div>`;
+            }).join('');
+        }
+
+        window.switchDataView = (mode) => {
+            state.dataViewMode = mode;
+            render();
+        }
 
         window.setTab = (t) => {
             if((state.tab === 'scan' || state.tab === 'gift') && (t !== 'scan' && t !== 'gift')) window.stopScanner();
             state.tab = t;
             ['register','find','scan','gift','data','admin'].forEach(x => {
                 const btn = document.getElementById(`tab-${x}`);
-                if(x === t) { btn.classList.add('active', 'border-emerald-200'); btn.classList.remove('border-transparent'); } 
-                else { btn.classList.remove('active', 'border-emerald-200'); btn.classList.add('border-transparent'); }
+                if(x === t) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
             });
             render();
             if(t === 'scan' || t === 'gift') setTimeout(() => window.initScanner(), 100);
@@ -603,84 +1485,34 @@
         function renderParticipantListOnly() {
             const container = document.getElementById('participant-list-container');
             if (container) {
-                if (state.participants.length === 0) { container.innerHTML = `<div class="text-center py-10 opacity-50"><p class="text-sm">Belum ada keluarga yang terdaftar</p></div>`; return; }
-                container.innerHTML = `<div class="flex justify-between items-center mb-4 px-2"><h4 class="font-bold text-slate-700">Keluarga Terdaftar</h4><span class="badge badge-primary">${state.participants.length} Jiwa</span></div><div class="space-y-3 custom-scrollbar max-h-[400px] overflow-y-auto pr-1">${state.participants.slice().reverse().map(p => `<div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex justify-between items-center"><div><div class="font-bold text-slate-800">${p.name}</div><div class="text-xs text-slate-400 mt-1">${p.marga} • ${p.status}</div></div><i class="fas fa-qrcode text-emerald-200 text-xl"></i></div>`).join('')}</div>`;
-            }
-        }
-
-        window.render = () => {
-            const root = document.getElementById('content-area');
-             
-            if (state.tab === 'register') {
-                if (!document.getElementById('registration-form')) {
-                    root.innerHTML = `<div class="card p-6 mb-6 relative overflow-hidden" id="registration-form"><div class="absolute top-0 right-0 p-4 opacity-5"><i class="fas fa-pen-fancy text-6xl"></i></div><h3 class="font-bold text-xl text-emerald-800 mb-1 serif-font">Registrasi Keluarga</h3><p class="text-slate-500 text-sm mb-6">Mari mengisi data untuk kelancaran acara.</p><div class="space-y-4 relative z-10"><div><label class="block text-xs font-bold text-slate-500 uppercase mb-1.5 ml-1">Nama Lengkap</label><input id="inName" type="text" placeholder="Tulis nama lengkap..." class="input-field w-full"></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-bold text-slate-500 uppercase mb-1.5 ml-1">Status</label><select id="inStatus" class="input-field w-full cursor-pointer bg-white"><option value="" disabled selected>Pilih...</option><option value="Orangtua">Orangtua</option><option value="Pemuda">Pemuda</option><option value="Sekolah Minggu">Sekolah Minggu</option><option value="Tamu Undangan">Tamu Undangan</option><option value="Pengurus Tupuan">Pengurus Tupuan</option></select></div><div><label class="block text-xs font-bold text-slate-500 uppercase mb-1.5 ml-1">Marga</label><select id="inMarga" class="input-field w-full cursor-pointer bg-white"><option value="" disabled selected>Pilih...</option><option value="Marga Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere / Panagolan">Bere/Panagolan</option></select></div></div><button onclick="preRegister()" class="btn-primary w-full mt-4 shadow-lg shadow-emerald-100 flex items-center justify-center gap-2 group"><span>Simpan Data</span> <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i></button></div></div><div id="participant-list-container"></div>`;
+                if (state.participants.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-12 text-gray-400">
+                            <div class="text-5xl mb-4"><i class="fas fa-users"></i></div>
+                            <div class="text-lg font-medium mb-2">Belum ada peserta terdaftar</div>
+                            <div class="text-sm">Mulai daftarkan peserta pertama</div>
+                        </div>
+                    `;
+                    return;
                 }
-                renderParticipantListOnly();
-            } else if (state.tab === 'find') {
-                root.innerHTML = `<div class="card p-6 mb-6 text-center relative overflow-hidden"><div class="absolute -top-10 -left-10 w-32 h-32 bg-amber-100 rounded-full blur-2xl opacity-50"></div><div class="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 text-2xl shadow-inner"><i class="fas fa-search"></i></div><h3 class="font-bold text-xl text-slate-800 mb-2 serif-font">Cek Undangan</h3><p class="text-slate-500 text-sm mb-6 max-w-xs mx-auto">Masukkan nama dan marga untuk menampilkan kembali tiket Anda.</p><div class="space-y-3 text-left"><input id="findName" type="text" placeholder="Nama Lengkap..." class="input-field w-full text-center"><select id="findMarga" class="input-field w-full text-center appearance-none cursor-pointer bg-white"><option value="" disabled selected>Pilih Marga Anda</option><option value="Marga Manihuruk">Marga Manihuruk</option><option value="Boru">Boru</option><option value="Bere / Panagolan">Bere / Panagolan</option></select><button onclick="findMyTicket()" class="btn-primary w-full shadow-lg shadow-emerald-100">Cari Tiket Saya</button></div></div>`;
-            } else if (state.tab === 'scan' || state.tab === 'gift') {
-                const isGift = state.tab === 'gift';
-                root.innerHTML = `<div class="card p-6 mb-6"><div class="flex justify-between items-center mb-4"><div><h3 class="font-bold text-lg text-slate-800">${isGift ? 'Ambil Berkat' : 'Scan Kehadiran'}</h3><p class="text-xs text-slate-400">Arahkan kamera ke QR Code</p></div><div class="w-10 h-10 rounded-full ${isGift ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600'} flex items-center justify-center"><i class="fas ${isGift ? 'fa-gift' : 'fa-camera'}"></i></div></div><div id="scanRes" class="hidden"></div><div class="rounded-2xl overflow-hidden shadow-inner bg-slate-900 relative"><div id="reader" class="w-full"></div></div>${state.isAdmin ? `<button onclick="${isGift ? 'openManualGift()' : 'openManualCheckin()'}" class="w-full mt-4 py-3 bg-slate-100 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-200 transition-colors border border-slate-200"><i class="fas fa-keyboard mr-2"></i> Mode Manual (Panitia)</button>` : ''}</div><div class="card p-0 overflow-hidden"><div class="bg-slate-50 p-4 border-b border-slate-100 flex justify-between items-center"><h4 class="font-bold text-slate-700 text-sm">Status Peserta</h4><div class="text-xs text-slate-400"><i class="fas fa-sync-alt mr-1"></i> Realtime</div></div><div class="p-4"><div class="relative mb-4"><input oninput="window.handleSearch(this)" type="text" placeholder="Cari status peserta..." class="input-field w-full pl-10 py-2 text-sm"><i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i></div><div id="manual-list" class="max-h-60 overflow-y-auto custom-scrollbar"></div></div></div>`;
-            } else if (state.tab === 'data') {
-                const isGiftView = state.dataViewMode === 'gifts';
-                const data = isGiftView ? state.gifts : state.attendance;
                 
-                // UPDATED: Chart Area (3 Charts)
-                root.innerHTML = `
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <div class="card p-4 h-64 relative md:col-span-2">
-                            <canvas id="chartOverview"></canvas>
+                container.innerHTML = `
+                    <div class="mb-6 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-gray-700 text-lg">Daftar Peserta Terdaftar</h3>
+                            <p class="text-sm text-gray-400">${state.participants.length} peserta terdaftar</p>
                         </div>
-                        <div class="card p-4 h-64 relative">
-                            <canvas id="chartMarga"></canvas>
-                        </div>
-                        <div class="card p-4 h-64 relative">
-                            <canvas id="chartStatus"></canvas>
+                        <div class="badge badge-primary">
+                            <i class="fas fa-ticket-alt mr-2"></i> Semua Tiket
                         </div>
                     </div>
-
-                    <div class="card p-6 mb-6">
-                        <h3 class="font-bold text-xl text-slate-800 mb-1 serif-font">Tabel Data</h3>
-                        <p class="text-slate-500 text-sm mb-6">Rekapitulasi data peserta.</p>
-                        
-                        <div class="flex p-1 bg-slate-100 rounded-xl mb-6">
-                            <button onclick="switchDataView('attendance')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all ${!isGiftView ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-400'}">Kehadiran</button>
-                            <button onclick="switchDataView('gifts')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all ${isGiftView ? 'bg-white text-amber-600 shadow-sm' : 'text-slate-400'}">Berkat</button>
-                        </div>
-                        
-                        <div class="space-y-3">
-                            <button onclick="exportData('p')" class="w-full py-3 bg-emerald-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-emerald-100 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"><i class="fas fa-file-csv"></i> Download Data Master</button>
-                            <div class="flex gap-3">
-                                <button onclick="exportData('a')" class="flex-1 py-3 bg-white border border-slate-200 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-50">Laporan Hadir</button>
-                                <button onclick="exportData('g')" class="flex-1 py-3 bg-white border border-slate-200 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-50">Laporan Berkat</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-between items-center px-2 mb-3"><h4 class="font-bold text-slate-700 text-sm">Riwayat Aktivitas</h4><span class="text-xs bg-white px-2 py-1 rounded border border-slate-100 text-slate-500">${data.length} Baris</span></div>
-                    
-                    <div class="space-y-3 pb-8">
-                        ${data.length === 0 ? `<div class="text-center py-10 opacity-50 text-sm">Belum ada data tercatat</div>` : ''}
-                        ${data.slice().reverse().map(d => `<div class="bg-white p-4 rounded-xl border-l-4 ${isGiftView ? 'border-amber-400' : 'border-emerald-400'} shadow-sm flex justify-between items-center"><div><div class="font-bold text-slate-800 text-sm">${d.name}</div><div class="text-[10px] text-slate-400 mt-0.5">${d.marga} • ${d.timestamp}</div></div><i class="fas ${isGiftView ? 'fa-gift text-amber-200' : 'fa-check text-emerald-200'} text-lg"></i></div>`).join('')}
-                    </div>
-                    ${state.isAdmin ? `<div class="text-center pt-8"><button onclick="resetData()" class="text-xs text-red-400 hover:text-red-600 font-bold border border-red-100 hover:bg-red-50 px-4 py-2 rounded-full transition-colors"><i class="fas fa-trash-alt mr-1"></i> Reset Sistem (Bahaya)</button></div>` : ''}
-                `;
-            }
-        };
-
-        window.showTicket = (n, st, mg, q) => {
-            document.getElementById('ticName').innerText = n; document.querySelector('.ticStatusText').innerText = st; document.querySelector('.ticMargaText').innerText = mg; document.getElementById('ticCode').innerText = q; document.getElementById('ticQR').src = getQR(q); document.getElementById('btnDownloadTicket').href = getQR(q); showModal('ticketModal');
-        };
-
-        window.printTicket = () => { const w = window.open('', '_blank'); w.document.write(`<html><head><title>Undangan - ${document.getElementById('ticName').innerText}</title><style>body{font-family:sans-serif;text-align:center;border:4px solid #059669;padding:40px;margin:20px;border-radius:20px}h1{color:#064e3b;margin-bottom:5px}.tag{background:#ecfdf5;color:#065f46;padding:5px 15px;border-radius:20px;font-weight:bold;font-size:12px;display:inline-block;margin:5px}img{margin:20px 0;border:1px solid #ddd;padding:10px;border-radius:10px}.footer{font-size:10px;color:#666;margin-top:20px;border-top:1px dashed #ccc;padding-top:10px}</style></head><body><h2>BONATAON MANIHURUK 2026</h2><h1>${document.getElementById('ticName').innerText}</h1><div><span class="tag">${document.querySelector('.ticStatusText').innerText}</span><span class="tag">${document.querySelector('.ticMargaText').innerText}</span></div><img src="${document.getElementById('ticQR').src}" width="250"><p style="font-family:monospace;letter-spacing:2px;">${document.getElementById('ticCode').innerText}</p><div class="footer">Harap bawa undangan ini saat acara berlangsung.</div><script>window.onload=()=>{window.print();setTimeout(()=>window.close(),500)}<\/script></body></html>`); w.document.close(); };
-
-        window.exportData = (type) => { let csv = type === 'p' ? "Nama,Status,Marga,Kode,Waktu\n" : "Nama,Status,Marga,Waktu\n"; let data = type === 'p' ? state.participants : (type === 'a' ? state.attendance : state.gifts); let filename = type === 'p' ? "Master_Data" : (type === 'a' ? "Absensi" : "Hadiah"); data.forEach(x => { csv += `"${x.name}","${x.status}","${x.marga}","${x.qrCode || x.timestamp}","${x.registeredAt || x.timestamp}"\n`; }); const blob = new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `Bonataon2026_${filename}.csv`; link.click(); };
-        window.importData = (input) => { const f = input.files[0]; if(!f) return; const r = new FileReader(); r.onload = e => { const lines = e.target.result.split('\n'); let c = 0; lines.forEach((l,i) => { if(i===0) return; const [n, st, mg] = l.split(',').map(x => x?.replace(/"/g,'').trim()); if(n) { const id = (Date.now() + i + Math.floor(Math.random()*1000)).toString(); push(ref(db, 'participants'), { id, name: n, status: st || '-', marga: mg || '-', qrCode: `MN-${id.slice(-6)}`, registeredAt: fmtDate(), timestamp: Date.now() }); c++; } }); showToast(`Berhasil import ${c} data keluarga`, 'success'); input.value = ''; }; r.readAsText(f); };
-        window.handleImport = (input) => window.importData(input);
-        window.triggerImport = () => document.getElementById('importInput').click();
-        window.resetData = () => { if(prompt("Ketik password admin untuk menghapus database:") === ADMIN_PASS) { set(ref(db, 'participants'), null); set(ref(db, 'attendance'), null); set(ref(db, 'gifts'), null); showToast("Sistem berhasil direset total.", 'success'); } };
-
-        setTimeout(() => { document.getElementById('loading').style.display = 'none'; setTab('register'); }, 2000);
-    </script>
-</body>
-</html>
+                    <div class="space-y-4 custom-scrollbar" style="max-height: 400px; overflow-y: auto;">
+                        ${state.participants.slice().reverse().map(p => {
+                            const active = state.attendance.find(a => a.participantId === p.id);
+                            const claimedGift = state.gifts.find(g => g.participantId === p.id);
+                            return `
+                            <div class="card p-5 flex justify-between items-center border-l-4 ${active ? 'border-green-500' : claimedGift ? 'border-yellow-500' : 'border-blue-500'}">
+                                <div class="flex-1">
+                                    <div class="font-bold text-gray-800 mb-2">${p.name}</div>
+                                    <div class="flex gap-2">
+                                        <span class="badge badge-group">${
