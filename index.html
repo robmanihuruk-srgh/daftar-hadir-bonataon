@@ -183,7 +183,7 @@
             <div class="flex gap-3 mt-6 overflow-x-auto pb-2 custom-scrollbar">
                 <div class="flex-1 min-w-[100px] bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10 text-center">
                     <div class="text-2xl font-bold text-white" id="statRegistered">0</div>
-                    <div class="text-[10px] font-bold text-emerald-200 uppercase tracking-wider mt-1">Jemaat</div>
+                    <div class="text-[10px] font-bold text-emerald-200 uppercase tracking-wider mt-1">Keluarga</div>
                 </div>
                 <div class="flex-1 min-w-[100px] bg-emerald-500/30 backdrop-blur-sm rounded-xl p-3 border border-emerald-400/50 text-center">
                     <div class="text-2xl font-bold text-emerald-50" id="statPresent">0</div>
@@ -621,12 +621,14 @@
                 renderRecentScans();
             }
             else if (t === 'data') {
+                // MODIFIKASI: RESTRICTION FOR NON-ADMIN
                 root.innerHTML = `
                     <div class="space-y-6">
                         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100"><h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-chart-bar text-emerald-600"></i> Ringkasan Acara</h4><div class="chart-wrapper"><canvas id="chartOverview"></canvas></div></div>
                         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100"><h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-users text-emerald-600"></i> Kehadiran per Marga</h4><div class="chart-wrapper"><canvas id="chartMarga"></canvas></div></div>
                         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100"><h4 class="font-bold text-slate-700 mb-4 border-b pb-2 flex items-center gap-2"><i class="fas fa-user-tag text-emerald-600"></i> Kehadiran per Status</h4><div class="chart-wrapper"><canvas id="chartStatus"></canvas></div></div>
                         
+                        ${state.isAdmin ? `
                         <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
                             <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
                                 <h4 class="font-bold text-slate-700">Laporan Realtime</h4>
@@ -645,16 +647,20 @@
                                 <button onclick="exportData('g')" class="px-4 py-2 bg-amber-600 text-white rounded-lg text-xs font-bold shadow hover:bg-amber-700">Laporan Hadiah</button>
                             </div>
                             
-                            ${state.isAdmin ? `
                             <div class="mt-6 pt-4 border-t border-slate-100 text-center">
                                 <button onclick="openChangePass()" class="text-xs text-emerald-600 font-bold hover:underline mb-3 block">Ganti Password Admin</button>
                                 <button onclick="resetData()" class="text-xs text-red-400 hover:text-red-600 font-bold border border-red-100 hover:bg-red-50 px-4 py-2 rounded-full transition-colors"><i class="fas fa-trash-alt mr-1"></i> Reset Sistem (Bahaya)</button>
-                            </div>` : ''}
+                            </div>
+                        </div>` : `
+                        <div class="bg-white/50 border-2 border-dashed border-slate-200 p-8 rounded-2xl text-center">
+                            <i class="fas fa-lock text-3xl text-slate-300 mb-2"></i>
+                            <p class="text-sm font-bold text-slate-400">Detail data dan fitur export<br>hanya dapat diakses oleh Panitia (Admin).</p>
                         </div>
+                        `}
                     </div>`;
                 setTimeout(() => {
                     renderCharts();
-                    toggleTable('registered'); 
+                    if(state.isAdmin) toggleTable('registered'); 
                 }, 150); 
             }
         };
@@ -1005,7 +1011,7 @@
             let data = [];
             let filename = '';
 
-            if (type === 'p') { data = state.participants; filename = 'Master_Jemaat'; }
+            if (type === 'p') { data = state.participants; filename = 'Master_Keluarga'; } // UPDATED FILENAME
             else if (type === 'a') { data = state.attendance; filename = 'Laporan_Kehadiran'; }
             else if (type === 'g') { data = state.gifts; filename = 'Laporan_Hadiah'; }
             
