@@ -12,8 +12,6 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <!-- Robust offline QR Code generator -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
       
     <style>
         :root {
@@ -103,7 +101,7 @@
         /* Animasi Modal */
         @keyframes modalUp { from { opacity: 0; transform: translateY(40px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         
-        /* --- NEW: VIP TICKET STYLES --- */
+        /* --- VIP TICKET STYLES --- */
         .vip-ticket {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid #334155;
@@ -202,28 +200,28 @@
             </div>
         </header>
 
-        <nav class="flex px-4 -mt-12 relative z-30 gap-3 overflow-x-auto pb-4 custom-scrollbar">
-            <button onclick="setTab('register')" id="tab-register" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-4 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+        <nav class="flex px-4 -mt-12 relative z-30 gap-2 overflow-x-auto pb-4 custom-scrollbar">
+            <button onclick="setTab('register')" id="tab-register" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-user-plus text-lg text-slate-400"></i>
                 <span class="text-[10px] font-bold uppercase">Registrasi</span>
             </button>
-            <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-4 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+            <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-search-location text-lg text-slate-400"></i>
                 <span class="text-[10px] font-bold uppercase">Undangan</span>
             </button>
-            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-4 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-qrcode text-lg text-slate-400"></i>
                 <span class="text-[10px] font-bold uppercase">Scan</span>
             </button>
-            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-4 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-gift text-lg text-slate-400"></i>
                 <span class="text-[10px] font-bold uppercase">Berkat</span>
             </button>
-            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-4 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-chart-pie text-lg text-slate-400"></i>
                 <span class="text-[10px] font-bold uppercase">Data</span>
             </button>
-            <button onclick="window.adminLogin()" id="tab-admin" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-4 flex flex-col items-center gap-1 shadow-md border border-slate-100">
+            <button onclick="window.adminLogin()" id="tab-admin" class="nav-btn flex-1 min-w-[75px] bg-white rounded-xl p-3 flex flex-col items-center gap-1 shadow-md border border-slate-100">
                 <i class="fas fa-user-lock text-lg text-slate-400"></i>
                 <span class="text-[10px] font-bold uppercase">Admin</span>
             </button>
@@ -410,13 +408,13 @@
         <div class="card max-w-sm w-full mx-4 relative z-10 p-6 bg-white rounded-2xl animate-[modalUp_0.3s_ease-out]">
             <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2"><i class="fas fa-check-double text-emerald-500"></i> Absensi Manual</h3>
             <div class="relative mb-4">
-                <input type="text" id="manualSearch" onkeyup="renderManualSearch('checkin')" placeholder="Cari nama keluarga..." class="form-input w-full rounded-xl pl-10 p-2">
+                <input type="text" id="manualSearch" placeholder="Cari nama keluarga..." class="form-input w-full rounded-xl pl-10 p-2">
                 <i class="fas fa-search absolute left-4 top-3 text-slate-400"></i>
             </div>
             <div id="manualCheckinList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100"></div>
             <div class="flex gap-3">
                 <button onclick="closeModal('manualCheckinModal')" class="w-full rounded-xl py-2 bg-slate-100 border border-slate-200">Tutup</button>
-                <button onclick="processManualCheckin()" class="w-full rounded-xl py-2 bg-emerald-600 text-white font-bold opacity-50 cursor-not-allowed" disabled id="manualCheckinBtn">Konfirmasi</button>
+                <button onclick="processManualCheckin()" class="w-full rounded-xl py-2 bg-emerald-600 text-white font-bold" disabled id="manualCheckinBtn">Konfirmasi</button>
             </div>
         </div>
     </div>
@@ -426,13 +424,13 @@
         <div class="card max-w-sm w-full mx-4 relative z-10 p-6 bg-white rounded-2xl animate-[modalUp_0.3s_ease-out]">
             <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2"><i class="fas fa-gift text-amber-500"></i> Serah Terima Berkat</h3>
             <div class="relative mb-4">
-                <input type="text" id="manualGiftSearch" onkeyup="renderManualSearch('gift')" placeholder="Cari nama keluarga..." class="form-input w-full rounded-xl pl-10 p-2">
+                <input type="text" id="manualGiftSearch" placeholder="Cari nama keluarga..." class="form-input w-full rounded-xl pl-10 p-2">
                 <i class="fas fa-search absolute left-4 top-3 text-slate-400"></i>
             </div>
             <div id="manualGiftList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100"></div>
             <div class="flex gap-3">
                 <button onclick="closeModal('manualGiftModal')" class="w-full rounded-xl py-2 bg-slate-100 border border-slate-200">Tutup</button>
-                <button onclick="processManualGift()" class="w-full rounded-xl py-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold opacity-50 cursor-not-allowed" disabled id="manualGiftBtn">Serahkan</button>
+                <button onclick="processManualGift()" class="w-full rounded-xl py-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold" disabled id="manualGiftBtn">Serahkan</button>
             </div>
         </div>
     </div>
@@ -466,7 +464,7 @@
             scanner: null,
             isAdmin: false,
             adminPass: "ADMIN123",
-            recoveryKey: "BONA2026", // Default recovery key
+            recoveryKey: "BONA2026",
             selectedManualCheckin: null,
             selectedManualGift: null,
             tempAuthUser: null,
@@ -488,11 +486,7 @@
             }
         });
 
-        let charts = {
-            overview: null,
-            marga: null,
-            status: null
-        }; 
+        let charts = {}; 
         let audioCtx = null;
 
         // --- CLOCK FUNCTION ---
@@ -539,6 +533,7 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.15);
         }
 
+        const getQR = (txt) => `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=20&ecc=H&color=000000&bgcolor=ffffff&format=png&data=${encodeURIComponent(txt)}`;
         const fmtDate = () => new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
 
         // --- LISTENERS ---
@@ -557,90 +552,10 @@
             }
             if (state.tab === 'register') renderParticipantList();
             
-            if (state.tab === 'scan' || state.tab === 'gift') {
-                // Ensure manual input buttons are re-rendered based on admin status
-                setTab(state.tab); 
-                renderRecentScans();
-            }
+            if (state.tab === 'scan' || state.tab === 'gift') renderRecentScans();
 
             document.getElementById('loading').style.display = 'none';
         }
-
-        // --- CHART LOGIC (Implemented for Responsiveness) ---
-        window.renderCharts = () => {
-             // Only render if elements exist
-             const ctxOverview = document.getElementById('chartOverview');
-             if (!ctxOverview) return;
-
-             const registered = state.participants.length;
-             const present = state.attendance.length;
-             const gifts = state.gifts.length;
-
-             // 1. Overview Chart
-             if (charts.overview) charts.overview.destroy();
-             charts.overview = new Chart(ctxOverview, {
-                 type: 'bar',
-                 data: {
-                     labels: ['Terdaftar', 'Hadir', 'Ambil Berkat'],
-                     datasets: [{
-                         label: 'Jumlah Peserta',
-                         data: [registered, present, gifts],
-                         backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'],
-                         borderRadius: 10
-                     }]
-                 },
-                 options: { responsive: true, maintainAspectRatio: false }
-             });
-
-             // 2. Marga Chart
-             const margaCounts = { 'Manihuruk': 0, 'Boru': 0, 'Bere / Panagolan': 0 };
-             state.attendance.forEach(a => {
-                 if (a.marga.includes('Manihuruk')) margaCounts['Manihuruk']++;
-                 else if (a.marga.includes('Boru')) margaCounts['Boru']++;
-                 else margaCounts['Bere / Panagolan']++;
-             });
-
-             const ctxMarga = document.getElementById('chartMarga');
-             if (charts.marga) charts.marga.destroy();
-             charts.marga = new Chart(ctxMarga, {
-                 type: 'doughnut',
-                 data: {
-                     labels: Object.keys(margaCounts),
-                     datasets: [{
-                         data: Object.values(margaCounts),
-                         backgroundColor: ['#059669', '#f59e0b', '#6366f1'],
-                         borderWidth: 0
-                     }]
-                 },
-                 options: { responsive: true, maintainAspectRatio: false }
-             });
-
-             // 3. Status Chart
-             const statusCounts = {};
-             state.attendance.forEach(a => {
-                 statusCounts[a.status] = (statusCounts[a.status] || 0) + 1;
-             });
-
-             const ctxStatus = document.getElementById('chartStatus');
-             if (charts.status) charts.status.destroy();
-             charts.status = new Chart(ctxStatus, {
-                 type: 'pie',
-                 data: {
-                     labels: Object.keys(statusCounts),
-                     datasets: [{
-                         data: Object.values(statusCounts),
-                         backgroundColor: ['#ef4444', '#3b82f6', '#10b981', '#8b5cf6', '#f97316'],
-                         borderWidth: 0
-                     }]
-                 },
-                 options: { responsive: true, maintainAspectRatio: false }
-             });
-        }
-        
-        // Handle window resize for charts
-        window.addEventListener('resize', () => {
-            if(state.tab === 'data') renderCharts();
-        });
 
         // --- NAVIGATION ---
         window.setTab = (t) => {
@@ -665,7 +580,7 @@
                                 <div><label class="text-xs font-bold text-slate-400 uppercase">Marga</label><select id="inMarga" class="form-input w-full rounded-xl mt-1 p-2"><option value="" disabled selected>Pilih...</option><option value="Marga Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere / Panagolan">Bere/Panagolan</option></select></div>
                             </div>
                             
-                            <div class="bg-amber-50 p-3 rounded-xl border border-amber-100">
+                            <div class="bg-amber-5 p-3 rounded-xl border border-amber-100">
                                 <label class="text-xs font-bold text-amber-600 uppercase"><i class="fas fa-lock mr-1"></i> Buat Password / PIN</label>
                                 <input id="inPass" type="text" class="form-input w-full rounded-xl mt-1 p-2 border-amber-200 text-center font-bold tracking-widest" placeholder="Contoh: 1234 (Wajib diingat!)">
                                 <p class="text-[10px] text-amber-600/70 mt-1 italic leading-tight">*Digunakan untuk membuka undangan nanti. Jangan sampai lupa.</p>
@@ -763,122 +678,6 @@
             }
         };
 
-        // --- MANUAL INPUT LOGIC (IMPLEMENTED) ---
-        window.openManualCheckin = () => {
-            state.selectedManualCheckin = null;
-            document.getElementById('manualCheckinBtn').disabled = true;
-            document.getElementById('manualCheckinBtn').classList.add('opacity-50', 'cursor-not-allowed');
-            document.getElementById('manualSearch').value = '';
-            renderManualSearch('checkin');
-            document.getElementById('manualCheckinModal').classList.remove('hidden');
-        }
-
-        window.openManualGift = () => {
-            state.selectedManualGift = null;
-            document.getElementById('manualGiftBtn').disabled = true;
-            document.getElementById('manualGiftBtn').classList.add('opacity-50', 'cursor-not-allowed');
-            document.getElementById('manualGiftSearch').value = '';
-            renderManualSearch('gift');
-            document.getElementById('manualGiftModal').classList.remove('hidden');
-        }
-
-        window.renderManualSearch = (type) => {
-            const query = document.getElementById(type === 'checkin' ? 'manualSearch' : 'manualGiftSearch').value.toLowerCase();
-            const listEl = document.getElementById(type === 'checkin' ? 'manualCheckinList' : 'manualGiftList');
-            const source = state.participants;
-            const compare = type === 'checkin' ? state.attendance : state.gifts;
-
-            // Filter: Name matches search AND (id is NOT in the compare list)
-            const filtered = source.filter(p => 
-                p.name.toLowerCase().includes(query) && 
-                !compare.find(c => c.participantId === p.id)
-            );
-
-            if(filtered.length === 0) {
-                listEl.innerHTML = '<div class="text-center text-xs text-slate-400 italic p-4">Tidak ada data yang cocok / Sudah tercatat.</div>';
-                return;
-            }
-
-            listEl.innerHTML = filtered.map(p => `
-                <div onclick="selectManual('${type}', '${p.id}')" 
-                     id="manual-${type}-${p.id}"
-                     class="p-3 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 transition-colors flex justify-between items-center bg-white">
-                     <div>
-                        <div class="font-bold text-sm text-slate-700">${p.name}</div>
-                        <div class="text-[10px] text-slate-400">${p.marga}</div>
-                     </div>
-                     <i class="fas fa-circle text-slate-200" id="icon-${type}-${p.id}"></i>
-                </div>
-            `).join('');
-        }
-
-        window.selectManual = (type, id) => {
-            // Reset previous selection
-            const listEl = document.getElementById(type === 'checkin' ? 'manualCheckinList' : 'manualGiftList');
-            listEl.querySelectorAll('.fa-circle').forEach(i => i.classList.replace('text-emerald-500', 'text-slate-200'));
-            listEl.querySelectorAll('.fa-check-circle').forEach(i => {
-                i.classList.replace('fa-check-circle', 'fa-circle');
-                i.classList.replace('text-emerald-500', 'text-slate-200');
-            });
-            listEl.querySelectorAll('div[id^="manual-"]').forEach(d => d.classList.remove('border-emerald-500', 'bg-emerald-50'));
-
-            // Set new selection
-            if (type === 'checkin') state.selectedManualCheckin = id;
-            else state.selectedManualGift = id;
-
-            // Highlight new selection
-            const item = document.getElementById(`manual-${type}-${id}`);
-            const icon = document.getElementById(`icon-${type}-${id}`);
-            if(item) item.classList.add('border-emerald-500', 'bg-emerald-50');
-            if(icon) {
-                icon.classList.replace('fa-circle', 'fa-check-circle');
-                icon.classList.replace('text-slate-200', 'text-emerald-500');
-            }
-
-            // Enable Button
-            const btn = document.getElementById(type === 'checkin' ? 'manualCheckinBtn' : 'manualGiftBtn');
-            btn.disabled = false;
-            btn.classList.remove('opacity-50', 'cursor-not-allowed');
-        }
-
-        window.processManualCheckin = () => {
-            const id = state.selectedManualCheckin;
-            const p = state.participants.find(x => x.id === id);
-            if(p) {
-                push(ref(db, 'attendance'), { 
-                    id: Date.now().toString(), 
-                    participantId: p.id, 
-                    name: p.name, 
-                    status: p.status, 
-                    marga: p.marga, 
-                    timestamp: fmtDate() 
-                }).then(() => {
-                    beep('success');
-                    alert(`Berhasil Absen Manual: ${p.name}`);
-                    closeModal('manualCheckinModal');
-                });
-            }
-        }
-
-        window.processManualGift = () => {
-            const id = state.selectedManualGift;
-            const p = state.participants.find(x => x.id === id);
-            if(p) {
-                push(ref(db, 'gifts'), { 
-                    id: Date.now().toString(), 
-                    participantId: p.id, 
-                    name: p.name, 
-                    status: p.status, 
-                    marga: p.marga, 
-                    timestamp: fmtDate() 
-                }).then(() => {
-                    beep('success');
-                    alert(`Berkat Diserahkan Manual: ${p.name}`);
-                    closeModal('manualGiftModal');
-                });
-            }
-        }
-
         // --- REGISTER LOGIC ---
         window.processRegister = () => {
             const name = document.getElementById('inName').value.trim();
@@ -944,14 +743,7 @@
             document.getElementById('ticStatusDisp').innerText = status; 
             document.getElementById('ticMargaDisp').innerText = marga; 
             document.getElementById('ticCode').innerText = code; 
-            
-            const qrImg = document.getElementById('ticQR');
-            if(typeof QRCode !== 'undefined') {
-                QRCode.toDataURL(code, { width: 600, margin: 2, errorCorrectionLevel: 'H' })
-                    .then(url => qrImg.src = url)
-                    .catch(e => console.error(e));
-            }
-
+            document.getElementById('ticQR').src = getQR(code); 
             document.getElementById('ticketModal').classList.remove('hidden');
         };
 
@@ -1188,6 +980,185 @@
                 </table>
             `;
         }
+        
+        // ------------------------------------------------------------------
+        // --- FITUR INPUT MANUAL (PERBAIKAN & PENAMBAHAN) ---
+        // ------------------------------------------------------------------
+
+        // 1. Logika Absensi Manual (Check-in)
+        window.openManualCheckin = () => {
+            state.selectedManualCheckin = null;
+            document.getElementById('manualSearch').value = '';
+            document.getElementById('manualCheckinList').innerHTML = '<div class="text-center text-xs text-slate-400 py-4">Ketik nama untuk mencari...</div>';
+            document.getElementById('manualCheckinBtn').disabled = true;
+            document.getElementById('manualCheckinBtn').classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('manualCheckinModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('manualSearch').focus(), 100);
+        };
+
+        // Event Listener untuk Pencarian Absensi
+        const manualSearchEl = document.getElementById('manualSearch');
+        if(manualSearchEl) {
+            manualSearchEl.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const container = document.getElementById('manualCheckinList');
+                
+                if (query.length < 2) {
+                    container.innerHTML = '<div class="text-center text-xs text-slate-400 py-4">Ketik minimal 2 huruf...</div>';
+                    return;
+                }
+
+                // Filter: Nama cocok DAN belum hadir
+                const matches = state.participants.filter(p => {
+                    const isMatch = p.name.toLowerCase().includes(query) || p.marga.toLowerCase().includes(query);
+                    const alreadyPresent = state.attendance.some(a => a.participantId === p.id);
+                    return isMatch && !alreadyPresent;
+                });
+
+                if (matches.length === 0) {
+                    container.innerHTML = '<div class="text-center text-xs text-red-400 py-4 font-bold">Data tidak ditemukan atau sudah hadir.</div>';
+                } else {
+                    container.innerHTML = matches.map(p => `
+                        <div onclick="window.selectManualItem('${p.id}', 'checkin')" 
+                             id="item-checkin-${p.id}"
+                             class="p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-emerald-50 transition-all flex justify-between items-center group">
+                            <div>
+                                <div class="font-bold text-slate-700 text-sm">${p.name}</div>
+                                <div class="text-[10px] text-slate-400 uppercase font-bold">${p.marga} • ${p.status}</div>
+                            </div>
+                            <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center group-hover:border-emerald-500">
+                                <div class="w-3 h-3 rounded-full bg-emerald-500 hidden selection-dot"></div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            });
+        }
+
+        window.processManualCheckin = () => {
+            if (!state.selectedManualCheckin) return;
+            const p = state.participants.find(x => x.id === state.selectedManualCheckin);
+            
+            if (p) {
+                // Simpan ke Firebase Attendance
+                push(ref(db, 'attendance'), {
+                    id: Date.now().toString(),
+                    participantId: p.id,
+                    name: p.name,
+                    status: p.status,
+                    marga: p.marga,
+                    timestamp: fmtDate(),
+                    method: 'manual_admin' // Menandai ini input manual
+                }).then(() => {
+                    beep('success');
+                    alert(`Berhasil: ${p.name} telah diabsen.`);
+                    closeModal('manualCheckinModal');
+                    updateDashboard();
+                });
+            }
+        };
+
+        // 2. Logika Penyerahan Berkat Manual (Gift)
+        window.openManualGift = () => {
+            state.selectedManualGift = null;
+            document.getElementById('manualGiftSearch').value = '';
+            document.getElementById('manualGiftList').innerHTML = '<div class="text-center text-xs text-slate-400 py-4">Ketik nama untuk mencari...</div>';
+            document.getElementById('manualGiftBtn').disabled = true;
+            document.getElementById('manualGiftBtn').classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('manualGiftModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('manualGiftSearch').focus(), 100);
+        };
+
+        // Event Listener untuk Pencarian Berkat
+        const manualGiftSearchEl = document.getElementById('manualGiftSearch');
+        if(manualGiftSearchEl) {
+            manualGiftSearchEl.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const container = document.getElementById('manualGiftList');
+                
+                if (query.length < 2) {
+                    container.innerHTML = '<div class="text-center text-xs text-slate-400 py-4">Ketik minimal 2 huruf...</div>';
+                    return;
+                }
+
+                // Filter: Nama cocok DAN belum ambil berkat
+                const matches = state.participants.filter(p => {
+                    const isMatch = p.name.toLowerCase().includes(query) || p.marga.toLowerCase().includes(query);
+                    const alreadyGifted = state.gifts.some(g => g.participantId === p.id);
+                    return isMatch && !alreadyGifted;
+                });
+
+                if (matches.length === 0) {
+                    container.innerHTML = '<div class="text-center text-xs text-red-400 py-4 font-bold">Data tidak ditemukan atau sudah ambil.</div>';
+                } else {
+                    container.innerHTML = matches.map(p => `
+                        <div onclick="window.selectManualItem('${p.id}', 'gift')" 
+                             id="item-gift-${p.id}"
+                             class="p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-amber-50 transition-all flex justify-between items-center group">
+                            <div>
+                                <div class="font-bold text-slate-700 text-sm">${p.name}</div>
+                                <div class="text-[10px] text-slate-400 uppercase font-bold">${p.marga}</div>
+                            </div>
+                            <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center group-hover:border-amber-500">
+                                <div class="w-3 h-3 rounded-full bg-amber-500 hidden selection-dot"></div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            });
+        }
+
+        window.processManualGift = () => {
+            if (!state.selectedManualGift) return;
+            const p = state.participants.find(x => x.id === state.selectedManualGift);
+            
+            if (p) {
+                // Simpan ke Firebase Gifts
+                push(ref(db, 'gifts'), {
+                    id: Date.now().toString(),
+                    participantId: p.id,
+                    name: p.name,
+                    status: p.status,
+                    marga: p.marga,
+                    timestamp: fmtDate(),
+                    method: 'manual_admin'
+                }).then(() => {
+                    beep('success');
+                    alert(`Berhasil: Berkat diserahkan kepada ${p.name}.`);
+                    closeModal('manualGiftModal');
+                    updateDashboard();
+                });
+            }
+        };
+
+        // 3. Fungsi Helper Seleksi Universal
+        window.selectManualItem = (id, type) => {
+            // Reset semua seleksi visual
+            document.querySelectorAll(`[id^="item-${type}-"]`).forEach(el => {
+                el.classList.remove('ring-2', 'ring-offset-2', type === 'checkin' ? 'ring-emerald-500' : 'ring-amber-500', 'bg-slate-50');
+                el.querySelector('.selection-dot').classList.add('hidden');
+            });
+
+            // Set seleksi baru
+            const selectedEl = document.getElementById(`item-${type}-${id}`);
+            if (selectedEl) {
+                selectedEl.classList.add('ring-2', 'ring-offset-2', type === 'checkin' ? 'ring-emerald-500' : 'ring-amber-500', 'bg-slate-50');
+                selectedEl.querySelector('.selection-dot').classList.remove('hidden');
+            }
+
+            // Update State & Tombol
+            if (type === 'checkin') {
+                state.selectedManualCheckin = id;
+                const btn = document.getElementById('manualCheckinBtn');
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                state.selectedManualGift = id;
+                const btn = document.getElementById('manualGiftBtn');
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        };
 
         // --- GLOBAL & ADMIN ---
         window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
@@ -1232,7 +1203,7 @@
             let data = [];
             let filename = '';
 
-            if (type === 'p') { data = state.participants; filename = 'Master_Keluarga'; } // UPDATED FILENAME
+            if (type === 'p') { data = state.participants; filename = 'Master_Keluarga'; } 
             else if (type === 'a') { data = state.attendance; filename = 'Laporan_Kehadiran'; }
             else if (type === 'g') { data = state.gifts; filename = 'Laporan_Hadiah'; }
             
@@ -1268,6 +1239,72 @@
                 console.error("Gagal download tiket:", err);
                 alert("Gagal menyimpan tiket. Silakan coba screenshot manual.");
             });
+        };
+
+        // --- CHART RENDERING LOGIC ---
+        window.renderCharts = () => {
+            if(typeof Chart === 'undefined') return;
+
+            // Destroy existing charts to prevent duplication/overlay issues
+            Object.values(charts).forEach(c => c.destroy());
+
+            // 1. Overview Chart (Bar)
+            const ctxOverview = document.getElementById('chartOverview');
+            if (ctxOverview) {
+                charts.overview = new Chart(ctxOverview, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Terdaftar', 'Hadir', 'Ambil Berkat'],
+                        datasets: [{
+                            label: 'Jumlah',
+                            data: [state.participants.length, state.attendance.length, state.gifts.length],
+                            backgroundColor: ['#e2e8f0', '#10b981', '#f59e0b'],
+                            borderRadius: 8
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                });
+            }
+
+            // 2. Marga Distribution (Doughnut)
+            const ctxMarga = document.getElementById('chartMarga');
+            if (ctxMarga) {
+                const margaCounts = {};
+                state.attendance.forEach(a => { margaCounts[a.marga] = (margaCounts[a.marga] || 0) + 1; });
+                
+                charts.marga = new Chart(ctxMarga, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(margaCounts),
+                        datasets: [{
+                            data: Object.values(margaCounts),
+                            backgroundColor: ['#059669', '#34d399', '#6ee7b7', '#a7f3d0'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            // 3. Status Distribution (Pie)
+            const ctxStatus = document.getElementById('chartStatus');
+            if (ctxStatus) {
+                const statusCounts = {};
+                state.attendance.forEach(a => { statusCounts[a.status] = (statusCounts[a.status] || 0) + 1; });
+                
+                charts.status = new Chart(ctxStatus, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(statusCounts),
+                        datasets: [{
+                            data: Object.values(statusCounts),
+                            backgroundColor: ['#f59e0b', '#fbbf24', '#fcd34d', '#fde68a', '#fffbeb'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
         };
 
         setTimeout(() => { setTab('register'); }, 1500);
