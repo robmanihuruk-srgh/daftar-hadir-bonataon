@@ -167,21 +167,21 @@
         </div>
 
         <header class="header-bg p-6 pb-20 shadow-xl relative z-20">
-            <div class="flex justify-between items-start relative z-10">
+            <div class="flex justify-between items-center relative z-10">
                 <div class="flex items-center gap-4">
-                    <div class="logo-frame w-16 h-16 p-1 border-2 border-white/20">
+                    <div class="logo-frame w-14 h-14 p-1 border-2 border-white/20">
                         <img src="logo tugu manihuruk.png" alt="Logo" class="w-full h-full object-contain">
                     </div>
                     <div>
-                        <h1 class="text-2xl md:text-3xl font-bold text-white serif-font tracking-wide drop-shadow-md">BONATAON<br>2026</h1>
-                        <p class="text-emerald-100 text-xs font-medium uppercase tracking-widest mt-1 opacity-90">
-                            <i class="fas fa-map-pin mr-1 text-amber-400"></i> Punguan Raja Manihuruk
-                        </p>
+                        <h1 class="text-xl md:text-2xl font-bold text-white serif-font tracking-wide drop-shadow-md">BONATAON<br>2026</h1>
                     </div>
                 </div>
+                
+                <div id="liveClock" class="text-right">
+                    </div>
             </div>
               
-            <div class="flex gap-3 mt-8 overflow-x-auto pb-2 custom-scrollbar">
+            <div class="flex gap-3 mt-6 overflow-x-auto pb-2 custom-scrollbar">
                 <div class="flex-1 min-w-[100px] bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10 text-center">
                     <div class="text-2xl font-bold text-white" id="statRegistered">0</div>
                     <div class="text-[10px] font-bold text-emerald-200 uppercase tracking-wider mt-1">Jemaat</div>
@@ -403,6 +403,27 @@
         let charts = {}; 
         let audioCtx = null;
 
+        // --- CLOCK FUNCTION (NEW) ---
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace('.', ':');
+            const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
+            
+            const el = document.getElementById('liveClock');
+            if(el) {
+                el.innerHTML = `
+                    <div class="flex flex-col items-end text-white/90">
+                        <div class="text-[10px] md:text-xs font-medium opacity-80 uppercase tracking-widest">${dateString}</div>
+                        <div class="text-lg md:text-2xl font-bold font-mono tracking-widest flex items-center gap-2 text-emerald-50">
+                            ${timeString} <i class="fas fa-clock text-amber-400 text-sm md:text-lg animate-pulse"></i>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); // Run immediately
+
         function beep(type = 'success') {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -529,7 +550,7 @@
                                 <div class="flex gap-2 text-xs">
                                     <button onclick="toggleTable('attendance')" class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200" id="btnTblAttend">Hadir</button>
                                     <button onclick="toggleTable('gifts')" class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200" id="btnTblGift">Berkat</button>
-                                    <button onclick="toggleTable('not-present')" class="px-2 py-1 bg-slate-200 text-slate-600 rounded-lg hover:bg-slate-300 font-bold" id="btnTblNotPresent">Belum Hadir</button>
+                                    <button onclick="toggleTable('registered')" class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200" id="btnTblRegistered">Semua Jemaat</button>
                                 </div>
                             </div>
                             <div id="dataTableContainer" class="max-h-60 overflow-y-auto custom-scrollbar border rounded-lg p-2 bg-slate-50"></div>
@@ -539,7 +560,6 @@
                                 <button onclick="exportData('p')" class="px-4 py-2 bg-slate-600 text-white rounded-lg text-xs font-bold shadow hover:bg-slate-700">Master Data</button>
                                 <button onclick="exportData('a')" class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow hover:bg-emerald-700">Laporan Hadir</button>
                                 <button onclick="exportData('g')" class="px-4 py-2 bg-amber-600 text-white rounded-lg text-xs font-bold shadow hover:bg-amber-700">Laporan Hadiah</button>
-                                <button onclick="exportData('n')" class="px-4 py-2 bg-slate-400 text-white rounded-lg text-xs font-bold shadow hover:bg-slate-500">Belum Hadir</button>
                             </div>
                             
                             ${state.isAdmin ? `
@@ -680,23 +700,25 @@
             
             const btnAttend = document.getElementById('btnTblAttend');
             const btnGift = document.getElementById('btnTblGift');
-            const btnNotPresent = document.getElementById('btnTblNotPresent');
+            const btnRegistered = document.getElementById('btnTblRegistered'); // Updated button ID
             
             // Reset styles
-            [btnAttend, btnGift, btnNotPresent].forEach(b => b.classList.remove('ring-2', 'ring-emerald-300', 'ring-amber-300', 'ring-slate-400'));
+            [btnAttend, btnGift, btnRegistered].forEach(b => {
+                if(b) b.classList.remove('ring-2', 'ring-emerald-300', 'ring-amber-300', 'ring-blue-300');
+            });
 
             let data = [];
             
             if(currentTableMode === 'gifts') {
                 data = state.gifts;
-                btnGift.classList.add('ring-2', 'ring-amber-300');
-            } else if (currentTableMode === 'not-present') {
-                // Filter peserta yang TIDAK ada di attendance
-                data = state.participants.filter(p => !state.attendance.find(a => a.participantId === p.id));
-                btnNotPresent.classList.add('ring-2', 'ring-slate-400');
+                if(btnGift) btnGift.classList.add('ring-2', 'ring-amber-300');
+            } else if (currentTableMode === 'registered') {
+                // Tampilkan semua peserta
+                data = state.participants;
+                if(btnRegistered) btnRegistered.classList.add('ring-2', 'ring-blue-300');
             } else {
                 data = state.attendance;
-                btnAttend.classList.add('ring-2', 'ring-emerald-300');
+                if(btnAttend) btnAttend.classList.add('ring-2', 'ring-emerald-300');
             }
 
             if(data.length === 0) {
@@ -704,9 +726,9 @@
                 return;
             }
 
-            // Untuk "Belum Hadir", urutkan berdasarkan nama, yang lain berdasarkan waktu (reverse)
-            const displayData = currentTableMode === 'not-present' 
-                ? data.sort((a,b) => a.name.localeCompare(b.name)) 
+            // Untuk "Registered", urutkan berdasarkan nama, yang lain berdasarkan waktu (reverse)
+            const displayData = currentTableMode === 'registered' 
+                ? data.slice().sort((a,b) => a.name.localeCompare(b.name)) // Sort by name
                 : data.slice().reverse();
 
             container.innerHTML = `
@@ -715,7 +737,7 @@
                         <tr>
                             <th class="py-2">Nama</th>
                             <th class="py-2">Info</th>
-                            <th class="py-2 text-right">${currentTableMode === 'not-present' ? 'Daftar' : 'Waktu'}</th>
+                            <th class="py-2 text-right">${currentTableMode === 'registered' ? 'Daftar' : 'Waktu'}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -792,17 +814,14 @@
         // --- GLOBAL & ADMIN ---
         window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
         
-        // MODIFIKASI: Toggle Login / Logout
         window.adminLogin = () => {
             if (state.isAdmin) {
-                // Jika sudah login, tawarkan Logout
                 if(confirm("Apakah Anda ingin keluar dari Mode Admin?")) {
                     state.isAdmin = false;
                     alert("Anda telah keluar dari mode Admin.");
-                    updateDashboard(); // Refresh UI untuk menyembunyikan fitur admin
+                    updateDashboard(); 
                 }
             } else {
-                // Jika belum login, buka modal password
                 document.getElementById('adminModal').classList.remove('hidden');
             }
         };
@@ -834,12 +853,9 @@
             if (type === 'p') { data = state.participants; filename = 'Master_Jemaat'; }
             else if (type === 'a') { data = state.attendance; filename = 'Laporan_Kehadiran'; }
             else if (type === 'g') { data = state.gifts; filename = 'Laporan_Hadiah'; }
-            else if (type === 'n') { 
-                // Export yang belum hadir
-                data = state.participants.filter(p => !state.attendance.find(a => a.participantId === p.id));
-                filename = 'Laporan_Belum_Hadir'; 
-            }
-
+            
+            // Perbaikan logic export (menghapus opsi 'n' / belum hadir)
+            
             let csv = "Nama,Status,Marga,Waktu\n" + data.map(r => `"${r.name}","${r.status}","${r.marga}","${r.timestamp || r.registeredAt}"`).join("\n");
             const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' })); link.download = `Bonataon_${filename}.csv`; link.click();
         };
