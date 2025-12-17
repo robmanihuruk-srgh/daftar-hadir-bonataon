@@ -177,8 +177,7 @@
                     </div>
                 </div>
                 
-                <div id="liveClock" class="text-right">
-                    </div>
+                <div id="liveClock" class="text-right"></div>
             </div>
               
             <div class="flex gap-3 mt-6 overflow-x-auto pb-2 custom-scrollbar">
@@ -286,34 +285,50 @@
             </div>
         </div>
     </div>
+
+    <div id="editParticipantModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeModal('editParticipantModal')"></div>
+        <div class="card max-w-xs w-full mx-4 relative z-10 p-6 bg-white rounded-2xl animate-[modalUp_0.3s_ease-out]">
+            <div class="text-center mb-4">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-600 text-xl"><i class="fas fa-edit"></i></div>
+                <h3 class="text-lg font-bold text-slate-800">Ubah Data Nama</h3>
+                <p class="text-xs text-slate-500 mt-1">Masukkan password peserta untuk mengubah nama.</p>
+            </div>
+            <div class="space-y-4">
+                <div id="editStep1">
+                    <input type="password" id="editPassInput" placeholder="Password Peserta" class="form-input w-full rounded-xl p-3 text-center text-lg tracking-widest font-bold mb-3">
+                    <button onclick="window.processEditAuth()" class="w-full rounded-xl py-3 bg-blue-600 text-white font-bold hover:bg-blue-700">Verifikasi</button>
+                </div>
+                <div id="editStep2" class="hidden">
+                    <input type="text" id="editNameInput" placeholder="Nama Baru" class="form-input w-full rounded-xl p-3 text-center text-lg font-bold mb-3">
+                    <button onclick="window.saveEditData()" class="w-full rounded-xl py-3 bg-emerald-600 text-white font-bold hover:bg-emerald-700">Simpan Perubahan</button>
+                </div>
+                <button onclick="closeModal('editParticipantModal')" class="w-full rounded-xl py-2 text-sm text-slate-400 hover:text-slate-600">Batal</button>
+            </div>
+        </div>
+    </div>
     
     <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onclick="closeModal('ticketModal')"></div>
-        
         <div class="relative w-full max-w-sm mx-6 animate-[modalUp_0.4s_ease-out]">
             <div class="vip-ticket rounded-3xl p-6 shadow-2xl shadow-amber-900/40">
                 <div class="pattern-overlay opacity-20"></div>
                 <div class="vip-border"></div>
-                
                 <div class="relative z-10 text-center">
                     <div class="flex justify-center mb-4">
                         <img src="logo tugu manihuruk.png" class="w-16 h-16 object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
                     </div>
-                    
                     <h4 class="text-emerald-400 text-[10px] font-bold tracking-[0.3em] uppercase mb-1">Official Invitation</h4>
                     <h2 class="royal-font text-3xl font-bold gold-text mb-1">BONATAON</h2>
                     <h3 class="royal-font text-xl text-slate-300 tracking-widest mb-6">2026</h3>
-
                     <div class="mb-2">
                         <p class="text-slate-400 text-[10px] uppercase tracking-widest mb-1">Nama Tamu</p>
                         <h1 id="ticName" class="text-2xl font-serif text-white leading-tight font-bold">Nama Peserta</h1>
                     </div>
-                    
                     <div class="flex justify-center gap-3 mb-6 mt-3">
                         <div class="px-3 py-1 border border-emerald-500/50 bg-emerald-900/30 rounded-full text-emerald-400 text-[10px] font-bold uppercase tracking-wide" id="ticStatusDisp">STATUS</div>
                         <div class="px-3 py-1 border border-amber-500/50 bg-amber-900/30 rounded-full text-amber-400 text-[10px] font-bold uppercase tracking-wide" id="ticMargaDisp">MARGA</div>
                     </div>
-
                     <div class="ticket-perforation bg-white p-5 shadow-inner">
                         <img id="ticQR" src="" class="w-48 h-48 object-contain mix-blend-multiply mx-auto" alt="QR Code">
                         <div class="text-center mt-3">
@@ -321,7 +336,6 @@
                             <div class="text-lg font-mono font-black text-slate-800 tracking-widest" id="ticCode">CODE</div>
                         </div>
                     </div>
-
                     <div class="mt-6">
                         <a id="btnDownloadTicket" href="#" download class="block w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-800 text-white font-bold text-sm shadow-lg hover:shadow-emerald-500/20 transition-all border border-emerald-500/50">
                             <i class="fas fa-download mr-2"></i> Simpan Tiket
@@ -369,7 +383,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue, set, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         // --- CONFIG ---
         const firebaseConfig = {
@@ -393,19 +407,19 @@
             tab: 'register',
             scanner: null,
             isAdmin: false,
-            adminPass: "ADMIN123", // Default, will be overwritten by DB
+            adminPass: "ADMIN123",
             selectedManualCheckin: null,
             selectedManualGift: null,
-            tempAuthUser: null // Stores user for password verification
+            tempAuthUser: null,
+            tempEditId: null,
+            tempEditParticipant: null
         };
 
-        // --- PASSWORD SYNC LOGIC (NEW) ---
-        // Listen to password changes in Firebase
+        // --- PASSWORD SYNC LOGIC ---
         onValue(ref(db, 'config/adminPassword'), (s) => {
             if(s.exists()) {
                 state.adminPass = s.val();
             } else {
-                // If no password in DB, set default
                 set(ref(db, 'config/adminPassword'), "ADMIN123");
                 state.adminPass = "ADMIN123";
             }
@@ -414,7 +428,7 @@
         let charts = {}; 
         let audioCtx = null;
 
-        // --- CLOCK FUNCTION (NEW) ---
+        // --- CLOCK FUNCTION ---
         function updateClock() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace('.', ':');
@@ -433,7 +447,7 @@
             }
         }
         setInterval(updateClock, 1000);
-        updateClock(); // Run immediately
+        updateClock();
 
         function beep(type = 'success') {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -561,7 +575,7 @@
                                 <div class="flex gap-2 text-xs">
                                     <button onclick="toggleTable('attendance')" class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200" id="btnTblAttend">Hadir</button>
                                     <button onclick="toggleTable('gifts')" class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200" id="btnTblGift">Berkat</button>
-                                    <button onclick="toggleTable('registered')" class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200" id="btnTblRegistered">Semua Jemaat</button>
+                                    <button onclick="toggleTable('registered')" class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200" id="btnTblRegistered">Semua Keluarga</button>
                                 </div>
                             </div>
                             <div id="dataTableContainer" class="max-h-60 overflow-y-auto custom-scrollbar border rounded-lg p-2 bg-slate-50"></div>
@@ -582,7 +596,7 @@
                     </div>`;
                 setTimeout(() => {
                     renderCharts();
-                    toggleTable('attendance'); 
+                    toggleTable('registered'); // MODIFIKASI: Default show registered list
                 }, 150); 
             }
         };
@@ -599,8 +613,13 @@
             const id = Date.now().toString(); 
             const qrCode = `MN-${id.slice(-6)}`;
             
-            push(ref(db, 'participants'), { 
-                id, name, status, marga, qrCode, 
+            // Push ke Database
+            const newRef = push(ref(db, 'participants')); // Use Firebase generated key for better consistency
+            const key = newRef.key;
+
+            set(newRef, { 
+                id: key, // Store the key inside the object too
+                name, status, marga, qrCode, 
                 password: userPass, 
                 registeredAt: fmtDate(), 
                 timestamp: Date.now() 
@@ -652,6 +671,59 @@
             document.getElementById('ticketModal').classList.remove('hidden');
         };
 
+        // --- EDIT PARTICIPANT LOGIC (NEW) ---
+        window.initEdit = (id) => {
+            const p = state.participants.find(x => x.id === id);
+            if(p) {
+                state.tempEditId = id;
+                state.tempEditParticipant = p;
+                document.getElementById('editPassInput').value = '';
+                document.getElementById('editNameInput').value = p.name;
+                
+                // Show Step 1, Hide Step 2
+                document.getElementById('editStep1').classList.remove('hidden');
+                document.getElementById('editStep2').classList.add('hidden');
+                
+                document.getElementById('editParticipantModal').classList.remove('hidden');
+            }
+        };
+
+        window.processEditAuth = () => {
+            const input = document.getElementById('editPassInput').value;
+            if(state.tempEditParticipant && input === state.tempEditParticipant.password) {
+                // Password Correct, Show Name Input
+                document.getElementById('editStep1').classList.add('hidden');
+                document.getElementById('editStep2').classList.remove('hidden');
+            } else {
+                alert("Password Salah!");
+            }
+        };
+
+        window.saveEditData = () => {
+            const newName = document.getElementById('editNameInput').value.trim();
+            if(newName && state.tempEditId) {
+                update(ref(db, 'participants/' + state.tempEditId), {
+                    name: newName
+                }).then(() => {
+                    alert("Nama Berhasil Diubah!");
+                    closeModal('editParticipantModal');
+                    state.tempEditId = null;
+                    state.tempEditParticipant = null;
+                });
+            } else {
+                alert("Nama tidak boleh kosong.");
+            }
+        };
+
+        // --- DELETE PARTICIPANT LOGIC (ADMIN ONLY) ---
+        window.deleteParticipant = (id, name) => {
+            if(confirm(`Yakin ingin menghapus data: ${name}? Data tidak bisa dikembalikan.`)) {
+                remove(ref(db, 'participants/' + id)).then(() => {
+                    alert("Data berhasil dihapus.");
+                });
+            }
+        };
+
         // --- SCANNER LOGIC ---
         window.initScanner = () => {
             if(state.scanner) return;
@@ -698,7 +770,7 @@
         }
 
         // --- LIVE DATA TABLE ---
-        let currentTableMode = 'attendance';
+        let currentTableMode = 'registered'; // DEFAULT MODE IS REGISTERED
         
         window.toggleTable = (mode) => {
             currentTableMode = mode;
@@ -711,7 +783,7 @@
             
             const btnAttend = document.getElementById('btnTblAttend');
             const btnGift = document.getElementById('btnTblGift');
-            const btnRegistered = document.getElementById('btnTblRegistered'); // Updated button ID
+            const btnRegistered = document.getElementById('btnTblRegistered'); 
             
             // Reset styles
             [btnAttend, btnGift, btnRegistered].forEach(b => {
@@ -724,7 +796,6 @@
                 data = state.gifts;
                 if(btnGift) btnGift.classList.add('ring-2', 'ring-amber-300');
             } else if (currentTableMode === 'registered') {
-                // Tampilkan semua peserta
                 data = state.participants;
                 if(btnRegistered) btnRegistered.classList.add('ring-2', 'ring-blue-300');
             } else {
@@ -737,9 +808,9 @@
                 return;
             }
 
-            // Untuk "Registered", urutkan berdasarkan nama, yang lain berdasarkan waktu (reverse)
+            // Sorting: Registered by Name A-Z, others by Time Desc
             const displayData = currentTableMode === 'registered' 
-                ? data.slice().sort((a,b) => a.name.localeCompare(b.name)) // Sort by name
+                ? data.slice().sort((a,b) => a.name.localeCompare(b.name)) 
                 : data.slice().reverse();
 
             container.innerHTML = `
@@ -748,17 +819,35 @@
                         <tr>
                             <th class="py-2">Nama</th>
                             <th class="py-2">Info</th>
-                            <th class="py-2 text-right">${currentTableMode === 'registered' ? 'Daftar' : 'Waktu'}</th>
+                            <th class="py-2 text-right">
+                                ${currentTableMode === 'registered' ? 'Aksi' : 'Waktu'}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${displayData.map(d => `
-                            <tr class="border-b border-slate-100 last:border-0 hover:bg-white">
+                        ${displayData.map(d => {
+                            // Logic for Actions Column
+                            let actionCol = '';
+                            if(currentTableMode === 'registered') {
+                                // Edit button for everyone
+                                let btns = `<button onclick="initEdit('${d.id}')" class="text-blue-500 hover:text-blue-700 mx-1 p-1"><i class="fas fa-edit"></i></button>`;
+                                // Delete button ONLY for Admin
+                                if(state.isAdmin) {
+                                    btns += `<button onclick="deleteParticipant('${d.id}', '${d.name}')" class="text-red-500 hover:text-red-700 mx-1 p-1"><i class="fas fa-trash"></i></button>`;
+                                }
+                                actionCol = `<div class="flex justify-end">${btns}</div>`;
+                            } else {
+                                // Time for other tabs
+                                actionCol = `<span class="font-mono text-slate-400">${d.timestamp ? d.timestamp.split(' ')[1] : '-'}</span>`;
+                            }
+
+                            return `
+                            <tr class="border-b border-slate-100 last:border-0 hover:bg-white transition-colors">
                                 <td class="py-2 font-bold text-slate-700">${d.name}</td>
                                 <td class="py-2 text-slate-500">${d.marga}<br>${d.status}</td>
-                                <td class="py-2 text-right text-slate-400 font-mono">${d.timestamp ? d.timestamp.split(' ')[1] : (d.registeredAt ? d.registeredAt.split(' ')[1] : '-')}</td>
+                                <td class="py-2 text-right">${actionCol}</td>
                             </tr>
-                        `).join('')}
+                        `}).join('')}
                     </tbody>
                 </table>
             `;
@@ -833,18 +922,15 @@
                     updateDashboard(); 
                 }
             } else {
-                // MODIFIKASI: Clear input saat membuka modal
                 document.getElementById('adminPassword').value = ""; 
                 document.getElementById('adminModal').classList.remove('hidden');
             }
         };
         
         window.verifyAdmin = () => {
-            // MODIFIKASI: Gunakan state.adminPass (dari database) bukan ADMIN_PASS (lokal)
             if(document.getElementById('adminPassword').value === state.adminPass) {
                 state.isAdmin = true; 
                 alert("Login Admin Berhasil"); 
-                // MODIFIKASI: Clear input setelah berhasil
                 document.getElementById('adminPassword').value = "";
                 closeModal('adminModal'); 
                 updateDashboard();
@@ -855,7 +941,6 @@
         window.saveNewPassword = () => {
             const newPass = document.getElementById('newAdminPass').value;
             if(newPass && newPass.length >= 4) {
-                // MODIFIKASI: Simpan ke Database Firebase, bukan localStorage
                 set(ref(db, 'config/adminPassword'), newPass);
                 alert("Password Admin Berhasil Diubah!");
                 closeModal('changePassModal');
@@ -877,7 +962,6 @@
             const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' })); link.download = `Bonataon_${filename}.csv`; link.click();
         };
         
-        // MODIFIKASI: Verifikasi reset menggunakan state.adminPass
         window.resetData = () => { if(prompt("Ketik password admin untuk menghapus database:") === state.adminPass) { set(ref(db, 'participants'), null); set(ref(db, 'attendance'), null); set(ref(db, 'gifts'), null); alert("Sistem berhasil direset total."); } };
 
         setTimeout(() => { setTab('register'); }, 1500);
