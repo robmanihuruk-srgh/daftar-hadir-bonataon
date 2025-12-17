@@ -385,8 +385,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         
-        let ADMIN_PASS = localStorage.getItem('bonataon_admin_pass') || "ADMIN123";
-
         // --- STATE ---
         let state = {
             participants: [],
@@ -395,10 +393,23 @@
             tab: 'register',
             scanner: null,
             isAdmin: false,
+            adminPass: "ADMIN123", // Default, will be overwritten by DB
             selectedManualCheckin: null,
             selectedManualGift: null,
             tempAuthUser: null // Stores user for password verification
         };
+
+        // --- PASSWORD SYNC LOGIC (NEW) ---
+        // Listen to password changes in Firebase
+        onValue(ref(db, 'config/adminPassword'), (s) => {
+            if(s.exists()) {
+                state.adminPass = s.val();
+            } else {
+                // If no password in DB, set default
+                set(ref(db, 'config/adminPassword'), "ADMIN123");
+                state.adminPass = "ADMIN123";
+            }
+        });
 
         let charts = {}; 
         let audioCtx = null;
@@ -822,13 +833,21 @@
                     updateDashboard(); 
                 }
             } else {
+                // MODIFIKASI: Clear input saat membuka modal
+                document.getElementById('adminPassword').value = ""; 
                 document.getElementById('adminModal').classList.remove('hidden');
             }
         };
         
         window.verifyAdmin = () => {
-            if(document.getElementById('adminPassword').value === ADMIN_PASS) {
-                state.isAdmin = true; alert("Login Admin Berhasil"); closeModal('adminModal'); updateDashboard();
+            // MODIFIKASI: Gunakan state.adminPass (dari database) bukan ADMIN_PASS (lokal)
+            if(document.getElementById('adminPassword').value === state.adminPass) {
+                state.isAdmin = true; 
+                alert("Login Admin Berhasil"); 
+                // MODIFIKASI: Clear input setelah berhasil
+                document.getElementById('adminPassword').value = "";
+                closeModal('adminModal'); 
+                updateDashboard();
             } else { alert("PIN Salah"); }
         };
 
@@ -836,8 +855,8 @@
         window.saveNewPassword = () => {
             const newPass = document.getElementById('newAdminPass').value;
             if(newPass && newPass.length >= 4) {
-                localStorage.setItem('bonataon_admin_pass', newPass);
-                ADMIN_PASS = newPass;
+                // MODIFIKASI: Simpan ke Database Firebase, bukan localStorage
+                set(ref(db, 'config/adminPassword'), newPass);
                 alert("Password Admin Berhasil Diubah!");
                 closeModal('changePassModal');
             } else {
@@ -854,16 +873,14 @@
             else if (type === 'a') { data = state.attendance; filename = 'Laporan_Kehadiran'; }
             else if (type === 'g') { data = state.gifts; filename = 'Laporan_Hadiah'; }
             
-            // Perbaikan logic export (menghapus opsi 'n' / belum hadir)
-            
             let csv = "Nama,Status,Marga,Waktu\n" + data.map(r => `"${r.name}","${r.status}","${r.marga}","${r.timestamp || r.registeredAt}"`).join("\n");
             const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' })); link.download = `Bonataon_${filename}.csv`; link.click();
         };
         
-        window.resetData = () => { if(prompt("Ketik password admin untuk menghapus database:") === ADMIN_PASS) { set(ref(db, 'participants'), null); set(ref(db, 'attendance'), null); set(ref(db, 'gifts'), null); alert("Sistem berhasil direset total."); } };
+        // MODIFIKASI: Verifikasi reset menggunakan state.adminPass
+        window.resetData = () => { if(prompt("Ketik password admin untuk menghapus database:") === state.adminPass) { set(ref(db, 'participants'), null); set(ref(db, 'attendance'), null); set(ref(db, 'gifts'), null); alert("Sistem berhasil direset total."); } };
 
         setTimeout(() => { setTab('register'); }, 1500);
     </script>
 </body>
 </html>
-
