@@ -349,7 +349,8 @@
             scanner: null,
             isAdmin: false,
             adminPass: "1234",
-            activeUser: null // Menyimpan user yang sedang dibuka tiketnya
+            activeUser: null,
+            filterStatus: "Semua"
         };
 
         // LOAD ADMIN PIN FROM FIREBASE
@@ -401,7 +402,7 @@
                         <input id="inName" type="text" class="form-input w-full rounded-xl p-4 font-bold" placeholder="Nama Lengkap Sesuai KTP">
                         <div class="grid grid-cols-2 gap-4">
                             <select id="inStatus" class="form-input w-full rounded-xl p-4 font-bold">
-                                <option value="Orangtua">Orangtua</option><option value="Pemuda">Pemuda</option><option value="Sekolah Minggu">Sekolah Minggu</option>
+                                <option value="Orangtua">Orangtua</option><option value="Pemuda">Pemuda</option><option value="Sekolah Minggu">Sekolah Minggu</option><option value="Tamu">Tamu</option>
                             </select>
                             <select id="inMarga" class="form-input w-full rounded-xl p-4 font-bold">
                                 <option value="Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere">Bere</option>
@@ -552,11 +553,20 @@
             const area = document.getElementById('content-area');
             area.innerHTML = `
             <div class="space-y-6">
-                <div class="flex justify-between items-center bg-white p-6 rounded-3xl shadow-lg">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-3xl shadow-lg gap-4">
                     <h3 class="font-black text-slate-800">Manajemen Database</h3>
-                    <div class="flex gap-2">
-                        <button onclick="document.getElementById('adminSettingsModal').classList.remove('hidden')" class="bg-slate-100 p-3 rounded-xl text-slate-600"><i class="fas fa-cog"></i></button>
-                        <button onclick="window.adminLogout()" class="bg-red-50 p-3 rounded-xl text-red-600"><i class="fas fa-sign-out-alt"></i></button>
+                    <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                        <select onchange="window.updateTableFilter(this.value)" class="form-input rounded-xl px-3 py-2 text-xs font-bold bg-slate-50 border-slate-200">
+                            <option value="Semua">Semua Kategori</option>
+                            <option value="Orangtua">Orangtua</option>
+                            <option value="Pemuda">Pemuda</option>
+                            <option value="Sekolah Minggu">Sekolah Minggu</option>
+                            <option value="Tamu">Tamu</option>
+                        </select>
+                        <div class="flex gap-2 ml-auto md:ml-0">
+                            <button onclick="document.getElementById('adminSettingsModal').classList.remove('hidden')" class="bg-slate-100 p-2.5 rounded-xl text-slate-600 text-sm"><i class="fas fa-cog"></i></button>
+                            <button onclick="window.adminLogout()" class="bg-red-50 p-2.5 rounded-xl text-red-600 text-sm"><i class="fas fa-sign-out-alt"></i></button>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
@@ -566,9 +576,20 @@
             renderDataTable();
         }
 
+        window.updateTableFilter = (val) => {
+            state.filterStatus = val;
+            renderDataTable();
+        };
+
         window.renderDataTable = () => {
             const container = document.getElementById('adminTableContainer');
             if(!container) return;
+            
+            let filteredParticipants = state.participants;
+            if(state.filterStatus !== "Semua") {
+                filteredParticipants = state.participants.filter(p => p.status === state.filterStatus);
+            }
+
             container.innerHTML = `
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest">
@@ -577,7 +598,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
-                    ${state.participants.map(p => `
+                    ${filteredParticipants.length > 0 ? filteredParticipants.map(p => `
                     <tr class="hover:bg-slate-50">
                         <td class="p-4 font-black">${p.name}</td>
                         <td class="p-4 font-bold text-slate-500">${p.status}</td>
@@ -587,7 +608,7 @@
                             <button onclick="window.adminResetPin('${p.firebaseId}')" class="p-2 bg-amber-50 text-amber-600 rounded-lg"><i class="fas fa-key"></i></button>
                             <button onclick="window.adminDeleteUser('${p.firebaseId}')" class="p-2 bg-red-50 text-red-600 rounded-lg"><i class="fas fa-trash"></i></button>
                         </td>
-                    </tr>`).join('')}
+                    </tr>`).join('') : `<tr><td colspan="4" class="p-10 text-center text-slate-400 font-bold">Tidak ada data untuk kategori ini</td></tr>`}
                 </tbody>
             </table>`;
         };
@@ -648,9 +669,16 @@
         // HELPERS
         window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
         function beep() {
-            const a = new AudioContext(); const o = a.createOscillator(); const g = a.createGain();
-            o.connect(g); g.connect(a.destination); o.frequency.value = 880; g.gain.value = 0.1;
-            o.start(); o.stop(a.currentTime + 0.1);
+            try {
+                const a = new (window.AudioContext || window.webkitAudioContext)();
+                const o = a.createOscillator();
+                const g = a.createGain();
+                o.connect(g); g.connect(a.destination);
+                o.frequency.value = 880;
+                g.gain.value = 0.1;
+                o.start();
+                o.stop(a.currentTime + 0.1);
+            } catch (e) { console.warn("AudioContext error", e); }
         }
 
         window.downloadTicketImage = () => {
