@@ -12,7 +12,6 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <!-- Updated to a more reliable CDN for qrcode -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.1/qrcode.min.js"></script>
       
     <style>
@@ -53,18 +52,10 @@
             position: relative;
             overflow: hidden;
         }
-        .header-bg::after {
-            content: "";
-            position: absolute; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M0 0h20L0 20z'/%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.3;
-        }
 
         .nav-btn {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 90px;
-            padding: 1rem 0.75rem;
-            touch-action: manipulation;
+            min-height: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -79,8 +70,6 @@
             box-shadow: 0 12px 20px -5px rgba(5, 150, 105, 0.25);
         }
 
-        .custom-scrollbar::-webkit-scrollbar { height: 0px; width: 0px; background: transparent; }
-        
         .logo-frame {
             background: white;
             border-radius: 1.25rem;
@@ -89,14 +78,10 @@
             display: flex; align-items: center; justify-content: center;
         }
         
-        .chart-wrapper { position: relative; height: 300px; width: 100%; }
-        
         .form-input {
             background-color: #f8fafc;
             border: 2px solid #e2e8f0;
             transition: all 0.3s;
-            appearance: none;
-            min-height: 48px;
         }
         .form-input:focus {
             background-color: #ffffff;
@@ -105,8 +90,6 @@
             outline: none;
         }
 
-        .ornament { position: absolute; z-index: 0; opacity: 0.6; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); pointer-events: none; }
-        
         @keyframes modalUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
         
         .vip-ticket {
@@ -114,14 +97,6 @@
             border: 1px solid #334155;
             position: relative;
             overflow: hidden;
-        }
-        .vip-border {
-            position: absolute; inset: 8px;
-            border: 2px solid transparent;
-            background: linear-gradient(135deg, #1e293b, #0f172a) padding-box,
-                        var(--gold-gradient) border-box;
-            border-radius: 16px;
-            pointer-events: none;
         }
         .gold-text {
             background: var(--gold-gradient);
@@ -148,13 +123,6 @@
         .ticket-perforation::before { left: -12px; }
         .ticket-perforation::after { right: -12px; }
 
-        #reader video {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            border-radius: 1rem;
-        }
-
         .scan-frame {
             position: absolute;
             inset: 15%;
@@ -164,220 +132,194 @@
             pointer-events: none;
             border-radius: 1rem;
         }
-        .scan-frame::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: var(--emerald-600);
-            animation: scanLine 2.5s infinite ease-in-out;
-            box-shadow: 0 0 20px var(--emerald-600);
-        }
-        @keyframes scanLine { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
 
-        @media (max-width: 640px) {
-            .nav-btn { min-width: 100px; }
-            .nav-btn span { font-size: 10px; }
-            header { padding: 1.5rem 1rem; }
-            .header-bg { padding-bottom: 6rem; }
-            .glass-panel { border-radius: 0; }
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body class="antialiased">
 
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="ornament top-10 left-10 opacity-10"><i class="fas fa-leaf text-emerald-400 text-6xl transform -rotate-12"></i></div>
-        <div class="ornament bottom-20 right-10 opacity-10"><i class="fas fa-church text-emerald-300 text-8xl"></i></div>
-    </div>
-
-    <div id="app" class="relative z-10 w-full max-w-lg mx-auto md:max-w-4xl min-h-screen md:my-10 md:rounded-[2.5rem] overflow-hidden flex flex-col glass-panel transition-all duration-500 shadow-2xl">
+    <div id="app" class="relative z-10 w-full max-w-lg mx-auto md:max-w-4xl min-h-screen md:my-10 md:rounded-[2.5rem] overflow-hidden flex flex-col glass-panel shadow-2xl">
           
         <div id="loading" class="absolute inset-0 z-[9999] bg-slate-50 flex flex-col justify-center items-center px-6 text-center">
             <div class="logo-frame w-32 h-32 p-4 mb-8 animate-bounce">
-                <img src="logo tugu manihuruk.png" alt="Logo Tugu" class="w-full h-full object-contain" 
-                     onerror="this.parentElement.innerHTML='<div class=\'text-center leading-none text-sm font-bold text-emerald-800\'>BONATAON<br>2026</div>'">
+                <img src="logo tugu manihuruk.png" alt="Logo" onerror="this.src='https://via.placeholder.com/150?text=LOGO'">
             </div>
-            <h2 class="text-2xl font-bold text-emerald-900 mb-2 serif-font tracking-wide leading-tight">BONATAON MARGA MANIHURUK<br>BORU BERE / PANAGOLAN 2026</h2>
-            <div class="flex items-center gap-3 text-emerald-600 text-base font-semibold mt-4">
+            <h2 class="text-2xl font-bold text-emerald-900 mb-2 serif-font">BONATAON MANIHURUK 2026</h2>
+            <div class="flex items-center gap-3 text-emerald-600 font-semibold mt-4">
                 <i class="fas fa-circle-notch fa-spin"></i> Sinkronisasi Sistem...
             </div>
         </div>
 
-        <header class="header-bg p-8 pb-24 shadow-2xl relative z-20">
-            <div class="flex justify-between items-start relative z-10">
+        <header class="header-bg p-8 pb-20 shadow-2xl relative z-20">
+            <div class="flex justify-between items-start">
                 <div class="flex items-center gap-4">
-                    <div class="logo-frame w-14 h-14 md:w-20 md:h-20 p-1.5 border-2 border-white/30 shrink-0">
+                    <div class="logo-frame w-14 h-14 md:w-20 md:h-20 p-1.5 border-2 border-white/30">
                         <img src="logo tugu manihuruk.png" alt="Logo" class="w-full h-full object-contain">
                     </div>
                     <div>
-                        <h1 class="text-sm md:text-2xl font-extrabold text-white serif-font tracking-wide drop-shadow-xl leading-snug">
+                        <h1 class="text-sm md:text-xl font-extrabold text-white serif-font tracking-wide leading-tight">
                             BONATAON MARGA MANIHURUK<br>BORU BERE / PANAGOLAN 2026
                         </h1>
                     </div>
                 </div>
-                
-                <div id="liveClock" class="text-right pl-4 hidden md:block"></div>
+                <div id="liveClock" class="text-right text-white hidden md:block"></div>
             </div>
-            <div id="liveClockMobile" class="text-center mt-6 md:hidden border-t border-white/20 pt-4"></div>
               
-            <div class="grid grid-cols-3 gap-3 md:gap-6 mt-8">
-                <div class="bg-white/15 backdrop-blur-md rounded-2xl p-3 md:p-4 border border-white/20 text-center transition-transform hover:scale-105">
-                    <div class="text-xl md:text-3xl font-black text-white" id="statRegistered">0</div>
-                    <div class="text-[9px] md:text-xs font-bold text-emerald-200 uppercase tracking-widest mt-1">Keluarga</div>
+            <div class="grid grid-cols-3 gap-3 mt-8">
+                <div class="bg-white/15 backdrop-blur-md rounded-2xl p-3 border border-white/20 text-center">
+                    <div class="text-xl md:text-2xl font-black text-white" id="statRegistered">0</div>
+                    <div class="text-[9px] font-bold text-emerald-200 uppercase tracking-widest mt-1">Peserta</div>
                 </div>
-                <div class="bg-emerald-500/40 backdrop-blur-md rounded-2xl p-3 md:p-4 border border-emerald-400/50 text-center transition-transform hover:scale-105">
-                    <div class="text-xl md:text-3xl font-black text-emerald-50" id="statPresent">0</div>
-                    <div class="text-[9px] md:text-xs font-bold text-emerald-200 uppercase tracking-widest mt-1">Hadir</div>
+                <div class="bg-emerald-500/40 backdrop-blur-md rounded-2xl p-3 border border-emerald-400/50 text-center">
+                    <div class="text-xl md:text-2xl font-black text-emerald-50" id="statPresent">0</div>
+                    <div class="text-[9px] font-bold text-emerald-200 uppercase tracking-widest mt-1">Hadir</div>
                 </div>
-                <div class="bg-amber-500/30 backdrop-blur-md rounded-2xl p-3 md:p-4 border border-amber-400/40 text-center transition-transform hover:scale-105">
-                    <div class="text-xl md:text-3xl font-black text-amber-200" id="statGifts">0</div>
-                    <div class="text-[9px] md:text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">Berkat</div>
+                <div class="bg-amber-500/30 backdrop-blur-md rounded-2xl p-3 border border-amber-400/40 text-center">
+                    <div class="text-xl md:text-2xl font-black text-amber-200" id="statGifts">0</div>
+                    <div class="text-[9px] font-bold text-amber-100 uppercase tracking-widest mt-1">Berkat</div>
                 </div>
             </div>
         </header>
 
-        <nav class="flex px-6 -mt-12 relative z-30 gap-3 overflow-x-auto pb-6 custom-scrollbar">
-            <button onclick="setTab('register')" id="tab-register" class="nav-btn flex-1 flex-shrink-0 bg-white rounded-2xl shadow-xl border border-slate-100">
-                <i class="fas fa-user-plus text-xl text-slate-400"></i>
-                <span class="font-extrabold uppercase tracking-tight">Registrasi</span>
+        <nav class="flex px-6 -mt-10 relative z-30 gap-2 overflow-x-auto pb-4 custom-scrollbar">
+            <button onclick="setTab('register')" id="tab-register" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100">
+                <i class="fas fa-user-plus"></i><span class="text-[10px] font-bold uppercase">Daftar</span>
             </button>
-            <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 flex-shrink-0 bg-white rounded-2xl shadow-xl border border-slate-100">
-                <i class="fas fa-search-location text-xl text-slate-400"></i>
-                <span class="font-extrabold uppercase tracking-tight">Undangan</span>
+            <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100">
+                <i class="fas fa-search"></i><span class="text-[10px] font-bold uppercase">Undangan</span>
             </button>
-            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 flex-shrink-0 bg-white rounded-2xl shadow-xl border border-slate-100">
-                <i class="fas fa-qrcode text-xl text-slate-400"></i>
-                <span class="font-extrabold uppercase tracking-tight">Scan</span>
+            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100">
+                <i class="fas fa-qrcode"></i><span class="text-[10px] font-bold uppercase">Absensi</span>
             </button>
-            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 flex-shrink-0 bg-white rounded-2xl shadow-xl border border-slate-100">
-                <i class="fas fa-gift text-xl text-slate-400"></i>
-                <span class="font-extrabold uppercase tracking-tight">Berkat</span>
+            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100">
+                <i class="fas fa-gift"></i><span class="text-[10px] font-bold uppercase">Berkat</span>
             </button>
-            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 flex-shrink-0 bg-white rounded-2xl shadow-xl border border-slate-100">
-                <i class="fas fa-chart-pie text-xl text-slate-400"></i>
-                <span class="font-extrabold uppercase tracking-tight">Data</span>
-            </button>
-            <button onclick="window.adminLogin()" id="tab-admin" class="nav-btn flex-1 flex-shrink-0 bg-white rounded-2xl shadow-xl border border-slate-100">
-                <i class="fas fa-user-lock text-xl text-slate-400"></i>
-                <span class="font-extrabold uppercase tracking-tight">Admin</span>
+            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100">
+                <i class="fas fa-database"></i><span class="text-[10px] font-bold uppercase">Admin</span>
             </button>
         </nav>
 
-        <main class="flex-1 p-6 md:p-10 overflow-y-auto bg-slate-50 pb-28 relative">
+        <main class="flex-1 p-6 md:p-10 overflow-y-auto bg-slate-50 pb-24">
             <div id="content-area" class="max-w-4xl mx-auto"></div>
         </main>
           
-        <footer class="py-5 px-8 border-t border-slate-200 text-center bg-white/95 backdrop-blur-md absolute bottom-0 w-full z-20">
-            <div class="flex justify-between items-center text-xs md:text-sm">
-                <div class="font-bold text-slate-400 uppercase tracking-widest">&copy; 2026 Panitia Bonataon</div>
-                <div class="font-bold text-emerald-800 flex items-center gap-2 uppercase tracking-tight">
-                    MARGA MANIHURUK <i class="fas fa-heart text-amber-500 animate-pulse"></i>
+        <footer class="py-4 px-8 border-t border-slate-200 bg-white/95 absolute bottom-0 w-full z-20">
+            <div class="flex justify-between items-center text-[10px] md:text-xs">
+                <div class="font-bold text-slate-400 uppercase">© 2026 Panitia Bonataon</div>
+                <div class="font-bold text-emerald-800 uppercase flex items-center gap-1">
+                    Marga Manihuruk <i class="fas fa-heart text-amber-500 animate-pulse"></i>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- Modals -->
-    <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('adminModal')"></div>
-        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] animate-[modalUp_0.3s_ease-out] shadow-2xl">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-700 text-2xl"><i class="fas fa-shield-alt"></i></div>
-                <h3 class="text-xl font-black text-slate-800">Akses Panitia</h3>
-            </div>
-            <div class="space-y-5">
-                <input type="password" id="adminPassword" placeholder="PIN" class="form-input w-full rounded-2xl p-4 text-center text-2xl tracking-[0.5em] font-black">
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="closeModal('adminModal')" class="rounded-2xl py-4 text-sm font-bold border-2 border-slate-100 text-slate-400 bg-slate-50 active:scale-95 transition-transform">Batal</button>
-                    <button onclick="window.verifyAdmin()" class="rounded-2xl py-4 text-sm font-black shadow-xl shadow-emerald-200 bg-emerald-600 text-white active:scale-95 transition-transform">MASUK</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden p-4 overflow-y-auto">
-        <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-xl" onclick="closeModal('ticketModal')"></div>
-        <div class="relative w-full max-w-sm my-10 animate-[modalUp_0.4s_ease-out]">
-            <div id="vipTicketCard" class="vip-ticket rounded-[2.5rem] p-8 shadow-2xl">
-                <div class="relative z-10 text-center">
-                    <img src="logo tugu manihuruk.png" class="w-20 h-20 object-contain mx-auto mb-6 drop-shadow-2xl">
-                    <h4 class="text-emerald-400 text-[10px] font-black tracking-[0.4em] uppercase mb-2">Official Digital Invitation</h4>
-                    <h2 class="royal-font text-2xl font-black gold-text mb-1">BONATAON 2026</h2>
-                    <h3 class="royal-font text-base text-slate-300 tracking-[0.4em] mb-8">MANIHURUK</h3>
-
-                    <div class="mb-4">
-                        <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Tamu Kehormatan</p>
-                        <h1 id="ticName" class="text-2xl font-extrabold text-white leading-tight px-2">...</h1>
-                    </div>
-                    
-                    <div class="flex justify-center gap-3 mb-8 mt-4">
-                        <div class="px-3 py-1.5 border border-emerald-500/50 bg-emerald-900/40 rounded-full text-emerald-400 text-[10px] font-black uppercase tracking-widest" id="ticStatusDisp">...</div>
-                        <div class="px-3 py-1.5 border border-amber-500/50 bg-amber-900/40 rounded-full text-amber-400 text-[10px] font-black uppercase tracking-widest" id="ticMargaDisp">...</div>
-                    </div>
-
-                    <div class="ticket-perforation bg-white p-6 shadow-2xl">
-                        <div id="qrLoading" class="w-48 h-48 mx-auto flex items-center justify-center bg-slate-50 rounded-lg">
-                            <i class="fas fa-circle-notch fa-spin text-emerald-600 text-2xl"></i>
-                        </div>
-                        <img id="ticQR" src="" class="w-48 h-48 object-contain mx-auto mix-blend-multiply hidden" alt="QR">
-                        <div class="text-center mt-5">
-                            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">Unique Digital ID</div>
-                            <div class="text-xl font-mono font-black text-slate-900 mt-1" id="ticCode">...</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="vip-border"></div>
-            </div>
-            <div class="mt-8 flex flex-col gap-3">
-                <button onclick="window.downloadTicketImage()" class="w-full py-4 rounded-2xl bg-white text-emerald-900 font-black text-sm shadow-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform"><i class="fas fa-cloud-download-alt"></i> SIMPAN TIKET KE GALERI</button>
-                <button onclick="closeModal('ticketModal')" class="w-full text-white/40 text-xs font-bold py-3 uppercase tracking-widest">Tutup Undangan</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Modal PIN Peserta -->
     <div id="authTicketModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('authTicketModal')"></div>
-        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] animate-[modalUp_0.3s_ease-out] shadow-2xl">
-            <h3 class="text-xl font-black text-slate-800 text-center mb-6">Verifikasi Password Peserta</h3>
-            <p class="text-xs text-slate-400 text-center mb-4">Masukkan PIN 4 digit yang dibuat saat registrasi</p>
-            <input type="password" id="ticketPassInput" placeholder="PIN" class="form-input w-full rounded-2xl p-4 text-center text-2xl font-black mb-6">
+        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
+            <h3 class="text-xl font-black text-slate-800 text-center mb-4">Verifikasi PIN</h3>
+            <p class="text-xs text-slate-400 text-center mb-6">Masukkan PIN 4 digit yang Anda buat saat daftar</p>
+            <input type="password" id="ticketPassInput" placeholder="••••" maxlength="4" class="form-input w-full rounded-2xl p-4 text-center text-3xl font-black mb-6 tracking-[0.5em]">
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="closeModal('authTicketModal')" class="py-4 border-2 border-slate-100 rounded-2xl font-bold text-slate-400">Batal</button>
-                <button onclick="window.verifyTicketPass()" class="py-4 bg-amber-500 text-white rounded-2xl font-black shadow-lg">BUKA</button>
+                <button onclick="closeModal('authTicketModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400">Batal</button>
+                <button onclick="window.verifyTicketPass()" class="py-4 bg-emerald-600 text-white rounded-2xl font-black shadow-lg">MASUK</button>
             </div>
         </div>
     </div>
 
-    <!-- Manual Entry Modals -->
-    <div id="manualCheckinModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('manualCheckinModal')"></div>
-        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] animate-[modalUp_0.3s_ease-out] shadow-2xl">
-            <h3 class="text-xl font-black text-slate-800 mb-6 border-b border-slate-100 pb-4 flex items-center gap-2"><i class="fas fa-check-double text-emerald-600"></i> Absensi Manual</h3>
-            <div class="relative mb-6">
-                <input type="text" id="manualSearch" onkeyup="renderManualSearch('checkin')" placeholder="Cari nama keluarga..." class="form-input w-full rounded-2xl pl-12 p-4">
-                <i class="fas fa-search absolute left-5 top-5 text-slate-400"></i>
-            </div>
-            <div id="manualCheckinList" class="max-h-64 overflow-y-auto custom-scrollbar space-y-3 mb-6 bg-slate-50 p-3 rounded-2xl border border-slate-100"></div>
-            <div class="flex gap-4">
-                <button onclick="closeModal('manualCheckinModal')" class="w-full rounded-2xl py-4 font-bold border-2 border-slate-100 text-slate-400">Tutup</button>
-                <button onclick="processManualCheckin()" class="w-full rounded-2xl py-4 bg-emerald-600 text-white font-black opacity-50 cursor-not-allowed" disabled id="manualCheckinBtn">KONFIRMASI</button>
+    <!-- Modal Edit User (Public & Admin) -->
+    <div id="editUserModal" class="fixed inset-0 z-[9500] flex items-center justify-center hidden p-6">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('editUserModal')"></div>
+        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
+            <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2"><i class="fas fa-user-edit text-emerald-600"></i> Edit Profil</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Nama Lengkap</label>
+                    <input id="editName" type="text" class="form-input w-full rounded-xl p-3 font-bold">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Kategori</label>
+                    <select id="editStatus" class="form-input w-full rounded-xl p-3 font-bold">
+                        <option value="Orangtua">Orangtua</option>
+                        <option value="Pemuda">Pemuda</option>
+                        <option value="Sekolah Minggu">Sekolah Minggu</option>
+                        <option value="Tamu">Tamu</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Marga</label>
+                    <select id="editMarga" class="form-input w-full rounded-xl p-3 font-bold">
+                        <option value="Manihuruk">Manihuruk</option>
+                        <option value="Boru">Boru</option>
+                        <option value="Bere">Bere</option>
+                    </select>
+                </div>
+                <div class="pt-4 grid grid-cols-2 gap-3">
+                    <button onclick="closeModal('editUserModal')" class="py-3 border-2 rounded-xl font-bold text-slate-400">Batal</button>
+                    <button onclick="window.saveUserEdit()" class="py-3 bg-emerald-600 text-white rounded-xl font-black">SIMPAN</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="manualGiftModal" class="fixed inset-0 z-[8000] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('manualGiftModal')"></div>
-        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] animate-[modalUp_0.3s_ease-out] shadow-2xl">
-            <h3 class="text-xl font-black text-slate-800 mb-6 border-b border-slate-100 pb-4 flex items-center gap-2"><i class="fas fa-gift text-amber-600"></i> Berkat Manual</h3>
-            <div class="relative mb-6">
-                <input type="text" id="manualGiftSearch" onkeyup="renderManualSearch('gift')" placeholder="Cari nama keluarga..." class="form-input w-full rounded-2xl pl-12 p-4">
-                <i class="fas fa-search absolute left-5 top-5 text-slate-400"></i>
+    <!-- Modal Tiket / Undangan -->
+    <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden p-4 overflow-y-auto">
+        <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-xl" onclick="closeModal('ticketModal')"></div>
+        <div class="relative w-full max-w-sm my-10 animate-[modalUp_0.4s]">
+            <div id="vipTicketCard" class="vip-ticket rounded-[2.5rem] p-8 shadow-2xl">
+                <div class="relative z-10 text-center">
+                    <img src="logo tugu manihuruk.png" class="w-16 h-16 mx-auto mb-4">
+                    <h4 class="text-emerald-400 text-[10px] font-black tracking-[0.3em] uppercase mb-1">Official Invitation</h4>
+                    <h2 class="royal-font text-2xl font-black gold-text">BONATAON 2026</h2>
+                    
+                    <div class="my-6">
+                        <p class="text-slate-500 text-[10px] font-bold uppercase mb-1">Tamu Kehormatan</p>
+                        <h1 id="ticName" class="text-xl font-extrabold text-white leading-tight">...</h1>
+                    </div>
+
+                    <div class="ticket-perforation bg-white p-6">
+                        <div id="qrLoading" class="w-48 h-48 mx-auto flex items-center justify-center bg-slate-50 rounded-lg">
+                            <i class="fas fa-circle-notch fa-spin text-emerald-600"></i>
+                        </div>
+                        <img id="ticQR" src="" class="w-48 h-48 object-contain mx-auto hidden">
+                        <div class="text-center mt-4">
+                            <div class="text-[10px] text-slate-400 font-bold uppercase">Registration Code</div>
+                            <div class="text-lg font-mono font-black text-slate-900" id="ticCode">...</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="manualGiftList" class="max-h-64 overflow-y-auto custom-scrollbar space-y-3 mb-6 bg-slate-50 p-3 rounded-2xl border border-slate-100"></div>
-            <div class="flex gap-4">
-                <button onclick="closeModal('manualGiftModal')" class="w-full rounded-2xl py-4 font-bold border-2 border-slate-100 text-slate-400">Tutup</button>
-                <button onclick="processManualGift()" class="w-full rounded-2xl py-4 bg-amber-500 text-white font-black opacity-50 cursor-not-allowed" disabled id="manualGiftBtn">KONFIRMASI</button>
+            <div class="mt-6 flex flex-col gap-3">
+                <button onclick="window.openSelfEdit()" class="w-full py-4 rounded-2xl bg-amber-500 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2">
+                    <i class="fas fa-edit"></i> EDIT NAMA / PROFIL
+                </button>
+                <button onclick="window.downloadTicketImage()" class="w-full py-4 rounded-2xl bg-white text-emerald-900 font-black text-sm shadow-lg flex items-center justify-center gap-2">
+                    <i class="fas fa-download"></i> SIMPAN KE GALERI
+                </button>
+                <button onclick="closeModal('ticketModal')" class="text-white/40 text-xs font-bold py-2 uppercase">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Admin Login -->
+    <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('adminModal')"></div>
+        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
+            <h3 class="text-xl font-black text-slate-800 text-center mb-6">Akses Panitia</h3>
+            <input type="password" id="adminPassword" placeholder="PIN ADMIN" class="form-input w-full rounded-2xl p-4 text-center text-2xl font-black mb-6">
+            <button onclick="window.verifyAdmin()" class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black">MASUK</button>
+        </div>
+    </div>
+
+    <!-- Modal Admin Settings (Ganti PIN Admin) -->
+    <div id="adminSettingsModal" class="fixed inset-0 z-[9600] flex items-center justify-center hidden p-6">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('adminSettingsModal')"></div>
+        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
+            <h3 class="text-xl font-black text-slate-800 mb-6">Ganti PIN Admin</h3>
+            <div class="space-y-4">
+                <input type="password" id="newAdminPin" placeholder="PIN Baru" class="form-input w-full rounded-xl p-4 text-center text-xl font-black">
+                <button onclick="window.updateAdminPin()" class="w-full py-4 bg-emerald-600 text-white rounded-xl font-black">UPDATE PIN</button>
             </div>
         </div>
     </div>
@@ -406,32 +348,31 @@
             tab: 'register',
             scanner: null,
             isAdmin: false,
-            adminPass: "ADMIN123",
-            recoveryKey: "BONA2026",
-            tempAuthUser: null,
-            activeTable: 'attendance',
-            selectedManualCheckin: null,
-            selectedManualGift: null
+            adminPass: "1234",
+            activeUser: null // Menyimpan user yang sedang dibuka tiketnya
         };
+
+        // LOAD ADMIN PIN FROM FIREBASE
+        onValue(ref(db, 'settings/adminPin'), s => {
+            if(s.val()) state.adminPass = s.val();
+        });
 
         // UI & CLOCK
         function updateClock() {
             const now = new Date();
-            const time = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit', second:'2-digit' }).replace(/\./g,':');
-            const date = now.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'short' });
-            const html = `
-                <div class="text-white/90">
-                    <div class="text-[10px] md:text-xs uppercase font-black tracking-widest opacity-80">${date}</div>
-                    <div class="text-xl md:text-3xl font-mono font-black mt-1">${time}</div>
-                </div>`;
+            const time = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+            const date = now.toLocaleDateString('id-ID', { day:'numeric', month:'short' });
+            const html = `<div class="text-xs font-bold opacity-70">${date}</div><div class="text-xl font-black">${time}</div>`;
             if(document.getElementById('liveClock')) document.getElementById('liveClock').innerHTML = html;
-            if(document.getElementById('liveClockMobile')) document.getElementById('liveClockMobile').innerHTML = html;
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateClock, 1000); updateClock();
 
-        // DATA LISTENERS
-        onValue(ref(db, 'participants'), s => { state.participants = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
+        // LISTENERS
+        onValue(ref(db, 'participants'), s => { 
+            const data = s.val();
+            state.participants = data ? Object.keys(data).map(k => ({...data[k], firebaseId: k})) : []; 
+            updateDashboard(); 
+        });
         onValue(ref(db, 'attendance'), s => { state.attendance = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
         onValue(ref(db, 'gifts'), s => { state.gifts = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
 
@@ -441,438 +382,97 @@
             document.getElementById('statGifts').innerText = state.gifts.length;
             
             if(state.tab === 'register') renderParticipantList();
-            if(state.tab === 'data') { renderCharts(); renderDataTable(); }
-            if(state.tab === 'scan' || state.tab === 'gift') renderRecentScans();
+            if(state.tab === 'data') renderDataTable();
             
-            setTimeout(() => {
-                const loader = document.getElementById('loading');
-                if(loader) loader.classList.add('opacity-0', 'pointer-events-none');
-            }, 800);
+            setTimeout(() => document.getElementById('loading')?.classList.add('hidden'), 500);
         }
 
-        // TABS & NAVIGATION
         window.setTab = async (t) => {
-            if(state.scanner) await stopScanner();
+            if(state.scanner) { try { await state.scanner.stop(); } catch(e){} state.scanner = null; }
             state.tab = t;
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.id === `tab-${t}`));
             
             const area = document.getElementById('content-area');
-            if(t === 'register') area.innerHTML = renderRegisterTab();
-            else if(t === 'find') area.innerHTML = renderFindTab();
-            else if(t === 'scan') area.innerHTML = renderScannerTab('Kehadiran');
-            else if(t === 'gift') area.innerHTML = renderScannerTab('Pengambilan Berkat');
-            else if(t === 'data') area.innerHTML = renderDataTab();
-
-            if(t === 'register') renderParticipantList();
-            if(t === 'scan' || t === 'gift') { setTimeout(initScanner, 300); renderRecentScans(); }
-            if(t === 'data') { renderCharts(); renderDataTable(); }
-        };
-
-        // RENDERERS
-        function renderRegisterTab() {
-            return `
-            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-slate-100 mb-8 transition-all hover:shadow-emerald-100/50">
-                <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-3"><i class="fas fa-id-card text-emerald-600"></i> Form Registrasi Digital</h3>
-                <div class="space-y-6">
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">Nama Lengkap Sesuai KTP</label>
-                        <input id="inName" type="text" class="form-input w-full rounded-2xl p-4 font-bold" placeholder="Contoh: St. Hotman Manihuruk / Ny. Manihuruk Br. Gultom">
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">Kategori Peserta</label>
-                            <select id="inStatus" class="form-input w-full rounded-2xl p-4 font-bold">
-                                <option value="Orangtua">Orangtua</option>
-                                <option value="Pemuda">Pemuda</option>
-                                <option value="Sekolah Minggu">Sekolah Minggu</option>
-                                <option value="Tamu">Tamu Undangan</option>
+            if(t === 'register') {
+                area.innerHTML = `
+                <div class="bg-white rounded-3xl p-6 shadow-xl mb-8">
+                    <h3 class="text-lg font-black text-slate-800 mb-6">Pendaftaran Peserta</h3>
+                    <div class="space-y-4">
+                        <input id="inName" type="text" class="form-input w-full rounded-xl p-4 font-bold" placeholder="Nama Lengkap Sesuai KTP">
+                        <div class="grid grid-cols-2 gap-4">
+                            <select id="inStatus" class="form-input w-full rounded-xl p-4 font-bold">
+                                <option value="Orangtua">Orangtua</option><option value="Pemuda">Pemuda</option><option value="Sekolah Minggu">Sekolah Minggu</option>
+                            </select>
+                            <select id="inMarga" class="form-input w-full rounded-xl p-4 font-bold">
+                                <option value="Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere">Bere</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">Kelompok Marga</label>
-                            <select id="inMarga" class="form-input w-full rounded-2xl p-4 font-bold">
-                                <option value="Manihuruk">Manihuruk</option>
-                                <option value="Boru">Boru</option>
-                                <option value="Bere">Bere / Panagolan</option>
-                            </select>
-                        </div>
+                        <input id="inPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-4 font-black text-center text-xl" placeholder="Buat PIN (4 Digit)">
+                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg">DAFTARKAN</button>
                     </div>
-                    <div class="bg-amber-50 p-5 rounded-2xl border-2 border-amber-100">
-                        <label class="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-2 block">Buat PIN Akses (PENTING)</label>
-                        <input id="inPass" type="text" maxlength="4" class="form-input w-full rounded-2xl p-4 font-black text-center border-amber-200 text-2xl tracking-[1em]" placeholder="0000">
-                        <p class="text-[9px] text-amber-500 mt-2 font-bold leading-relaxed italic">*PIN ini digunakan untuk membuka kartu undangan digital Anda nanti.</p>
-                    </div>
-                    <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-2xl py-5 font-black text-lg shadow-2xl shadow-emerald-200 active:scale-95 transition-all hover:bg-emerald-700">Daftarkan Keluarga</button>
                 </div>
-            </div>
-            <div id="participantList" class="space-y-3"></div>`;
-        }
-
-        function renderFindTab() {
-            return `
-            <div class="bg-white rounded-[2.5rem] p-10 shadow-2xl border border-slate-100 text-center max-w-xl mx-auto">
-                <div class="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-6 text-amber-500 text-3xl shadow-inner"><i class="fas fa-ticket-alt"></i></div>
-                <h3 class="font-black text-2xl text-slate-800 mb-8">Buka Undangan Digital</h3>
-                <div class="space-y-6 text-left">
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block text-center">Cari Nama Terdaftar</label>
-                        <input id="findName" type="text" placeholder="Masukkan Nama Lengkap" class="form-input w-full rounded-2xl p-5 text-center font-bold text-lg">
+                <div id="participantList" class="space-y-3"></div>`;
+                renderParticipantList();
+            } else if(t === 'find') {
+                area.innerHTML = `
+                <div class="bg-white rounded-3xl p-8 shadow-xl text-center">
+                    <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 text-2xl"><i class="fas fa-ticket-alt"></i></div>
+                    <h3 class="font-black text-xl mb-6">Buka Undangan</h3>
+                    <div class="space-y-4">
+                        <input id="findName" type="text" placeholder="Masukkan Nama Lengkap" class="form-input w-full rounded-xl p-4 text-center font-bold">
+                        <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-xl py-4 font-black">CARI DATA</button>
                     </div>
-                    <div class="grid grid-cols-1 gap-4">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block text-center">Pilih Marga</label>
-                        <select id="findMarga" class="form-input w-full rounded-2xl p-5 text-center font-bold text-lg">
-                            <option value="Manihuruk">Manihuruk</option>
-                            <option value="Boru">Boru</option>
-                            <option value="Bere">Bere</option>
-                        </select>
-                    </div>
-                    <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-2xl py-5 font-black text-lg shadow-2xl active:scale-95 transition-all mt-4">TEMUKAN TIKET</button>
-                </div>
-            </div>`;
-        }
-
-        function renderScannerTab(title) {
-            const isGift = title.includes('Berkat');
-            const manualAction = isGift ? 'openManualGift()' : 'openManualCheckin()';
-            const icon = isGift ? 'fa-gift' : 'fa-keyboard';
-            const color = isGift ? 'text-amber-700' : 'text-emerald-700';
-
-            return `
-            <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-2xl">
-                <h3 class="font-black text-xl text-center mb-8 flex items-center justify-center gap-3"><i class="fas fa-qrcode text-emerald-600"></i> Scan QR ${title}</h3>
-                <div id="scanMsg" class="hidden p-4 rounded-2xl text-center text-sm font-black mb-6 animate-bounce"></div>
-                <div class="relative rounded-3xl overflow-hidden bg-black aspect-square max-w-sm mx-auto border-8 border-slate-50 shadow-2xl">
-                    <div id="reader" class="w-full h-full"></div>
-                    <div class="scan-frame"></div>
-                </div>
-                <div id="recentScans" class="mt-10 space-y-3"></div>
-                ${state.isAdmin ? `
-                <button onclick="${manualAction}" class="w-full mt-8 py-5 bg-slate-100 ${color} rounded-2xl text-xs font-black hover:bg-slate-200 transition-all border-2 border-slate-200 flex items-center justify-center gap-2">
-                    <i class="fas ${icon}"></i> INPUT DATA MANUAL (ADMIN)
-                </button>` : ''}
-            </div>`;
-        }
-
-        function renderDataTab() {
-            return `
-            <div class="space-y-8">
-                <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-2xl border border-slate-100">
-                    <h4 class="font-black text-slate-800 mb-6 border-b-2 border-slate-50 pb-4 flex items-center gap-3"><i class="fas fa-chart-line text-emerald-600"></i> Statistik Kehadiran</h4>
-                    <div class="chart-wrapper"><canvas id="chartOverview"></canvas></div>
-                </div>
-                ${state.isAdmin ? `
-                <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-2xl border border-slate-100">
-                    <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-                        <h4 class="font-black text-slate-800 uppercase tracking-widest text-sm">Database Realtime</h4>
-                        <div class="flex bg-slate-100 p-1.5 rounded-2xl w-full sm:w-auto">
-                            <button onclick="window.toggleTable('attendance')" class="flex-1 px-4 py-2 text-[10px] font-black rounded-xl transition-all ${state.activeTable === 'attendance' ? 'bg-white shadow-md text-emerald-600' : 'text-slate-400'}">HADIR</button>
-                            <button onclick="window.toggleTable('gifts')" class="flex-1 px-4 py-2 text-[10px] font-black rounded-xl transition-all ${state.activeTable === 'gifts' ? 'bg-white shadow-md text-amber-600' : 'text-slate-400'}">BERKAT</button>
-                        </div>
-                    </div>
-                    <div id="dataTableContainer" class="overflow-x-auto rounded-2xl border-2 border-slate-50 shadow-inner"></div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-                        <button onclick="window.exportData('a')" class="w-full py-5 bg-emerald-600 text-white rounded-2xl font-black text-sm shadow-xl active:scale-95 transition-all uppercase tracking-widest"><i class="fas fa-file-excel mr-2"></i> Download CSV</button>
-                        <button onclick="window.adminLogout()" class="w-full py-5 text-red-500 bg-red-50 rounded-2xl font-black text-sm active:scale-95 transition-all uppercase tracking-widest">Keluar Mode Admin</button>
-                    </div>
-                </div>` : `
-                <div class="p-12 text-center text-slate-300 bg-white rounded-[2.5rem] border-4 border-dashed border-slate-100 shadow-xl">
-                    <i class="fas fa-fingerprint text-5xl mb-4 opacity-30"></i>
-                    <p class="text-sm font-black uppercase tracking-widest">Detail Laporan Terproteksi</p>
-                    <p class="text-xs font-bold mt-2 text-slate-400 italic">Hanya dapat diakses oleh Panitia Bonataon.</p>
-                </div>`}
-            </div>`;
-        }
-
-        // SCANNER LOGIC
-        window.initScanner = () => {
-            state.scanner = new Html5Qrcode("reader");
-            const config = { fps: 15, qrbox: (width, height) => ({ width: width * 0.7, height: height * 0.7 }) };
-            state.scanner.start({ facingMode: "environment" }, config, onScanSuccess).catch(err => {
-                showScanFeedback('Kamera Gagal Dimulai', 'bg-red-500 text-white');
-            });
-        };
-
-        window.stopScanner = async () => {
-            if(state.scanner) {
-                try { await state.scanner.stop(); } catch(e) {}
-                state.scanner = null;
-            }
-        };
-
-        function onScanSuccess(decodedText) {
-            const p = state.participants.find(x => x.qrCode === decodedText);
-            
-            if(!p) {
-                showScanFeedback('QR CODE TIDAK VALID', 'bg-red-600 text-white');
-                beep('error');
-                return;
-            }
-
-            const dbPath = state.tab === 'scan' ? 'attendance' : 'gifts';
-            const existing = state[dbPath].find(x => x.participantId === p.id);
-
-            if(existing) {
-                showScanFeedback(`SUDAH TERCATAT: ${p.name.toUpperCase()}`, 'bg-amber-500 text-white');
-                beep('error');
-            } else {
-                push(ref(db, dbPath), {
-                    participantId: p.id,
-                    name: p.name,
-                    marga: p.marga,
-                    status: p.status,
-                    timestamp: new Date().toLocaleString('id-ID', { hour12: false })
-                }).then(() => {
-                    showScanFeedback(`BERHASIL: ${p.name.toUpperCase()}`, 'bg-emerald-600 text-white');
-                    beep('success');
-                });
-            }
-        }
-
-        function showScanFeedback(text, classes) {
-            const msg = document.getElementById('scanMsg');
-            if(!msg) return;
-            msg.innerText = text;
-            msg.className = `p-5 rounded-2xl text-center text-sm font-black mb-6 shadow-xl ${classes}`;
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 4000);
-        }
-
-        window.renderRecentScans = () => {
-            const list = document.getElementById('recentScans');
-            if(!list) return;
-            const data = state.tab === 'scan' ? state.attendance : state.gifts;
-            const title = state.tab === 'scan' ? 'Kehadiran' : 'Berkat';
-            
-            list.innerHTML = `
-                <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Log Scan Terbaru (${title})</h5>
-                <div class="space-y-3">
-                ${data.slice(-3).reverse().map(d => `
-                    <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-100 shadow-sm transition-transform hover:scale-[1.02]">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600"><i class="fas fa-check"></i></div>
-                            <div>
-                                <div class="font-black text-sm text-slate-800">${d.name}</div>
-                                <div class="text-[10px] font-bold text-slate-400">${d.timestamp.split(' ')[1]}</div>
-                            </div>
-                        </div>
-                        <div class="text-[8px] font-black bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full uppercase">${d.marga}</div>
-                    </div>
-                `).join('') || '<p class="text-[10px] text-slate-400 font-bold italic text-center p-4">Menunggu aktivitas scan...</p>'}
                 </div>`;
-        };
-
-        // ADMIN FUNCTIONS
-        window.verifyAdmin = () => {
-            const pass = document.getElementById('adminPassword').value;
-            if(pass === state.adminPass) {
-                state.isAdmin = true;
-                closeModal('adminModal');
-                setTab(state.tab);
-                alert("Otorisasi Admin Berhasil");
-            } else alert("PIN Rahasia Salah!");
-        };
-
-        window.adminLogin = () => {
-            if(state.isAdmin) alert("Anda sudah berada dalam mode Admin");
-            else {
-                const passField = document.getElementById('adminPassword');
-                if (passField) passField.value = '';
-                const modal = document.getElementById('adminModal');
-                if (modal) modal.classList.remove('hidden');
+            } else if(t === 'scan' || t === 'gift') {
+                area.innerHTML = `
+                <div class="bg-white rounded-3xl p-6 shadow-xl text-center">
+                    <h3 class="font-black mb-6">Scan QR ${t === 'scan' ? 'Kehadiran' : 'Berkat'}</h3>
+                    <div id="scanMsg" class="hidden p-3 rounded-xl mb-4 text-white font-bold"></div>
+                    <div class="relative rounded-2xl overflow-hidden bg-black aspect-square max-w-sm mx-auto">
+                        <div id="reader"></div>
+                        <div class="scan-frame"></div>
+                    </div>
+                </div>`;
+                setTimeout(initScanner, 300);
+            } else if(t === 'data') {
+                if(!state.isAdmin) {
+                    document.getElementById('adminModal').classList.remove('hidden');
+                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold">Akses Terbatas</div>`;
+                } else {
+                    renderAdminPanel();
+                }
             }
         };
 
-        window.adminLogout = () => {
-            state.isAdmin = false;
-            setTab('register');
-        };
-
-        // MANUAL ENTRY LOGIC
-        window.openManualCheckin = () => {
-            state.selectedManualCheckin = null;
-            const modal = document.getElementById('manualCheckinModal');
-            if (modal) modal.classList.remove('hidden');
-            renderManualSearch('checkin');
-        };
-
-        window.openManualGift = () => {
-            state.selectedManualGift = null;
-            const modal = document.getElementById('manualGiftModal');
-            if (modal) modal.classList.remove('hidden');
-            renderManualSearch('gift');
-        };
-
-        window.renderManualSearch = (type) => {
-            const searchInputId = type === 'checkin' ? 'manualSearch' : 'manualGiftSearch';
-            const listId = type === 'checkin' ? 'manualCheckinList' : 'manualGiftList';
-            
-            const query = document.getElementById(searchInputId).value.toLowerCase();
-            const listEl = document.getElementById(listId);
-            const source = state.participants;
-            const compare = type === 'checkin' ? state.attendance : state.gifts;
-
-            const filtered = source.filter(p => 
-                p.name.toLowerCase().includes(query) && 
-                !compare.find(c => c.participantId === p.id)
-            );
-
-            if(filtered.length === 0) {
-                listEl.innerHTML = '<div class="text-center text-xs text-slate-400 italic p-6">Tidak ada data atau keluarga sudah tercatat.</div>';
-                return;
-            }
-
-            listEl.innerHTML = filtered.map(p => `
-                <div onclick="window.selectManual('${type}', '${p.id}')" 
-                     id="manual-${type}-${p.id}"
-                     class="p-4 border-2 border-slate-100 rounded-2xl cursor-pointer hover:bg-slate-100 transition-all flex justify-between items-center bg-white">
-                     <div>
-                        <div class="font-black text-sm text-slate-800">${p.name}</div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">${p.marga}</div>
-                     </div>
-                     <i class="fas fa-circle text-slate-100" id="icon-${type}-${p.id}"></i>
-                </div>
-            `).join('');
-        };
-
-        window.selectManual = (type, id) => {
-            const listId = type === 'checkin' ? 'manualCheckinList' : 'manualGiftList';
-            const listEl = document.getElementById(listId);
-            
-            listEl.querySelectorAll('.fa-circle, .fa-check-circle').forEach(i => i.className = 'fas fa-circle text-slate-100');
-            listEl.querySelectorAll('div[id^="manual-"]').forEach(d => d.className = 'p-4 border-2 border-slate-100 rounded-2xl cursor-pointer hover:bg-slate-100 transition-all flex justify-between items-center bg-white');
-
-            if (type === 'checkin') state.selectedManualCheckin = id;
-            else state.selectedManualGift = id;
-
-            const item = document.getElementById(`manual-${type}-${id}`);
-            const icon = document.getElementById(`icon-${type}-${id}`);
-            if(item) item.className = 'p-4 border-2 border-emerald-500 rounded-2xl cursor-pointer bg-emerald-50 transition-all flex justify-between items-center';
-            if(icon) icon.className = 'fas fa-check-circle text-emerald-500';
-
-            const btnId = type === 'checkin' ? 'manualCheckinBtn' : 'manualGiftBtn';
-            const btn = document.getElementById(btnId);
-            if(btn) {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        };
-
-        window.processManualCheckin = () => {
-            const id = state.selectedManualCheckin;
-            const p = state.participants.find(x => x.id === id);
-            if(p && state.isAdmin) {
-                push(ref(db, 'attendance'), { 
-                    participantId: p.id, name: p.name, status: p.status, marga: p.marga, 
-                    timestamp: new Date().toLocaleString('id-ID', { hour12: false })
-                }).then(() => {
-                    beep('success');
-                    alert(`Absensi Manual Sukses: ${p.name}`);
-                    closeModal('manualCheckinModal');
-                });
-            }
-        };
-
-        window.processManualGift = () => {
-            const id = state.selectedManualGift;
-            const p = state.participants.find(x => x.id === id);
-            if(p && state.isAdmin) {
-                push(ref(db, 'gifts'), { 
-                    participantId: p.id, name: p.name, status: p.status, marga: p.marga, 
-                    timestamp: new Date().toLocaleString('id-ID', { hour12: false })
-                }).then(() => {
-                    beep('success');
-                    alert(`Berkat Manual Sukses: ${p.name}`);
-                    closeModal('manualGiftModal');
-                });
-            }
-        };
-
-        window.toggleTable = (type) => {
-            state.activeTable = type;
-            renderDataTable();
-        };
-
-        window.renderDataTable = () => {
-            const container = document.getElementById('dataTableContainer');
-            if(!container) return;
-            const data = state.activeTable === 'attendance' ? state.attendance : state.gifts;
-            container.innerHTML = `
-                <table class="w-full text-left text-xs">
-                    <thead class="bg-slate-50 border-b-2 border-slate-100 text-slate-400 font-black uppercase tracking-widest">
-                        <tr>
-                            <th class="p-4">Nama</th>
-                            <th class="p-4">Kategori</th>
-                            <th class="p-4">Waktu</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
-                        ${data.map(d => `
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="p-4 font-black text-slate-800">${d.name}</td>
-                                <td class="p-4 font-bold text-slate-500">${d.status}</td>
-                                <td class="p-4 font-mono text-emerald-600">${d.timestamp.split(' ')[1]}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>`;
-        };
-
-        window.closeModal = (id) => {
-            const el = document.getElementById(id);
-            if(el) el.classList.add('hidden');
-        };
-
-        function beep(type) {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.frequency.setValueAtTime(type === 'success' ? 880 : 200, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.15);
-            } catch (e) { console.warn("Beep failed: AudioContext not allowed without interaction."); }
-        }
-
-        window.exportData = () => {
-            const data = state.activeTable === 'attendance' ? state.attendance : state.gifts;
-            const csv = "Nama,Status,Marga,Waktu\n" + data.map(r => `"${r.name}","${r.status}","${r.marga}","${r.timestamp}"`).join("\n");
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' }));
-            link.download = `Bonataon_2026_${state.activeTable}_${Date.now()}.csv`;
-            link.click();
-        };
-
+        // REGISTER
         window.processRegister = () => {
-            const n = document.getElementById('inName').value.trim();
-            const s = document.getElementById('inStatus').value;
-            const m = document.getElementById('inMarga').value;
-            const p = document.getElementById('inPass').value.trim();
-            
-            if(!n) return alert("Nama Lengkap wajib diisi sesuai KTP/Panggilan keluarga.");
-            if(p.length < 4) return alert("PIN Keamanan terlalu pendek! Harap masukkan minimal 4 digit PIN.");
+            const name = document.getElementById('inName').value.trim();
+            const pass = document.getElementById('inPass').value;
+            if(!name || pass.length < 4) return alert("Lengkapi data dan PIN 4 digit!");
             
             const code = `MN-${Date.now().toString().slice(-6)}`;
-            const newRef = push(ref(db, 'participants'));
-            const key = newRef.key;
-            set(newRef, { 
-                id: key, name:n, status:s, marga:m, password:p, qrCode:code, 
-                registeredAt: new Date().toLocaleString() 
-            })
-            .then(() => {
-                beep('success');
-                window.showTicket(n, s, m, code);
+            const data = {
+                name, 
+                status: document.getElementById('inStatus').value,
+                marga: document.getElementById('inMarga').value,
+                password: pass,
+                qrCode: code,
+                registeredAt: new Date().toLocaleString()
+            };
+            
+            push(ref(db, 'participants'), data).then(() => {
+                alert("Pendaftaran Berhasil!");
+                window.showTicket(data);
                 document.getElementById('inName').value = '';
                 document.getElementById('inPass').value = '';
             });
         };
 
-        window.showTicket = async (name, status, marga, code) => {
-            document.getElementById('ticName').innerText = name;
-            document.getElementById('ticStatusDisp').innerText = status;
-            document.getElementById('ticMargaDisp').innerText = marga;
-            document.getElementById('ticCode').innerText = code;
+        // SHOW TICKET & QR
+        window.showTicket = async (user) => {
+            state.activeUser = user;
+            document.getElementById('ticName').innerText = user.name;
+            document.getElementById('ticCode').innerText = user.qrCode;
             
             const qrImg = document.getElementById('ticQR');
             const qrLoader = document.getElementById('qrLoading');
@@ -882,113 +482,198 @@
             document.getElementById('ticketModal').classList.remove('hidden');
 
             try {
-                // Access library via window object for better reliability in modules
-                const qrLib = window.QRCode;
-                if (!qrLib) {
-                    throw new Error("Library QRCode tidak terdeteksi di global scope.");
-                }
-
-                const qrOptions = {
-                    errorCorrectionLevel: 'H',
-                    type: 'image/png',
-                    margin: 4,
-                    width: 800,
-                    color: { 
-                        dark: "#064e3b",
-                        light: "#ffffff"
-                    }
-                };
-
-                // Promisify QRCode generation if possible, or use standard callback
-                qrLib.toDataURL(code, qrOptions, (err, url) => {
-                    if (err) {
-                        console.error("QRCode.toDataURL error:", err);
-                        throw err;
-                    }
+                const qrOptions = { errorCorrectionLevel: 'H', margin: 2, width: 600, color: { dark: "#064e3b" } };
+                if (typeof QRCode !== 'undefined') {
+                    const url = await QRCode.toDataURL(user.qrCode, qrOptions);
                     qrImg.src = url;
-                    qrImg.onload = () => {
-                        qrLoader.classList.add('hidden');
-                        qrImg.classList.remove('hidden');
-                        qrImg.classList.add('animate-[modalUp_0.4s_ease-out]');
-                    };
-                });
-
-            } catch (err) {
-                console.error("QR Generation Failed:", err);
-                qrLoader.innerHTML = `
-                    <div class="text-center p-4">
-                        <i class="fas fa-exclamation-triangle text-red-500 mb-2"></i>
-                        <div class="text-[10px] text-slate-400 font-bold uppercase">${err.message || 'QR Generation Error'}</div>
-                    </div>
-                `;
+                    qrImg.onload = () => { qrLoader.classList.add('hidden'); qrImg.classList.remove('hidden'); };
+                } else { throw new Error(); }
+            } catch (e) {
+                qrLoader.innerHTML = `<span class="text-[10px] text-red-500 font-bold">QR ERROR</span>`;
             }
         };
 
+        // FIND TICKET
         window.findTicket = () => {
             const name = document.getElementById('findName').value.toLowerCase().trim();
-            const marga = document.getElementById('findMarga').value;
-            if(!name) return alert("Masukkan nama untuk mencari!");
-            
-            const found = state.participants.find(x => x.name.toLowerCase().includes(name) && x.marga === marga);
+            if(!name) return alert("Masukkan nama!");
+            const found = state.participants.find(x => x.name.toLowerCase().includes(name));
             if(found) {
-                state.tempAuthUser = found;
+                state.tempUser = found;
                 document.getElementById('ticketPassInput').value = '';
                 document.getElementById('authTicketModal').classList.remove('hidden');
-            } else alert("Maaf, data keluarga tidak ditemukan.");
+            } else alert("Data tidak ditemukan!");
         };
 
         window.verifyTicketPass = () => {
-            const input = document.getElementById('ticketPassInput').value;
-            if(state.tempAuthUser && input === state.tempAuthUser.password) {
-                window.showTicket(state.tempAuthUser.name, state.tempAuthUser.status, state.tempAuthUser.marga, state.tempAuthUser.qrCode);
+            const pin = document.getElementById('ticketPassInput').value;
+            if(state.tempUser && pin === state.tempUser.password) {
+                window.showTicket(state.tempUser);
                 closeModal('authTicketModal');
-                state.tempAuthUser = null;
-            } else alert("PIN Keamanan Salah!");
+            } else alert("PIN Salah!");
         };
 
-        window.downloadTicketImage = () => {
-            const el = document.getElementById('vipTicketCard');
-            const participantName = document.getElementById('ticName').innerText;
-            html2canvas(el, { scale: 2, backgroundColor: '#0f172a' }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Undangan_Bonataon_2026_${participantName.replace(/\s+/g, '_')}.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
+        // SELF EDIT FACILITY
+        window.openSelfEdit = () => {
+            if(!state.activeUser) return;
+            document.getElementById('editName').value = state.activeUser.name;
+            document.getElementById('editStatus').value = state.activeUser.status;
+            document.getElementById('editMarga').value = state.activeUser.marga;
+            document.getElementById('editUserModal').classList.remove('hidden');
+        };
+
+        window.saveUserEdit = () => {
+            const id = state.activeUser.firebaseId;
+            const updates = {
+                name: document.getElementById('editName').value,
+                status: document.getElementById('editStatus').value,
+                marga: document.getElementById('editMarga').value
+            };
+            
+            update(ref(db, 'participants/' + id), updates).then(() => {
+                alert("Data berhasil diperbarui!");
+                closeModal('editUserModal');
+                state.activeUser = {...state.activeUser, ...updates};
+                document.getElementById('ticName').innerText = updates.name;
             });
         };
 
-        window.renderCharts = () => {
-            const ctx = document.getElementById('chartOverview');
-            if(!ctx) return;
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Peserta', 'Hadir', 'Berkat'],
-                    datasets: [{
-                        data: [state.participants.length, state.attendance.length, state.gifts.length],
-                        backgroundColor: ['#3b82f6', '#059669', '#f59e0b'],
-                        borderRadius: 12
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        // ADMIN FEATURES
+        window.verifyAdmin = () => {
+            const p = document.getElementById('adminPassword').value;
+            if(p === state.adminPass) {
+                state.isAdmin = true;
+                closeModal('adminModal');
+                setTab('data');
+            } else alert("PIN Salah!");
+        };
+
+        function renderAdminPanel() {
+            const area = document.getElementById('content-area');
+            area.innerHTML = `
+            <div class="space-y-6">
+                <div class="flex justify-between items-center bg-white p-6 rounded-3xl shadow-lg">
+                    <h3 class="font-black text-slate-800">Manajemen Database</h3>
+                    <div class="flex gap-2">
+                        <button onclick="document.getElementById('adminSettingsModal').classList.remove('hidden')" class="bg-slate-100 p-3 rounded-xl text-slate-600"><i class="fas fa-cog"></i></button>
+                        <button onclick="window.adminLogout()" class="bg-red-50 p-3 rounded-xl text-red-600"><i class="fas fa-sign-out-alt"></i></button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+                    <div id="adminTableContainer" class="overflow-x-auto custom-scrollbar"></div>
+                </div>
+            </div>`;
+            renderDataTable();
+        }
+
+        window.renderDataTable = () => {
+            const container = document.getElementById('adminTableContainer');
+            if(!container) return;
+            container.innerHTML = `
+            <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest">
+                    <tr>
+                        <th class="p-4">Nama</th><th class="p-4">Kategori</th><th class="p-4">PIN</th><th class="p-4 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    ${state.participants.map(p => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-4 font-black">${p.name}</td>
+                        <td class="p-4 font-bold text-slate-500">${p.status}</td>
+                        <td class="p-4 font-mono text-emerald-600">${p.password}</td>
+                        <td class="p-4 flex justify-center gap-2">
+                            <button onclick="window.adminEditUser('${p.firebaseId}')" class="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><i class="fas fa-edit"></i></button>
+                            <button onclick="window.adminResetPin('${p.firebaseId}')" class="p-2 bg-amber-50 text-amber-600 rounded-lg"><i class="fas fa-key"></i></button>
+                            <button onclick="window.adminDeleteUser('${p.firebaseId}')" class="p-2 bg-red-50 text-red-600 rounded-lg"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>`;
+        };
+
+        window.adminEditUser = (id) => {
+            const user = state.participants.find(p => p.firebaseId === id);
+            state.activeUser = user;
+            window.openSelfEdit();
+        };
+
+        window.adminResetPin = (id) => {
+            if(confirm("Reset PIN peserta ini menjadi '0000'?")) {
+                update(ref(db, 'participants/' + id), { password: '0000' }).then(() => alert("PIN Direset!"));
+            }
+        };
+
+        window.adminDeleteUser = (id) => {
+            if(confirm("Hapus data peserta ini secara permanen?")) {
+                remove(ref(db, 'participants/' + id)).then(() => alert("Data Dihapus!"));
+            }
+        };
+
+        window.updateAdminPin = () => {
+            const newPin = document.getElementById('newAdminPin').value;
+            if(newPin.length < 4) return alert("PIN minimal 4 digit!");
+            set(ref(db, 'settings/adminPin'), newPin).then(() => {
+                state.adminPass = newPin;
+                alert("PIN Admin berhasil diperbarui!");
+                closeModal('adminSettingsModal');
+            });
+        };
+
+        window.adminLogout = () => { state.isAdmin = false; setTab('register'); };
+
+        // SCANNER LOGIC
+        window.initScanner = () => {
+            state.scanner = new Html5Qrcode("reader");
+            state.scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, onScanSuccess);
+        };
+
+        function onScanSuccess(text) {
+            const p = state.participants.find(x => x.qrCode === text);
+            if(!p) return showFeedback('QR TIDAK VALID', 'bg-red-600');
+            
+            const path = state.tab === 'scan' ? 'attendance' : 'gifts';
+            push(ref(db, path), { name: p.name, timestamp: new Date().toLocaleString() }).then(() => {
+                showFeedback(`BERHASIL: ${p.name}`, 'bg-emerald-600');
+                beep();
+            });
+        }
+
+        function showFeedback(txt, cls) {
+            const el = document.getElementById('scanMsg');
+            el.innerText = txt; el.className = `p-3 rounded-xl mb-4 text-white font-bold ${cls}`;
+            el.classList.remove('hidden'); setTimeout(() => el.classList.add('hidden'), 3000);
+        }
+
+        // HELPERS
+        window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
+        function beep() {
+            const a = new AudioContext(); const o = a.createOscillator(); const g = a.createGain();
+            o.connect(g); g.connect(a.destination); o.frequency.value = 880; g.gain.value = 0.1;
+            o.start(); o.stop(a.currentTime + 0.1);
+        }
+
+        window.downloadTicketImage = () => {
+            html2canvas(document.getElementById('vipTicketCard')).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Tiket_Bonataon.png';
+                link.href = canvas.toDataURL();
+                link.click();
             });
         };
 
         function renderParticipantList() {
             const list = document.getElementById('participantList');
             if(!list) return;
-            list.innerHTML = `<h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Pendaftar Terbaru</h5>` + 
-                state.participants.slice(-5).reverse().map(p => `
-                <div class="bg-white p-5 rounded-2xl border border-slate-100 flex justify-between items-center shadow-md">
-                    <div>
-                        <div class="font-black text-slate-800">${p.name}</div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">${p.marga}</div>
-                    </div>
-                    <div class="text-[9px] font-black bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full uppercase">${p.status}</div>
+            list.innerHTML = `<h5 class="text-[10px] font-black text-slate-400 uppercase mb-2">Pendaftar Terbaru</h5>` + 
+                state.participants.slice(-3).reverse().map(p => `
+                <div class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm">
+                    <div class="font-bold text-sm">${p.name}</div>
+                    <div class="text-[8px] font-black bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full">${p.status}</div>
                 </div>`).join('');
         }
 
-        setTimeout(() => setTab('register'), 100);
+        setTab('register');
     </script>
 </body>
 </html>
