@@ -54,7 +54,7 @@
         }
 
         .nav-btn {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 80px;
             display: flex;
             flex-direction: column;
@@ -139,31 +139,35 @@
         
         .btn-hover { transition: transform 0.2s; }
         .btn-hover:active { transform: scale(0.95); }
+
+        .nav-btn-animate { animation: modalUp 0.5s ease-out; }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased text-slate-900">
 
     <div id="app" class="relative z-10 w-full max-w-lg mx-auto md:max-w-4xl min-h-screen md:my-10 md:rounded-[2.5rem] overflow-hidden flex flex-col glass-panel shadow-2xl">
           
+        <!-- Loading State -->
         <div id="loading" class="absolute inset-0 z-[9999] bg-slate-50 flex flex-col justify-center items-center px-6 text-center">
             <div class="logo-frame w-32 h-32 p-4 mb-8 animate-bounce">
                 <img src="logo tugu manihuruk.png" alt="Logo" onerror="this.src='https://via.placeholder.com/150?text=LOGO'">
             </div>
-            <h2 class="text-2xl font-bold text-emerald-900 mb-2 serif-font">BONATAON MANIHURUK 2026</h2>
+            <h2 class="text-2xl font-bold text-emerald-900 mb-2 serif-font uppercase tracking-tight">Bonataon Manihuruk 2026</h2>
             <div class="flex items-center gap-3 text-emerald-600 font-semibold mt-4">
                 <i class="fas fa-circle-notch fa-spin"></i> Sinkronisasi Sistem...
             </div>
         </div>
 
+        <!-- Header Section -->
         <header class="header-bg p-8 pb-20 shadow-2xl relative z-20">
             <div class="flex justify-between items-start">
                 <div class="flex items-center gap-4">
-                    <div onclick="window.showAdminLogin()" class="logo-frame w-14 h-14 md:w-20 md:h-20 p-1.5 border-2 border-white/30">
+                    <div onclick="window.showAdminLogin()" class="logo-frame w-14 h-14 md:w-20 md:h-20 p-1.5 border-2 border-white/30 hover:scale-105 transition-transform duration-300">
                         <img src="logo tugu manihuruk.png" alt="Logo" class="w-full h-full object-contain">
                     </div>
                     <div>
-                        <h1 class="text-sm md:text-xl font-extrabold text-white serif-font tracking-wide leading-tight">
-                            BONATAON MARGA MANIHURUK<br>BORU BERE / PANAGOLAN 2026
+                        <h1 class="text-sm md:text-xl font-extrabold text-white serif-font tracking-wide leading-tight uppercase">
+                            Bonataon Marga Manihuruk<br>Boru Bere / Panagolan 2026
                         </h1>
                     </div>
                 </div>
@@ -186,6 +190,7 @@
             </div>
         </header>
 
+        <!-- Navigation Section -->
         <nav id="mainNav" class="flex px-6 -mt-10 relative z-30 gap-2 overflow-x-auto pb-4 custom-scrollbar">
             <button onclick="setTab('register')" id="tab-register" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover">
                 <i class="fas fa-user-plus text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Daftar</span>
@@ -193,13 +198,15 @@
             <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover">
                 <i class="fas fa-search text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Undangan</span>
             </button>
-            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover max-sm:hidden admin-tab staff-tab">
+            
+            <!-- Operational Tabs (Hidden on mobile by default) -->
+            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover admin-tab staff-tab max-sm:hidden">
                 <i class="fas fa-qrcode text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Absensi</span>
             </button>
-            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover max-sm:hidden admin-tab staff-tab">
+            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover admin-tab staff-tab max-sm:hidden">
                 <i class="fas fa-gift text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Berkat</span>
             </button>
-            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover max-sm:hidden admin-tab">
+            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover admin-tab max-sm:hidden">
                 <i class="fas fa-database text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Admin</span>
             </button>
         </nav>
@@ -210,7 +217,7 @@
           
         <footer class="py-4 px-8 border-t border-slate-200 bg-white/95 absolute bottom-0 w-full z-20">
             <div class="flex justify-between items-center text-[10px] md:text-xs">
-                <div class="font-bold text-slate-400 uppercase">© 2026 Panitia Bonataon</div>
+                <div class="font-bold text-slate-400 uppercase tracking-widest">© 2026 Panitia Bonataon</div>
                 <div class="font-bold text-emerald-800 uppercase flex items-center gap-1">
                     Marga Manihuruk <i class="fas fa-heart text-amber-500 animate-pulse"></i>
                 </div>
@@ -218,6 +225,8 @@
         </footer>
     </div>
 
+    <!-- Modals -->
+    
     <!-- Modal Admin Login -->
     <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('adminModal')"></div>
@@ -226,11 +235,11 @@
                 <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-user-shield text-2xl"></i>
                 </div>
-                <h3 class="text-xl font-black text-slate-800">Akses Panitia</h3>
-                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-widest">Gunakan PIN Admin/Petugas</p>
+                <h3 class="text-xl font-black text-slate-800 tracking-tight">Akses Panitia</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-widest">Masukkan PIN Anda</p>
             </div>
-            <input type="password" id="adminPassword" placeholder="PIN ANDA" class="form-input w-full rounded-2xl p-4 text-center text-2xl font-black mb-4 tracking-widest">
-            <button onclick="window.verifyAdmin()" class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black btn-hover shadow-lg">MASUK SISTEM</button>
+            <input type="password" id="adminPassword" placeholder="••••" maxlength="8" class="form-input w-full rounded-2xl p-4 text-center text-3xl font-black mb-4 tracking-[0.5em]">
+            <button onclick="window.verifyAdmin()" class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black btn-hover shadow-lg shadow-emerald-100 uppercase tracking-widest">MASUK SISTEM</button>
             <button onclick="window.showRecoveryModal()" class="w-full mt-4 text-[10px] font-black text-slate-400 hover:text-emerald-600 uppercase tracking-widest transition-colors">Lupa PIN Admin Utama?</button>
         </div>
     </div>
@@ -239,10 +248,10 @@
     <div id="recoveryModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('recoveryModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 text-center mb-2 tracking-tight">Pulihkan PIN Admin</h3>
-            <p class="text-xs text-slate-400 text-center mb-6">Gunakan PIN lama atau Kode Pemulihan ('BONA2026') untuk verifikasi.</p>
+            <h3 class="text-xl font-black text-slate-800 text-center mb-2 tracking-tight">Reset PIN Admin</h3>
+            <p class="text-xs text-slate-400 text-center mb-6">Verifikasi identitas dengan PIN lama atau Kode Pemulihan ('BONA2026').</p>
             <div class="space-y-4">
-                <input type="text" id="recoveryKeyInput" placeholder="PIN LAMA / KODE PEMULIHAN" class="form-input w-full rounded-2xl p-4 text-center font-black text-lg">
+                <input type="text" id="recoveryKeyInput" placeholder="PIN LAMA / KODE" class="form-input w-full rounded-2xl p-4 text-center font-black text-lg tracking-wider">
                 <input type="password" id="recoveryNewPin" maxlength="4" placeholder="PIN BARU (4 DIGIT)" class="form-input w-full rounded-2xl p-4 text-center font-black text-2xl tracking-[0.5em]">
                 <div class="grid grid-cols-2 gap-3 pt-4">
                     <button onclick="closeModal('recoveryModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover">BATAL</button>
@@ -252,13 +261,13 @@
         </div>
     </div>
 
-    <!-- Modal Kelola Petugas -->
+    <!-- Modal Staff Management -->
     <div id="staffManagerModal" class="fixed inset-0 z-[9200] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('staffManagerModal')"></div>
         <div class="card max-w-md w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s] flex flex-col max-h-[85vh]">
-            <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2"><i class="fas fa-user-plus text-emerald-600"></i> Manajemen Petugas</h3>
+            <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2 tracking-tight uppercase"><i class="fas fa-user-plus text-emerald-600"></i> Manajemen Petugas</h3>
             
-            <div class="bg-emerald-50 p-5 rounded-2xl mb-6 border border-emerald-100">
+            <div class="bg-emerald-50 p-5 rounded-2xl mb-6 border border-emerald-100 shadow-inner">
                 <p class="text-[10px] font-black text-emerald-700 uppercase mb-3 tracking-widest">Tambah Petugas Lapangan</p>
                 <div class="space-y-3">
                     <input id="newStaffName" type="text" placeholder="Nama Petugas" class="form-input w-full rounded-xl p-3 text-sm font-bold">
@@ -272,30 +281,30 @@
             <p class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Daftar Petugas Aktif</p>
             <div id="staffListArea" class="flex-1 overflow-y-auto custom-scrollbar space-y-2 pr-1"></div>
             
-            <button onclick="closeModal('staffManagerModal')" class="w-full mt-6 py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover">TUTUP</button>
+            <button onclick="closeModal('staffManagerModal')" class="w-full mt-6 py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover uppercase tracking-widest">Tutup</button>
         </div>
     </div>
 
-    <!-- Modals (Tetap sama untuk fitur lainnya) -->
+    <!-- Regular Modals (Search, Auth, Ticket, Edit, Settings, Confirm) -->
     <div id="searchResultsModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('searchResultsModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 mb-4" id="searchResultsTitle">Hasil Pencarian</h3>
-            <p class="text-xs text-slate-400 mb-4">Pilih nama yang sesuai:</p>
+            <h3 class="text-xl font-black text-slate-800 mb-4 tracking-tight" id="searchResultsTitle">Hasil Pencarian</h3>
+            <p class="text-xs text-slate-400 mb-4 uppercase font-bold tracking-tight">Pilih nama yang sesuai:</p>
             <div id="searchResultsList" class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar p-1"></div>
-            <button onclick="closeModal('searchResultsModal')" class="w-full mt-6 py-4 border-2 rounded-2xl font-bold text-slate-400">Tutup</button>
+            <button onclick="closeModal('searchResultsModal')" class="w-full mt-6 py-4 border-2 rounded-2xl font-bold text-slate-400 uppercase tracking-widest">Tutup</button>
         </div>
     </div>
 
     <div id="authTicketModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('authTicketModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 text-center mb-4" id="authTitle">Verifikasi PIN</h3>
+            <h3 class="text-xl font-black text-slate-800 text-center mb-4 tracking-tight uppercase" id="authTitle">Verifikasi PIN</h3>
             <p class="text-xs text-slate-400 text-center mb-6" id="authDesc">Masukkan PIN 4 digit untuk <span id="authUserName" class="font-bold text-emerald-600"></span></p>
             <input type="password" id="ticketPassInput" placeholder="••••" maxlength="4" class="form-input w-full rounded-2xl p-4 text-center text-3xl font-black mb-6 tracking-[0.5em]">
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="closeModal('authTicketModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover">Batal</button>
-                <button onclick="window.verifyTicketPass()" class="py-4 bg-emerald-600 text-white rounded-2xl font-black shadow-lg btn-hover">KONFIRMASI</button>
+                <button onclick="closeModal('authTicketModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover uppercase tracking-widest">Batal</button>
+                <button onclick="window.verifyTicketPass()" class="py-4 bg-emerald-600 text-white rounded-2xl font-black shadow-lg btn-hover uppercase tracking-widest">Konfirmasi</button>
             </div>
         </div>
     </div>
@@ -303,7 +312,7 @@
     <div id="editUserModal" class="fixed inset-0 z-[9500] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('editUserModal')"></div>
         <div class="card max-w-md w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2"><i class="fas fa-user-edit text-emerald-600"></i> Edit Profil</h3>
+            <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2 tracking-tight uppercase"><i class="fas fa-user-edit text-emerald-600"></i> Edit Profil</h3>
             <div class="space-y-4">
                 <div>
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Nama Lengkap</label>
@@ -329,12 +338,12 @@
                     </div>
                 </div>
                 <div>
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">PIN Keamanan Baru (4 Digit)</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">PIN Baru (4 Digit)</label>
                     <input id="editPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-3 font-black text-center text-xl tracking-widest">
                 </div>
                 <div class="pt-4 grid grid-cols-2 gap-3">
-                    <button onclick="closeModal('editUserModal')" class="py-3 border-2 rounded-xl font-bold text-slate-400 btn-hover">Batal</button>
-                    <button onclick="window.saveUserEdit()" class="py-3 bg-emerald-600 text-white rounded-xl font-black btn-hover">SIMPAN PERUBAHAN</button>
+                    <button onclick="closeModal('editUserModal')" class="py-3 border-2 rounded-xl font-bold text-slate-400 btn-hover uppercase tracking-widest">Batal</button>
+                    <button onclick="window.saveUserEdit()" class="py-3 bg-emerald-600 text-white rounded-xl font-black btn-hover uppercase tracking-widest">Simpan</button>
                 </div>
             </div>
         </div>
@@ -351,11 +360,11 @@
                     
                     <div class="my-6">
                         <p class="text-slate-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Tamu Kehormatan</p>
-                        <h1 id="ticName" class="text-xl font-extrabold text-white leading-tight">...</h1>
+                        <h1 id="ticName" class="text-xl font-extrabold text-white leading-tight uppercase tracking-tight">...</h1>
                         <div id="ticMeta" class="text-[9px] text-emerald-400 font-bold mt-2 uppercase tracking-widest leading-relaxed"></div>
                     </div>
 
-                    <div class="ticket-perforation bg-white p-6">
+                    <div class="ticket-perforation bg-white p-6 shadow-inner">
                         <div id="qrLoading" class="w-48 h-48 mx-auto flex items-center justify-center bg-slate-50 rounded-lg">
                             <i class="fas fa-circle-notch fa-spin text-emerald-600 text-xl"></i>
                         </div>
@@ -368,13 +377,13 @@
                 </div>
             </div>
             <div class="mt-6 flex flex-col gap-3">
-                <button onclick="window.openSelfEdit()" class="w-full py-4 rounded-2xl bg-amber-500 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 btn-hover">
-                    <i class="fas fa-edit"></i> EDIT PROFIL / GANTI PIN
+                <button onclick="window.openSelfEdit()" class="w-full py-4 rounded-2xl bg-amber-500 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 btn-hover uppercase tracking-widest">
+                    <i class="fas fa-edit"></i> Edit Profil / PIN
                 </button>
-                <button onclick="window.downloadTicketImage()" class="w-full py-4 rounded-2xl bg-white text-emerald-900 font-black text-sm shadow-lg flex items-center justify-center gap-2 btn-hover">
-                    <i class="fas fa-download"></i> SIMPAN KE GALERI
+                <button onclick="window.downloadTicketImage()" class="w-full py-4 rounded-2xl bg-white text-emerald-900 font-black text-sm shadow-lg flex items-center justify-center gap-2 btn-hover uppercase tracking-widest">
+                    <i class="fas fa-download"></i> Simpan ke Galeri
                 </button>
-                <button onclick="closeModal('ticketModal')" class="text-white/40 text-xs font-bold py-2 uppercase btn-hover">Tutup</button>
+                <button onclick="closeModal('ticketModal')" class="text-white/40 text-xs font-bold py-2 uppercase tracking-widest btn-hover">Tutup</button>
             </div>
         </div>
     </div>
@@ -382,38 +391,39 @@
     <div id="adminSettingsModal" class="fixed inset-0 z-[9600] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('adminSettingsModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 mb-2">Ubah PIN Admin</h3>
+            <h3 class="text-xl font-black text-slate-800 mb-2 tracking-tight uppercase">Ubah PIN Admin</h3>
             <p class="text-xs text-slate-400 mb-6 leading-relaxed">Gunakan PIN saat ini atau Kode Pemulihan ('BONA2026').</p>
             <div class="space-y-4">
                 <div>
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Verifikasi Akses</label>
-                    <input type="password" id="verifyAdminInput" placeholder="PIN LAMA / KODE PEMULIHAN" class="form-input w-full rounded-xl p-4 text-center text-lg font-bold">
+                    <input type="password" id="verifyAdminInput" placeholder="PIN / KODE" class="form-input w-full rounded-xl p-4 text-center text-lg font-bold">
                 </div>
                 <div>
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">PIN Baru (4 Digit)</label>
                     <input type="password" id="newAdminPin" maxlength="4" placeholder="••••" class="form-input w-full rounded-xl p-4 text-center text-2xl font-black tracking-[0.5em]">
                 </div>
                 <div class="pt-4 grid grid-cols-2 gap-3">
-                    <button onclick="closeModal('adminSettingsModal')" class="py-4 border-2 rounded-xl font-bold text-slate-400 btn-hover">Batal</button>
-                    <button onclick="window.updateAdminPin()" class="py-4 bg-emerald-600 text-white rounded-xl font-black btn-hover shadow-lg">SIMPAN PIN</button>
+                    <button onclick="closeModal('adminSettingsModal')" class="py-4 border-2 rounded-xl font-bold text-slate-400 btn-hover uppercase tracking-widest">Batal</button>
+                    <button onclick="window.updateAdminPin()" class="py-4 bg-emerald-600 text-white rounded-xl font-black btn-hover shadow-lg uppercase tracking-widest">Simpan</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Confirmation Modals -->
     <div id="confirmDeleteModal" class="fixed inset-0 z-[9700] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('confirmDeleteModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s] text-center">
-            <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl animate-pulse">
+            <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl animate-pulse shadow-inner">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <h3 class="text-xl font-black text-slate-800 mb-2">Konfirmasi Hapus</h3>
+            <h3 class="text-xl font-black text-slate-800 mb-2 tracking-tight">Konfirmasi Hapus</h3>
             <p class="text-xs text-slate-500 mb-8 leading-relaxed">
                 Apakah Anda yakin ingin menghapus <span id="deleteTargetName" class="font-bold text-red-600"></span>?<br>Tindakan ini permanen.
             </p>
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="closeModal('confirmDeleteModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover">Batal</button>
-                <button onclick="window.confirmPermanentDelete()" class="py-4 bg-red-600 text-white rounded-2xl font-black shadow-lg shadow-red-200 btn-hover">YA, HAPUS</button>
+                <button onclick="closeModal('confirmDeleteModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover uppercase tracking-widest">Batal</button>
+                <button onclick="window.confirmPermanentDelete()" class="py-4 bg-red-600 text-white rounded-2xl font-black shadow-lg shadow-red-200 btn-hover uppercase tracking-widest">Ya, Hapus</button>
             </div>
         </div>
     </div>
@@ -421,16 +431,16 @@
     <div id="confirmResetModal" class="fixed inset-0 z-[9700] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('confirmResetModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s] text-center">
-            <div class="w-20 h-20 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+            <div class="w-20 h-20 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-inner">
                 <i class="fas fa-key"></i>
             </div>
-            <h3 class="text-xl font-black text-slate-800 mb-2">Reset PIN Peserta</h3>
+            <h3 class="text-xl font-black text-slate-800 mb-2 tracking-tight">Reset PIN Peserta</h3>
             <p class="text-xs text-slate-500 mb-8 leading-relaxed">
                 PIN untuk <span id="resetTargetName" class="font-bold text-amber-600"></span> akan diatur ulang ke <span class="font-bold text-emerald-600">0000</span>.
             </p>
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="closeModal('confirmResetModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover">Batal</button>
-                <button onclick="window.confirmPermanentReset()" class="py-4 bg-amber-500 text-white rounded-2xl font-black shadow-lg shadow-amber-200 btn-hover">YA, RESET</button>
+                <button onclick="closeModal('confirmResetModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover uppercase tracking-widest">Batal</button>
+                <button onclick="window.confirmPermanentReset()" class="py-4 bg-amber-500 text-white rounded-2xl font-black shadow-lg shadow-amber-200 btn-hover uppercase tracking-widest">Ya, Reset</button>
             </div>
         </div>
     </div>
@@ -456,7 +466,7 @@
             participants: [],
             attendance: [],
             gifts: [],
-            staff: [], // Koleksi petugas lapangan
+            staff: [],
             tab: 'register',
             scanner: null,
             isAdmin: false,
@@ -473,7 +483,7 @@
             authContext: 'view'
         };
 
-        // LOAD SETTINGS & STAFF
+        // Firebase Listeners
         onValue(ref(db, 'settings/adminPin'), s => { if(s.val()) state.adminPass = s.val(); });
         onValue(ref(db, 'staff'), s => { 
             const data = s.val();
@@ -481,17 +491,7 @@
             if(!document.getElementById('staffManagerModal').classList.contains('hidden')) renderStaffList();
         });
 
-        // UI & CLOCK
-        function updateClock() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
-            const date = now.toLocaleDateString('id-ID', { day:'numeric', month:'short' });
-            const html = `<div class="text-xs font-bold opacity-70 uppercase tracking-widest">${date}</div><div class="text-xl font-black">${time}</div>`;
-            if(document.getElementById('liveClock')) document.getElementById('liveClock').innerHTML = html;
-        }
-        setInterval(updateClock, 1000); updateClock();
-
-        // LISTENERS
+        // Dashboard Update
         onValue(ref(db, 'participants'), s => { 
             const data = s.val();
             state.participants = data ? Object.keys(data).map(k => ({...data[k], firebaseId: k})) : []; 
@@ -504,14 +504,12 @@
             if(document.getElementById('statRegistered')) document.getElementById('statRegistered').innerText = state.participants.length;
             if(document.getElementById('statPresent')) document.getElementById('statPresent').innerText = state.attendance.length;
             if(document.getElementById('statGifts')) document.getElementById('statGifts').innerText = state.gifts.length;
-            
             if(state.tab === 'register') renderParticipantList();
             if(state.tab === 'data') renderDataTable();
-            
             setTimeout(() => document.getElementById('loading')?.classList.add('hidden'), 500);
         }
 
-        // --- Feature 1: Recovery Admin PIN ---
+        // Feature: Recovery & Login
         window.showRecoveryModal = () => {
             closeModal('adminModal');
             document.getElementById('recoveryKeyInput').value = '';
@@ -522,12 +520,10 @@
         window.processRecovery = () => {
             const key = document.getElementById('recoveryKeyInput').value.trim();
             const newPin = document.getElementById('recoveryNewPin').value.trim();
-            
-            // Verifikasi menggunakan PIN lama ATAU kode pemulihan
             if(key === state.adminPass || key === state.recoveryKey) {
                 if(newPin.length === 4) {
                     set(ref(db, 'settings/adminPin'), newPin).then(() => {
-                        state.adminPass = newPin; // Update local state
+                        state.adminPass = newPin;
                         alert("PIN Admin Utama berhasil diperbarui!");
                         closeModal('recoveryModal');
                         window.showAdminLogin();
@@ -536,11 +532,8 @@
             } else alert("Verifikasi Gagal: PIN Lama atau Kode Pemulihan tidak cocok!");
         };
 
-        // --- Multi-role Verification (Admin vs Staff) ---
         window.verifyAdmin = () => {
             const p = document.getElementById('adminPassword').value;
-            
-            // Cek Admin Utama
             if(p === state.adminPass) {
                 state.isAdmin = true;
                 state.isStaff = false;
@@ -549,8 +542,6 @@
                 setTab('data');
                 return;
             }
-
-            // Cek Petugas Lapangan
             const staffMatch = state.staff.find(s => s.pin === p);
             if(staffMatch) {
                 state.isStaff = true;
@@ -561,11 +552,33 @@
                 alert(`Login Berhasil: Petugas ${staffMatch.name}`);
                 return;
             }
-
             alert("PIN Salah atau Tidak Terdaftar!");
         };
 
-        // --- Feature 2: Staff Management ---
+        // UI Enforcement: Hide Sensitive Tabs on Mobile for Public
+        function refreshUIVisibility() {
+            const adminTabs = document.querySelectorAll('.admin-tab');
+            const staffTabs = document.querySelectorAll('.staff-tab');
+            
+            // Default: Hide all sensitive tabs on mobile via max-sm:hidden
+            // If logged in as Admin, show all including Admin panel
+            // If logged in as Staff, show only Scan/Gift tabs
+            
+            adminTabs.forEach(tab => {
+                if (state.isAdmin) {
+                    tab.classList.remove('max-sm:hidden', 'hidden');
+                    tab.classList.add('nav-btn-animate');
+                } else if (state.isStaff && tab.classList.contains('staff-tab')) {
+                    tab.classList.remove('max-sm:hidden', 'hidden');
+                    tab.classList.add('nav-btn-animate');
+                } else {
+                    tab.classList.add('max-sm:hidden');
+                    tab.classList.remove('nav-btn-animate');
+                }
+            });
+        }
+
+        // Staff Management
         window.openStaffManager = () => {
             document.getElementById('newStaffName').value = '';
             document.getElementById('newStaffPin').value = '';
@@ -577,7 +590,6 @@
             const name = document.getElementById('newStaffName').value.trim();
             const pin = document.getElementById('newStaffPin').value.trim();
             if(!name || pin.length !== 4) return alert("Lengkapi nama dan PIN 4 digit!");
-            
             push(ref(db, 'staff'), { name, pin }).then(() => {
                 document.getElementById('newStaffName').value = '';
                 document.getElementById('newStaffPin').value = '';
@@ -585,43 +597,26 @@
         };
 
         window.deleteStaff = (id) => {
-            if(confirm("Hapus akses petugas ini?")) {
-                remove(ref(db, 'staff/' + id));
-            }
+            if(confirm("Hapus akses petugas ini?")) remove(ref(db, 'staff/' + id));
         };
 
         function renderStaffList() {
             const area = document.getElementById('staffListArea');
             if(!area) return;
             area.innerHTML = state.staff.length > 0 ? state.staff.map(s => `
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center animate-fade-in shadow-sm">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center shadow-sm">
                     <div>
-                        <div class="font-black text-slate-800 text-sm">${s.name}</div>
+                        <div class="font-black text-slate-800 text-sm tracking-tight">${s.name}</div>
                         <div class="text-[9px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5">PIN: ${s.pin}</div>
                     </div>
                     <button onclick="window.deleteStaff('${s.firebaseId}')" class="w-8 h-8 flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
-            `).join('') : `<div class="p-10 text-center text-slate-300 font-bold text-xs uppercase italic">Belum ada petugas lapangan</div>`;
+            `).join('') : `<div class="p-10 text-center text-slate-300 font-bold text-xs uppercase italic tracking-widest">Belum ada petugas lapangan</div>`;
         }
 
-        function refreshUIVisibility() {
-            const adminTabs = document.querySelectorAll('.admin-tab');
-            const staffOnlyTabs = document.querySelectorAll('.staff-tab');
-            
-            adminTabs.forEach(tab => {
-                if (state.isAdmin) {
-                    tab.classList.remove('max-sm:hidden', 'hidden');
-                } else if (state.isStaff && tab.classList.contains('staff-tab')) {
-                    tab.classList.remove('max-sm:hidden', 'hidden');
-                } else {
-                    tab.classList.add('max-sm:hidden');
-                }
-            });
-        }
-
-        // --- Fitur Inti (Pendaftaran, Tiket, dsb - Tidak Berubah) ---
+        // Core App Logic (Pendaftaran, Tiket, Scanner)
         window.setTab = async (t) => {
             if(state.scanner) { try { await state.scanner.stop(); } catch(e){} state.scanner = null; }
             state.tab = t;
@@ -631,7 +626,7 @@
             if(t === 'register') {
                 area.innerHTML = `
                 <div class="bg-white rounded-3xl p-6 shadow-xl mb-8 border border-slate-50">
-                    <h3 class="text-lg font-black text-slate-800 mb-6 flex items-center gap-2"><i class="fas fa-pencil-alt text-emerald-600"></i> Pendaftaran Peserta</h3>
+                    <h3 class="text-lg font-black text-slate-800 mb-6 flex items-center gap-2 uppercase tracking-tight"><i class="fas fa-pencil-alt text-emerald-600"></i> Pendaftaran Peserta</h3>
                     <div class="space-y-4">
                         <input id="inName" type="text" class="form-input w-full rounded-xl p-4 font-bold" placeholder="Nama Lengkap">
                         <div class="grid grid-cols-2 gap-4">
@@ -643,7 +638,7 @@
                             </select>
                         </div>
                         <input id="inPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-4 font-black text-center text-xl tracking-[0.5em]" placeholder="Buat PIN 4 Digit">
-                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg btn-hover uppercase tracking-widest">DAFTARKAN</button>
+                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg btn-hover uppercase tracking-widest">Daftarkan</button>
                     </div>
                 </div>
                 <div id="participantList" class="space-y-3"></div>`;
@@ -652,10 +647,10 @@
                 area.innerHTML = `
                 <div class="bg-white rounded-3xl p-8 shadow-xl text-center border border-slate-50">
                     <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 text-2xl shadow-inner"><i class="fas fa-search"></i></div>
-                    <h3 class="font-black text-xl mb-6 text-slate-800">Cari Undangan</h3>
+                    <h3 class="font-black text-xl mb-6 text-slate-800 uppercase tracking-tight">Cari Undangan</h3>
                     <div class="space-y-4">
                         <input id="findName" type="text" placeholder="Masukkan Nama Anda" class="form-input w-full rounded-xl p-4 text-center font-bold">
-                        <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-xl py-4 font-black btn-hover shadow-xl uppercase tracking-widest">LIHAT TIKET</button>
+                        <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-xl py-4 font-black btn-hover shadow-xl uppercase tracking-widest">Lihat Tiket</button>
                     </div>
                 </div>`;
             } else if(t === 'scan' || t === 'gift') {
@@ -667,7 +662,7 @@
                 const isScan = t === 'scan';
                 area.innerHTML = `
                 <div class="bg-white rounded-3xl p-6 shadow-xl text-center border border-slate-50">
-                    <h3 class="font-black mb-6 text-slate-800 tracking-tight">Scanner ${isScan ? 'Absensi' : 'Tukar Berkat'}</h3>
+                    <h3 class="font-black mb-6 text-slate-800 tracking-tight uppercase">Scanner ${isScan ? 'Absensi' : 'Berkat'}</h3>
                     <div id="scanMsg" class="hidden p-3 rounded-xl mb-4 text-white font-bold animate-pulse shadow-lg"></div>
                     <div class="relative rounded-2xl overflow-hidden bg-black aspect-square max-w-sm mx-auto mb-6 shadow-2xl">
                         <div id="reader"></div>
@@ -683,7 +678,7 @@
                 setTimeout(initScanner, 300);
             } else if(t === 'data') {
                 if(!state.isAdmin) {
-                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest">Akses Admin</div>`;
+                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest italic">Akses Admin</div>`;
                     window.showAdminLogin();
                 } else {
                     renderAdminPanel();
@@ -697,7 +692,7 @@
             <div class="space-y-6">
                 <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100">
                     <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
-                        <h3 class="font-black text-slate-800 flex items-center gap-2 tracking-tight">
+                        <h3 class="font-black text-slate-800 flex items-center gap-2 tracking-tight uppercase">
                             <i class="fas fa-shield-alt text-emerald-600"></i> Panel Manajemen
                         </h3>
                         <div class="flex flex-wrap gap-2">
@@ -734,7 +729,7 @@
             renderDataTable();
         }
 
-        // Logic pendukung lainnya (Sama dengan versi sebelumnya untuk kestabilan)
+        // Dashboard & App Logic (Sama seperti sebelumnya)
         window.processRegister = () => {
             const name = document.getElementById('inName').value.trim();
             const pass = document.getElementById('inPass').value;
@@ -774,7 +769,7 @@
             list.innerHTML = matches.map(m => `
                 <div onclick="window.selectForContext('${m.firebaseId}')" class="p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 rounded-xl cursor-pointer transition-all flex justify-between items-center group shadow-sm">
                     <div>
-                        <div class="font-black text-slate-800 text-sm group-hover:text-emerald-700 transition-colors tracking-tight">${m.name}</div>
+                        <div class="font-black text-slate-800 text-sm group-hover:text-emerald-700 transition-colors tracking-tight uppercase">${m.name}</div>
                         <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">${m.marga} - ${m.status}</div>
                     </div>
                     <i class="fas fa-chevron-right text-slate-200 group-hover:text-emerald-300 transition-all"></i>
@@ -853,20 +848,19 @@
             container.innerHTML = `
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100">
-                    <tr><th class="p-4">Identitas</th><th class="p-4">Kategori</th><th class="p-4">PIN</th><th class="p-4 text-center">Aksi</th></tr>
+                    <tr><th class="p-4">Identitas</th><th class="p-4">Kategori</th><th class="p-4 text-center">Aksi</th></tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
                     ${filtered.length > 0 ? filtered.map(p => `
                     <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="p-4"><div class="font-black text-slate-800 text-sm tracking-tight">${p.name}</div><div class="text-[9px] font-mono text-slate-400 mt-1 uppercase tracking-tighter">${p.qrCode}</div></td>
+                        <td class="p-4"><div class="font-black text-slate-800 text-sm tracking-tight uppercase">${p.name}</div><div class="text-[9px] font-mono text-slate-400 mt-1 uppercase tracking-tighter">${p.qrCode}</div></td>
                         <td class="p-4"><div class="font-bold text-slate-600">${p.status}</div><div class="text-[8px] text-slate-400 uppercase font-black tracking-widest">${p.marga}</div></td>
-                        <td class="p-4 font-mono font-black text-emerald-600 text-[10px] tracking-widest">${p.password}</td>
                         <td class="p-4"><div class="flex justify-center gap-2">
                             <button onclick="window.adminEditUser('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition-all shadow-sm"><i class="fas fa-edit"></i></button>
                             <button onclick="window.adminResetPin('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-all shadow-sm"><i class="fas fa-key"></i></button>
                             <button onclick="window.adminDeleteUser('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-all shadow-sm"><i class="fas fa-trash"></i></button>
                         </div></td>
-                    </tr>`).join('') : `<tr><td colspan="4" class="p-20 text-center text-slate-400 font-bold uppercase tracking-widest italic">Tidak ada data ditemukan</td></tr>`}
+                    </tr>`).join('') : `<tr><td colspan="3" class="p-20 text-center text-slate-400 font-bold uppercase tracking-widest italic">Tidak ada data ditemukan</td></tr>`}
                 </tbody>
             </table>`;
         };
@@ -877,7 +871,6 @@
         window.adminDeleteUser = (id) => { const user = state.participants.find(p => p.firebaseId === id); state.deleteTargetId = id; document.getElementById('deleteTargetName').innerText = user.name; document.getElementById('confirmDeleteModal').classList.remove('hidden'); };
         window.confirmPermanentDelete = () => { if (!state.deleteTargetId) return; remove(ref(db, 'participants/' + state.deleteTargetId)).then(() => { alert("Data Berhasil Dihapus."); closeModal('confirmDeleteModal'); state.deleteTargetId = null; }); };
         
-        // Update Admin PIN dari Pengaturan (Settings)
         window.updateAdminPin = () => { 
             const v = document.getElementById('verifyAdminInput').value; 
             const n = document.getElementById('newAdminPin').value; 
@@ -891,6 +884,12 @@
         };
         
         window.adminLogout = () => { state.isAdmin = false; state.isStaff = false; refreshUIVisibility(); setTab('register'); };
+
+        window.showAdminLogin = () => {
+            if (state.isAdmin || state.isStaff) return;
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminModal').classList.remove('hidden');
+        };
 
         window.initScanner = () => {
             state.scanner = new Html5Qrcode("reader");
@@ -914,12 +913,11 @@
             list.innerHTML = `<h5 class="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest pl-1">Pendaftar Terbaru</h5>` + 
                 state.participants.slice(-3).reverse().map(p => `
                 <div class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm border border-slate-50 animate-fade-in hover:shadow-md transition-all">
-                    <div class="font-bold text-sm text-slate-800 tracking-tight">${p.name}</div>
+                    <div class="font-bold text-sm text-slate-800 tracking-tight uppercase">${p.name}</div>
                     <div class="text-[8px] font-black bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full uppercase tracking-tighter">${p.status}</div>
                 </div>`).join('');
         }
 
-        window.showAdminLogin(); // Entry point login jika diperlukan akses cepat
         refreshUIVisibility();
         setTab('register');
     </script>
