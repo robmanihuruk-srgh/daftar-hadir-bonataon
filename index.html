@@ -194,14 +194,14 @@
             <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover">
                 <i class="fas fa-search"></i><span class="text-[10px] font-bold uppercase">Undangan</span>
             </button>
-            <!-- Admin-only tabs hidden by default -->
-            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover hidden admin-tab">
+            <!-- Admin-only tabs: Hidden on mobile (max-sm) unless admin logs in -->
+            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover max-sm:hidden admin-tab">
                 <i class="fas fa-qrcode"></i><span class="text-[10px] font-bold uppercase">Absensi</span>
             </button>
-            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover hidden admin-tab">
+            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover max-sm:hidden admin-tab">
                 <i class="fas fa-gift"></i><span class="text-[10px] font-bold uppercase">Berkat</span>
             </button>
-            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover hidden admin-tab">
+            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover max-sm:hidden admin-tab">
                 <i class="fas fa-database"></i><span class="text-[10px] font-bold uppercase">Admin</span>
             </button>
         </nav>
@@ -466,14 +466,17 @@
             setTimeout(() => document.getElementById('loading')?.classList.add('hidden'), 500);
         }
 
-        // Toggle Restricted UI visibility
+        // Toggle Restricted UI visibility based on admin status AND screen width
         function refreshUIVisibility() {
             const adminTabs = document.querySelectorAll('.admin-tab');
             adminTabs.forEach(tab => {
                 if (state.isAdmin) {
-                    tab.classList.remove('hidden');
+                    // Admins see everything, even on mobile
+                    tab.classList.remove('max-sm:hidden');
                 } else {
-                    tab.classList.add('hidden');
+                    // Non-admins have these tabs hidden on mobile specifically (max-sm: < 640px)
+                    // They stay visible on desktop to allow entry point for admin login
+                    tab.classList.add('max-sm:hidden');
                 }
             });
         }
@@ -521,6 +524,12 @@
                     </div>
                 </div>`;
             } else if(t === 'scan' || t === 'gift') {
+                // Access check for desktop users who can see the tab
+                if(!state.isAdmin) {
+                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold">Akses Terbatas</div>`;
+                    window.showAdminLogin();
+                    return;
+                }
                 const isScan = t === 'scan';
                 area.innerHTML = `
                 <div class="bg-white rounded-3xl p-6 shadow-xl text-center">
@@ -949,6 +958,8 @@
                 </div>`).join('');
         }
 
+        // Initial setup for visibility
+        refreshUIVisibility();
         setTab('register');
     </script>
 </body>
