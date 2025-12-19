@@ -601,7 +601,6 @@
                 if (state.isAdmin) {
                     btn.classList.remove('hidden');
                 } else if (state.isStaff) {
-                    // Petugas hanya bisa scan dan akses menu publik
                     if (isStaffTab || isPublicTab) btn.classList.remove('hidden');
                     else btn.classList.add('hidden');
                 } else {
@@ -990,12 +989,11 @@
 
             state.scanner = new Html5Qrcode("reader");
             
-            // Konfigurasi QR dinamis agar pas di layar mobile
             const config = { 
                 fps: 10, 
                 qrbox: (viewWidth, viewHeight) => {
                     const minEdge = Math.min(viewWidth, viewHeight);
-                    const boxSize = Math.floor(minEdge * 0.7); // 70% dari area terkecil
+                    const boxSize = Math.floor(minEdge * 0.7);
                     return { width: boxSize, height: boxSize };
                 },
                 aspectRatio: 1.0,
@@ -1012,25 +1010,35 @@
                     const p = state.participants.find(x => x.qrCode && x.qrCode.trim().toUpperCase() === scannedText);
                     
                     if(!p) {
-                        msgEl.innerText = "Kode QR tidak terdaftar atau kadaluarsa.";
+                        msgEl.innerText = "KODE QR TIDAK TERDAFTAR!";
                         msgEl.className = "p-4 rounded-2xl mb-6 bg-red-600 text-white font-black block shadow-xl";
                         setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 3000);
                         return;
                     }
 
                     const path = state.tab === 'scan' ? 'attendance' : 'gifts';
+                    const listToCheck = state.tab === 'scan' ? state.attendance : state.gifts;
+                    const alreadyExists = listToCheck.find(item => item.qrCode === p.qrCode);
+
+                    if (alreadyExists) {
+                        const duplicateMsg = state.tab === 'scan' ? `${p.name} SUDAH HADIR!` : `${p.name} SUDAH TERIMA BERKAT!`;
+                        msgEl.innerText = duplicateMsg;
+                        msgEl.className = "p-4 rounded-2xl mb-6 bg-amber-500 text-white font-black block shadow-xl animate-pulse";
+                        setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 3000);
+                        return;
+                    }
+
                     push(ref(db, path), { name: p.name, qrCode: p.qrCode, timestamp: new Date().toLocaleString() }).then(() => {
-                        msgEl.innerText = `${p.name} BERHASIL!`;
+                        const successMsg = state.tab === 'scan' ? `Selamat Datang, ${p.name}!` : `Berkat Berhasil Diberikan ke ${p.name}!`;
+                        msgEl.innerText = successMsg;
                         msgEl.className = "p-4 rounded-2xl mb-6 bg-emerald-600 text-white font-black block shadow-xl animate-bounce";
                         setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 3000);
                     });
                 },
-                (errorMessage) => {
-                    // Abaikan kesalahan pembacaan frame per frame (biasa terjadi)
-                }
+                (errorMessage) => {}
             ).catch(err => {
                 console.error("Camera access error:", err);
-                msgEl.innerText = "Kamera Gagal Diakses. Pastikan Izin Kamera Aktif.";
+                msgEl.innerText = "Kamera Gagal Diakses.";
                 msgEl.className = "p-4 rounded-2xl mb-6 bg-red-600 text-white font-black block shadow-xl";
                 msgEl.classList.remove('hidden');
                 state.isProcessingScan = false;
@@ -1099,7 +1107,13 @@
             if (!q) return;
             const matches = state.participants.filter(x => (x.name && x.name.toLowerCase().includes(q.toLowerCase())) || (x.qrCode && x.qrCode.toLowerCase().includes(q.toLowerCase())));
             if (!matches.length) return alert("Data tidak ditemukan!");
-            push(ref(db, type === 'scan' ? 'attendance' : 'gifts'), { name: matches[0].name, qrCode: matches[0].qrCode, timestamp: new Date().toLocaleString() }).then(() => alert(`Input Sukses: ${matches[0].name}`));
+            
+            const listToCheck = type === 'scan' ? state.attendance : state.gifts;
+            if(listToCheck.find(i => i.qrCode === matches[0].qrCode)) {
+                return alert(type === 'scan' ? "Sudah Hadir!" : "Berkat Sudah Diterima!");
+            }
+
+            push(ref(db, type === 'scan' ? 'attendance' : 'gifts'), { name: matches[0].name, qrCode: matches[0].qrCode, timestamp: new Date().toLocaleString() }).then(() => alert(type === 'scan' ? `Selamat Datang, ${matches[0].name}!` : `Input Sukses: ${matches[0].name}`));
         };
 
         function renderParticipantList() {
