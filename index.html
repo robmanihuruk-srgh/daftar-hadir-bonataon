@@ -6,7 +6,7 @@
     <title>Bonataon Marga Manihuruk Boru Bere / Panagolan 2026</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:wght@700;800;900&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -17,373 +17,358 @@
     <style>
         :root {
             --emerald-900: #064e3b;
-            --emerald-600: #059669;
+            --emerald-600: #10b981;
+            --emerald-500: #34d399;
             --emerald-50: #ecfdf5;
             --amber-500: #f59e0b;
             --slate-900: #0f172a;
+            --slate-800: #1e293b;
             --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --royal-gradient: linear-gradient(135deg, #064e3b 0%, #10b981 100%);
         }
           
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: #0f172a;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.3) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.15) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.1) 0px, transparent 50%);
             background-attachment: fixed;
             min-height: 100vh;
             color: #1e293b;
             -webkit-tap-highlight-color: transparent;
+            letter-spacing: -0.01em;
         }
 
         .serif-font { font-family: 'Playfair Display', serif; }
         .royal-font { font-family: 'Cinzel', serif; }
           
         .glass-panel {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.4);
         }
           
         .header-bg {
-            background: linear-gradient(135deg, var(--emerald-900) 0%, var(--emerald-600) 100%);
+            background: var(--royal-gradient);
             position: relative;
             overflow: hidden;
         }
 
+        .header-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
         .nav-btn {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 80px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 85px;
+            border-radius: 1.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
         .nav-btn.active {
-            background-color: var(--emerald-50);
-            color: var(--emerald-900);
-            border-color: var(--emerald-600);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 20px -5px rgba(5, 150, 105, 0.25);
+            background-color: white;
+            color: var(--emerald-600);
+            border-color: var(--emerald-500);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.2);
         }
+        .nav-btn i { font-size: 1.25rem; }
 
         .logo-frame {
             background: white;
             border-radius: 1.25rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.2);
             overflow: hidden;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
+            transition: transform 0.3s;
         }
+        .logo-frame:hover { transform: rotate(5deg) scale(1.05); }
         
         .form-input {
-            background-color: #f8fafc;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s;
+            background-color: #f1f5f9;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
         }
         .form-input:focus {
             background-color: #ffffff;
             border-color: var(--emerald-600);
-            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.15);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
             outline: none;
+            transform: translateY(-2px);
         }
 
-        @keyframes modalUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        
-        .vip-ticket {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid #334155;
+        .btn-modern {
             position: relative;
             overflow: hidden;
+            transition: all 0.3s;
+        }
+        .btn-modern::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        .btn-modern:hover::after { left: 100%; }
+
+        @keyframes modalUp { 
+            from { opacity: 0; transform: translateY(40px) scale(0.9); filter: blur(10px); } 
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+        }
+        
+        .vip-ticket {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .gold-text {
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .ticket-perforation {
-            position: relative;
-            background: #ffffff;
-            margin-top: 24px;
-            border-radius: 16px;
+            font-weight: 900;
         }
         .ticket-perforation::before, .ticket-perforation::after {
             content: "";
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
             background: #0f172a;
             border-radius: 50%;
+            z-index: 10;
         }
-        .ticket-perforation::before { left: -12px; }
-        .ticket-perforation::after { right: -12px; }
+        .ticket-perforation::before { left: -15px; }
+        .ticket-perforation::after { right: -15px; }
 
-        .scan-frame {
-            position: absolute;
-            inset: 15%;
-            border: 2px solid var(--emerald-600);
-            box-shadow: 0 0 0 1000px rgba(0,0,0,0.6);
-            z-index: 5;
-            pointer-events: none;
-            border-radius: 1rem;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
-        .btn-hover { transition: transform 0.2s; }
-        .btn-hover:active { transform: scale(0.95); }
+        .btn-hover:active { transform: scale(0.92); }
+
+        .badge-luxury {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 99px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <div id="app" class="relative z-10 w-full max-w-lg mx-auto md:max-w-4xl min-h-screen md:my-10 md:rounded-[2.5rem] overflow-hidden flex flex-col glass-panel shadow-2xl">
+    <div id="app" class="relative z-10 w-full max-w-lg mx-auto md:max-w-4xl min-h-screen md:my-10 md:rounded-[3rem] overflow-hidden flex flex-col glass-panel">
           
+        <!-- Loading State -->
         <div id="loading" class="absolute inset-0 z-[9999] bg-slate-50 flex flex-col justify-center items-center px-6 text-center">
-            <div class="logo-frame w-32 h-32 p-4 mb-8 animate-bounce">
+            <div class="logo-frame w-36 h-36 p-5 mb-8 animate-bounce">
                 <img src="logo tugu manihuruk.png" alt="Logo" onerror="this.src='https://via.placeholder.com/150?text=LOGO'">
             </div>
-            <h2 class="text-2xl font-bold text-emerald-900 mb-2 serif-font uppercase tracking-tight">BONATAON MANIHURUK 2026</h2>
-            <div class="flex items-center gap-3 text-emerald-600 font-semibold mt-4">
-                <i class="fas fa-circle-notch fa-spin"></i> Sinkronisasi Sistem...
+            <h2 class="text-3xl font-black text-emerald-900 mb-2 royal-font uppercase tracking-tight">BONATAON 2026</h2>
+            <div class="flex items-center gap-3 text-emerald-600 font-bold mt-4 bg-emerald-50 px-6 py-3 rounded-full shadow-sm">
+                <i class="fas fa-circle-notch fa-spin"></i> Memuat Aplikasi...
             </div>
         </div>
 
-        <header class="header-bg p-8 pb-20 shadow-2xl relative z-20">
-            <div class="flex justify-between items-start">
-                <div class="flex items-center gap-4">
-                    <div onclick="window.showAdminLogin()" class="logo-frame w-14 h-14 md:w-20 md:h-20 p-1.5 border-2 border-white/30">
+        <header class="header-bg p-10 pb-24 shadow-2xl relative z-20">
+            <div class="flex justify-between items-start relative z-10">
+                <div class="flex items-center gap-5">
+                    <div onclick="window.showAdminLogin()" class="logo-frame w-16 h-16 md:w-24 md:h-24 p-2 border-2 border-white/20">
                         <img src="logo tugu manihuruk.png" alt="Logo" class="w-full h-full object-contain">
                     </div>
                     <div>
-                        <h1 class="text-sm md:text-xl font-extrabold text-white serif-font tracking-wide leading-tight uppercase">
-                            BONATAON MARGA MANIHURUK<br>BORU BERE / PANAGOLAN 2026
+                        <h1 class="text-lg md:text-2xl font-black text-white royal-font tracking-wide leading-tight uppercase drop-shadow-lg">
+                            BONATAON MARGA MANIHURUK<br><span class="text-emerald-300">BORU BERE / PANAGOLAN 2026</span>
                         </h1>
-                        <div id="roleBadge" class="hidden inline-block mt-2 px-3 py-1 bg-amber-400 text-amber-900 text-[10px] font-black rounded-full uppercase tracking-widest shadow-lg"></div>
+                        <div id="roleBadge" class="hidden inline-block mt-3 px-4 py-1.5 bg-amber-400 text-amber-900 text-[10px] font-black rounded-full uppercase tracking-widest shadow-xl border border-amber-300"></div>
                     </div>
                 </div>
-                <div id="liveClock" class="text-right text-white hidden md:block"></div>
+                <div id="liveClock" class="text-right text-white hidden md:block backdrop-blur-md bg-white/10 p-3 rounded-2xl border border-white/10"></div>
             </div>
               
-            <div class="grid grid-cols-3 gap-3 mt-8">
-                <div class="bg-white/15 backdrop-blur-md rounded-2xl p-3 border border-white/20 text-center">
-                    <div class="text-xl md:text-2xl font-black text-white" id="statRegistered">0</div>
-                    <div class="text-[9px] font-bold text-emerald-200 uppercase tracking-widest mt-1">Peserta</div>
+            <div class="grid grid-cols-3 gap-4 mt-10 relative z-10">
+                <div class="bg-white/10 backdrop-blur-xl rounded-[2rem] p-4 border border-white/20 text-center shadow-lg">
+                    <div class="text-2xl md:text-4xl font-black text-white" id="statRegistered">0</div>
+                    <div class="text-[10px] font-extrabold text-emerald-200 uppercase tracking-widest mt-1">Peserta</div>
                 </div>
-                <div class="bg-emerald-500/40 backdrop-blur-md rounded-2xl p-3 border border-emerald-400/50 text-center">
-                    <div class="text-xl md:text-2xl font-black text-emerald-50" id="statPresent">0</div>
-                    <div class="text-[9px] font-bold text-emerald-200 uppercase tracking-widest mt-1">Hadir</div>
+                <div class="bg-emerald-500/20 backdrop-blur-xl rounded-[2rem] p-4 border border-emerald-400/30 text-center shadow-lg">
+                    <div class="text-2xl md:text-4xl font-black text-white" id="statPresent">0</div>
+                    <div class="text-[10px] font-extrabold text-emerald-200 uppercase tracking-widest mt-1">Hadir</div>
                 </div>
-                <div class="bg-amber-500/30 backdrop-blur-md rounded-2xl p-3 border border-amber-400/40 text-center">
-                    <div class="text-xl md:text-2xl font-black text-amber-200" id="statGifts">0</div>
-                    <div class="text-[9px] font-bold text-amber-100 uppercase tracking-widest mt-1">Berkat</div>
+                <div class="bg-amber-500/20 backdrop-blur-xl rounded-[2rem] p-4 border border-amber-400/30 text-center shadow-lg">
+                    <div class="text-2xl md:text-4xl font-black text-white" id="statGifts">0</div>
+                    <div class="text-[10px] font-extrabold text-amber-100 uppercase tracking-widest mt-1">Berkat</div>
                 </div>
             </div>
         </header>
 
-        <nav id="mainNav" class="flex px-6 -mt-10 relative z-30 gap-2 overflow-x-auto pb-4 custom-scrollbar">
-            <button onclick="setTab('register')" id="tab-register" class="nav-btn public-tab flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover">
-                <i class="fas fa-user-plus text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Daftar</span>
+        <nav id="mainNav" class="flex px-6 -mt-12 relative z-30 gap-3 overflow-x-auto pb-6 custom-scrollbar no-scrollbar">
+            <button onclick="setTab('register')" id="tab-register" class="nav-btn public-tab flex-1 min-w-[110px] bg-white shadow-2xl btn-hover btn-modern">
+                <i class="fas fa-user-plus text-emerald-600"></i><span class="text-[10px] font-black uppercase tracking-widest">Daftar</span>
             </button>
-            <button onclick="setTab('find')" id="tab-find" class="nav-btn public-tab flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover">
-                <i class="fas fa-search text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Undangan</span>
+            <button onclick="setTab('find')" id="tab-find" class="nav-btn public-tab flex-1 min-w-[110px] bg-white shadow-2xl btn-hover btn-modern">
+                <i class="fas fa-search text-emerald-600"></i><span class="text-[10px] font-black uppercase tracking-widest">Undangan</span>
             </button>
-            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn admin-tab staff-tab flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover hidden">
-                <i class="fas fa-qrcode text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Absensi</span>
+            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn admin-tab staff-tab flex-1 min-w-[110px] bg-white shadow-2xl btn-hover btn-modern hidden">
+                <i class="fas fa-qrcode text-emerald-600"></i><span class="text-[10px] font-black uppercase tracking-widest">Absensi</span>
             </button>
-            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn admin-tab staff-tab flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover hidden">
-                <i class="fas fa-gift text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Berkat</span>
+            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn admin-tab staff-tab flex-1 min-w-[110px] bg-white shadow-2xl btn-hover btn-modern hidden">
+                <i class="fas fa-gift text-emerald-600"></i><span class="text-[10px] font-black uppercase tracking-widest">Berkat</span>
             </button>
-            <button onclick="setTab('data')" id="tab-data" class="nav-btn admin-tab flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover hidden">
-                <i class="fas fa-database text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Admin</span>
+            <button onclick="setTab('data')" id="tab-data" class="nav-btn admin-tab flex-1 min-w-[110px] bg-white shadow-2xl btn-hover btn-modern hidden">
+                <i class="fas fa-shield-halved text-emerald-600"></i><span class="text-[10px] font-black uppercase tracking-widest">Admin</span>
             </button>
-            <button onclick="window.adminLogout()" id="tab-logout" class="nav-btn hidden flex-1 min-w-[100px] bg-red-50 text-red-600 rounded-2xl shadow-xl border border-red-100 btn-hover">
-                <i class="fas fa-sign-out-alt"></i><span class="text-[10px] font-bold uppercase">Keluar</span>
+            <button onclick="window.adminLogout()" id="tab-logout" class="nav-btn hidden flex-1 min-w-[110px] bg-red-50 text-red-600 border-red-100 shadow-xl btn-hover">
+                <i class="fas fa-power-off"></i><span class="text-[10px] font-black uppercase tracking-widest">Keluar</span>
             </button>
         </nav>
 
-        <main class="flex-1 p-6 md:p-10 overflow-y-auto bg-slate-50 pb-24">
+        <main class="flex-1 p-6 md:p-12 overflow-y-auto bg-slate-50/50 pb-28">
             <div id="content-area" class="max-w-4xl mx-auto"></div>
         </main>
           
-        <footer class="py-4 px-8 border-t border-slate-200 bg-white/95 absolute bottom-0 w-full z-20">
+        <footer class="py-6 px-10 border-t border-slate-200 bg-white/95 absolute bottom-0 w-full z-20 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
             <div class="flex justify-between items-center text-[10px] md:text-xs">
-                <div class="font-bold text-slate-400 uppercase">© 2026 Panitia Bonataon</div>
-                <div class="font-bold text-emerald-800 uppercase flex items-center gap-1">
-                    Marga Manihuruk <i class="fas fa-heart text-amber-500 animate-pulse"></i>
+                <div class="font-black text-slate-400 uppercase tracking-widest">© 2026 PANITIA BONATAON</div>
+                <div class="font-black text-emerald-900 uppercase flex items-center gap-2 tracking-widest">
+                    Manihuruk <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Bersatu
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- MODALS SECTION -->
+    <!-- MODALS -->
 
     <!-- Modal Admin Login -->
     <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('adminModal')"></div>
-        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-user-shield text-2xl"></i>
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-xl" onclick="closeModal('adminModal')"></div>
+        <div class="card max-w-sm w-full relative z-10 p-10 bg-white rounded-[3rem] shadow-2xl animate-[modalUp_0.4s]">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-emerald-50 text-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner transform rotate-12">
+                    <i class="fas fa-lock text-3xl"></i>
                 </div>
-                <h3 class="text-xl font-black text-slate-800 tracking-tight uppercase">Login Panitia</h3>
-                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-widest">Gunakan PIN Panitia / Petugas</p>
+                <h3 class="text-2xl font-black text-slate-800 tracking-tight uppercase royal-font">Akses Panitia</h3>
+                <p class="text-[10px] text-slate-400 font-black uppercase mt-2 tracking-[0.2em]">Verifikasi Keamanan</p>
             </div>
-            <input type="password" id="adminPassword" placeholder="••••" maxlength="8" class="form-input w-full rounded-2xl p-4 text-center text-3xl font-black mb-4 tracking-[0.5em]">
-            <button onclick="window.verifyAdmin()" class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black btn-hover shadow-lg uppercase tracking-widest">Masuk</button>
-            <div class="mt-4 text-center">
-                <button onclick="window.openResetFacility()" class="text-xs font-bold text-emerald-600 hover:text-emerald-800 uppercase tracking-widest underline underline-offset-4">Lupa PIN Admin?</button>
+            <input type="password" id="adminPassword" placeholder="••••" maxlength="8" class="form-input w-full rounded-2xl p-5 text-center text-4xl font-black mb-6 tracking-[0.5em] shadow-inner">
+            <button onclick="window.verifyAdmin()" class="w-full py-5 bg-emerald-600 text-white rounded-[1.5rem] font-black btn-hover btn-modern shadow-xl uppercase tracking-widest">MASUK SEKARANG</button>
+            <div class="mt-6 text-center">
+                <button onclick="window.openResetFacility()" class="text-xs font-black text-emerald-600 hover:text-emerald-800 uppercase tracking-widest underline underline-offset-8">Reset PIN Admin?</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Reset Admin PIN -->
-    <div id="resetAdminModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('resetAdminModal')"></div>
-        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-key text-2xl"></i>
+    <!-- Modal Konfirmasi Reset Data -->
+    <div id="confirmResetDataModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden p-6">
+        <div class="absolute inset-0 bg-red-950/80 backdrop-blur-xl" onclick="closeModal('confirmResetDataModal')"></div>
+        <div class="card max-w-sm w-full relative z-10 p-10 bg-white rounded-[3rem] shadow-2xl animate-[modalUp_0.4s]">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner animate-pulse">
+                    <i class="fas fa-triangle-exclamation text-3xl"></i>
                 </div>
-                <h3 class="text-xl font-black text-slate-800 tracking-tight uppercase">Reset PIN Admin</h3>
-                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-widest">Masukkan Kode Pemulihan</p>
+                <h3 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Hapus Semua?</h3>
+                <p class="text-xs text-slate-500 font-bold mt-3 leading-relaxed">Operasi ini akan menghapus seluruh data pendaftaran, absensi, dan berkat secara permanen.</p>
             </div>
             <div class="space-y-4">
-                <input type="text" id="recoveryKeyInput" placeholder="KODE PEMULIHAN" class="form-input w-full rounded-2xl p-4 text-center font-black text-emerald-700 tracking-widest">
-                <input type="password" id="newAdminPinReset" maxlength="4" placeholder="PIN BARU (4 DIGIT)" class="form-input w-full rounded-2xl p-4 text-center text-3xl font-black tracking-[0.5em]">
-                <button onclick="window.handleResetAdminPin()" class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black btn-hover shadow-lg uppercase tracking-widest">Setel PIN Baru</button>
+                <input type="text" id="resetConfirmText" placeholder="Ketik 'RESET' untuk konfirmasi" class="form-input w-full rounded-2xl p-4 text-center font-black uppercase tracking-widest text-red-600 border-red-100">
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="closeModal('confirmResetDataModal')" class="py-4 border-2 border-slate-100 rounded-2xl font-black text-slate-400 uppercase tracking-widest text-xs btn-hover">Batal</button>
+                    <button onclick="window.executeResetData()" class="py-4 bg-red-600 text-white rounded-2xl font-black shadow-lg uppercase tracking-widest text-xs btn-hover">YA, HAPUS</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Staff Management -->
+    <!-- Modal Auth PIN -->
+    <div id="authTicketModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-xl" onclick="closeModal('authTicketModal')"></div>
+        <div class="card max-w-sm w-full relative z-10 p-10 bg-white rounded-[3rem] shadow-2xl animate-[modalUp_0.4s]">
+            <h3 class="text-2xl font-black text-slate-800 text-center mb-4 uppercase royal-font tracking-tight" id="authTitle">Verifikasi</h3>
+            <p class="text-[10px] text-slate-400 font-black text-center mb-8 uppercase tracking-widest" id="authDesc">MASUKKAN PIN UNTUK <span id="authUserName" class="text-emerald-600 font-black"></span></p>
+            <input type="password" id="ticketPassInput" placeholder="••••" maxlength="4" class="form-input w-full rounded-2xl p-5 text-center text-4xl font-black mb-8 tracking-[0.5em] shadow-inner">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="closeModal('authTicketModal')" class="py-5 border-2 border-slate-100 rounded-2xl font-black text-slate-400 uppercase tracking-widest text-xs btn-hover">Batal</button>
+                <button onclick="window.verifyTicketPass()" class="py-5 bg-emerald-600 text-white rounded-2xl font-black shadow-xl btn-hover uppercase tracking-widest text-xs">KONFIRMASI</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Staff Manager -->
     <div id="staffManagerModal" class="fixed inset-0 z-[9600] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('staffManagerModal')"></div>
-        <div class="card max-w-md w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s] flex flex-col max-h-[85vh]">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-black text-slate-800 flex items-center gap-2 uppercase tracking-tight"><i class="fas fa-users-cog text-emerald-600"></i> Kelola Petugas</h3>
-                <button onclick="closeModal('staffManagerModal')" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times"></i></button>
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-xl" onclick="closeModal('staffManagerModal')"></div>
+        <div class="card max-w-md w-full relative z-10 p-10 bg-white rounded-[3rem] shadow-2xl animate-[modalUp_0.4s] flex flex-col max-h-[85vh]">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-black text-slate-800 flex items-center gap-3 uppercase tracking-tight royal-font"><i class="fas fa-users-gear text-emerald-600"></i> Kelola Staf</h3>
+                <button onclick="closeModal('staffManagerModal')" class="w-10 h-10 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center"><i class="fas fa-times"></i></button>
             </div>
             
-            <div class="bg-emerald-50 p-5 rounded-2xl mb-6 border border-emerald-100 shadow-inner">
-                <p class="text-[10px] font-black text-emerald-700 uppercase mb-3 tracking-widest">Daftarkan Petugas Lapangan</p>
-                <div class="space-y-3">
-                    <input id="newStaffName" type="text" placeholder="NAMA PETUGAS" class="form-input w-full rounded-xl p-3 text-sm font-bold uppercase">
-                    <div class="flex gap-2">
-                        <input id="newStaffPin" type="password" maxlength="4" placeholder="PIN (4 DIGIT)" class="form-input flex-1 rounded-xl p-3 text-center font-black tracking-widest">
-                        <button onclick="window.addStaff()" class="bg-emerald-600 text-white px-6 rounded-xl font-black btn-hover shadow-md"><i class="fas fa-plus"></i></button>
+            <div class="bg-emerald-50/50 p-6 rounded-[2rem] mb-8 border border-emerald-100 shadow-sm">
+                <p class="text-[10px] font-black text-emerald-700 uppercase mb-4 tracking-[0.2em]">Daftarkan Petugas Lapangan</p>
+                <div class="space-y-4">
+                    <input id="newStaffName" type="text" placeholder="NAMA PETUGAS" class="form-input w-full rounded-2xl p-4 text-sm font-bold uppercase">
+                    <div class="flex gap-3">
+                        <input id="newStaffPin" type="password" maxlength="4" placeholder="PIN 4 DIGIT" class="form-input flex-1 rounded-2xl p-4 text-center font-black tracking-[0.3em]">
+                        <button onclick="window.addStaff()" class="bg-emerald-600 text-white px-8 rounded-2xl font-black btn-hover shadow-lg"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
 
-            <p class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest pl-1">Daftar Petugas Aktif</p>
-            <div id="staffListArea" class="flex-1 overflow-y-auto custom-scrollbar space-y-2 pr-1"></div>
+            <p class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-[0.2em] px-2">Daftar Petugas Aktif</p>
+            <div id="staffListArea" class="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2"></div>
         </div>
     </div>
 
-    <!-- Rest of existing Modals -->
-    <div id="searchResultsModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('searchResultsModal')"></div>
-        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 mb-4" id="searchResultsTitle">Hasil Pencarian</h3>
-            <p class="text-xs text-slate-400 mb-4">Pilih nama yang sesuai:</p>
-            <div id="searchResultsList" class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar p-1"></div>
-            <button onclick="closeModal('searchResultsModal')" class="w-full mt-6 py-4 border-2 rounded-2xl font-bold text-slate-400">Tutup</button>
-        </div>
-    </div>
-
-    <div id="authTicketModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('authTicketModal')"></div>
-        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 text-center mb-4" id="authTitle">Verifikasi PIN</h3>
-            <p class="text-xs text-slate-400 text-center mb-6" id="authDesc">Masukkan PIN 4 digit untuk <span id="authUserName" class="font-bold text-emerald-600"></span></p>
-            <input type="password" id="ticketPassInput" placeholder="••••" maxlength="4" class="form-input w-full rounded-2xl p-4 text-center text-3xl font-black mb-6 tracking-[0.5em]">
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="closeModal('authTicketModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover">Batal</button>
-                <button onclick="window.verifyTicketPass()" class="py-4 bg-emerald-600 text-white rounded-2xl font-black shadow-lg btn-hover">KONFIRMASI</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="editUserModal" class="fixed inset-0 z-[9500] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('editUserModal')"></div>
-        <div class="card max-w-md w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2"><i class="fas fa-user-edit text-emerald-600"></i> Edit Profil</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Nama Lengkap</label>
-                    <input id="editName" type="text" class="form-input w-full rounded-xl p-3 font-bold uppercase">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Kategori</label>
-                        <select id="editStatus" class="form-input w-full rounded-xl p-3 font-bold">
-                            <option value="Orangtua">Orangtua</option>
-                            <option value="Pemuda">Pemuda</option>
-                            <option value="Sekolah Minggu">Sekolah Minggu</option>
-                            <option value="Tamu">Tamu</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Marga</label>
-                        <select id="editMarga" class="form-input w-full rounded-xl p-3 font-bold">
-                            <option value="Manihuruk">Manihuruk</option>
-                            <option value="Boru">Boru</option>
-                            <option value="Bere">Bere</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">PIN Baru (4 Digit)</label>
-                    <input id="editPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-3 font-black text-center text-xl tracking-widest">
-                </div>
-                <div class="pt-4 grid grid-cols-2 gap-3">
-                    <button onclick="closeModal('editUserModal')" class="py-3 border-2 rounded-xl font-bold text-slate-400 btn-hover">Batal</button>
-                    <button onclick="window.saveUserEdit()" class="py-3 bg-emerald-600 text-white rounded-xl font-black btn-hover">SIMPAN</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Modal Tiket Digital -->
     <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden p-4 overflow-y-auto">
-        <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-xl" onclick="closeModal('ticketModal')"></div>
-        <div class="relative w-full max-w-sm my-10 animate-[modalUp_0.4s]">
-            <div id="vipTicketCard" class="vip-ticket rounded-[2.5rem] p-8 shadow-2xl">
+        <div class="absolute inset-0 bg-slate-950/98 backdrop-blur-3xl" onclick="closeModal('ticketModal')"></div>
+        <div class="relative w-full max-w-sm my-10 animate-[modalUp_0.5s]">
+            <div id="vipTicketCard" class="vip-ticket rounded-[3rem] p-10 shadow-2xl border border-white/10">
                 <div class="relative z-10 text-center">
-                    <img src="logo tugu manihuruk.png" class="w-16 h-16 mx-auto mb-4">
-                    <h4 class="text-emerald-400 text-[10px] font-black tracking-[0.3em] uppercase mb-1">Official Invitation</h4>
-                    <h2 class="royal-font text-2xl font-black gold-text uppercase">BONATAON 2026</h2>
-                    <div class="my-6">
-                        <p class="text-slate-500 text-[10px] font-bold uppercase mb-1">Tamu Kehormatan</p>
-                        <h1 id="ticName" class="text-xl font-extrabold text-white leading-tight uppercase">...</h1>
-                        <div id="ticMeta" class="text-[9px] text-emerald-400 font-bold mt-2 uppercase tracking-widest leading-relaxed"></div>
+                    <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl overflow-hidden">
+                        <img src="logo tugu manihuruk.png" class="w-14 h-14">
                     </div>
-                    <div class="ticket-perforation bg-white p-6 rounded-2xl shadow-inner">
-                        <div id="qrLoading" class="w-48 h-48 mx-auto flex items-center justify-center bg-slate-50 rounded-lg">
-                            <i class="fas fa-circle-notch fa-spin text-emerald-600 text-xl"></i>
+                    <div class="badge-luxury mb-2">OFFICIAL INVITATION</div>
+                    <h2 class="royal-font text-3xl font-black gold-text uppercase leading-none mt-2">BONATAON 2026</h2>
+                    <div class="my-10">
+                        <p class="text-slate-500 text-[10px] font-black uppercase mb-2 tracking-[0.3em]">Tamu Kehormatan</p>
+                        <h1 id="ticName" class="text-2xl font-black text-white leading-tight uppercase mb-4">...</h1>
+                        <div id="ticMeta" class="inline-flex gap-2 text-[9px] text-emerald-400 font-black uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full border border-white/5"></div>
+                    </div>
+                    <div class="ticket-perforation bg-white p-8 rounded-[2.5rem] shadow-2xl relative">
+                        <div id="qrLoading" class="w-48 h-48 mx-auto flex items-center justify-center bg-slate-50 rounded-2xl">
+                            <i class="fas fa-circle-notch fa-spin text-emerald-600 text-2xl"></i>
                         </div>
-                        <img id="ticQR" src="" class="w-48 h-48 object-contain mx-auto hidden">
-                        <div class="text-center mt-4">
-                            <div class="text-[10px] text-slate-400 font-bold uppercase">Registration Code</div>
-                            <div class="text-lg font-mono font-black text-slate-900" id="ticCode">...</div>
+                        <img id="ticQR" src="" class="w-52 h-52 object-contain mx-auto hidden rounded-xl">
+                        <div class="text-center mt-6">
+                            <div class="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Registration Code</div>
+                            <div class="text-xl font-mono font-black text-slate-900 bg-slate-50 py-2 rounded-xl" id="ticCode">...</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="mt-6 flex flex-col gap-3">
-                <button onclick="window.openSelfEdit()" class="w-full py-4 rounded-2xl bg-amber-500 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 btn-hover uppercase tracking-widest">
-                    <i class="fas fa-edit"></i> Edit Profil / PIN
+            <div class="mt-8 flex flex-col gap-4">
+                <button onclick="window.downloadTicketImage()" class="w-full py-5 rounded-[1.5rem] bg-white text-emerald-900 font-black text-sm shadow-xl flex items-center justify-center gap-3 btn-hover btn-modern uppercase tracking-widest">
+                    <i class="fas fa-download"></i> SIMPAN TIKET KE GALERI
                 </button>
-                <button onclick="window.downloadTicketImage()" class="w-full py-4 rounded-2xl bg-white text-emerald-900 font-black text-sm shadow-lg flex items-center justify-center gap-2 btn-hover uppercase tracking-widest">
-                    <i class="fas fa-download"></i> Simpan Gambar
-                </button>
-                <button onclick="closeModal('ticketModal')" class="text-white/40 text-xs font-bold py-2 uppercase tracking-widest btn-hover">Tutup</button>
+                <button onclick="closeModal('ticketModal')" class="text-white/40 text-[10px] font-black py-2 uppercase tracking-[0.4em] btn-hover">Tutup Jendela</button>
             </div>
         </div>
     </div>
@@ -421,9 +406,7 @@
             tempUser: null,
             filterStatus: "Semua",
             adminSearchQuery: "",
-            manualContext: null,
-            authContext: 'view',
-            isProcessingScan: false // Lock untuk mencegah scan ganda
+            isProcessingScan: false
         };
 
         // Realtime Listeners
@@ -447,7 +430,7 @@
             const now = new Date();
             const time = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
             const date = now.toLocaleDateString('id-ID', { day:'numeric', month:'short' });
-            if(document.getElementById('liveClock')) document.getElementById('liveClock').innerHTML = `<div class="text-xs font-bold opacity-70">${date}</div><div class="text-xl font-black">${time}</div>`;
+            if(document.getElementById('liveClock')) document.getElementById('liveClock').innerHTML = `<div class="text-[10px] font-black opacity-60 uppercase tracking-widest mb-1">${date}</div><div class="text-2xl font-black">${time}</div>`;
         }
         setInterval(updateClock, 1000); updateClock();
 
@@ -484,10 +467,9 @@
                 closeModal('adminModal');
                 refreshUIVisibility();
                 setTab('scan');
-                alert(`Login Petugas Berhasil: Selamat Bekerja ${staffMatch.name}!`);
                 return;
             }
-            alert("PIN Salah atau Petugas Tidak Terdaftar!");
+            alert("PIN Salah atau Akses Ditolak!");
         };
 
         window.openResetFacility = () => {
@@ -501,9 +483,9 @@
             const recoveryInput = document.getElementById('recoveryKeyInput').value.trim();
             const newPin = document.getElementById('newAdminPinReset').value.trim();
             if (recoveryInput !== state.recoveryKey) return alert("Kode Pemulihan Salah!");
-            if (newPin.length < 4) return alert("PIN Baru minimal 4 digit!");
+            if (newPin.length < 4) return alert("PIN Minimal 4 digit!");
             set(ref(db, 'settings/adminPin'), newPin).then(() => {
-                alert("PIN Admin berhasil direset!");
+                alert("Reset PIN Berhasil!");
                 closeModal('resetAdminModal');
                 state.adminPass = newPin;
                 window.showAdminLogin();
@@ -511,12 +493,33 @@
         };
 
         window.adminLogout = () => {
-            if(confirm("Yakin ingin keluar dari mode panitia?")) {
+            if(confirm("Keluar dari Mode Panitia?")) {
                 state.isAdmin = false;
                 state.isStaff = false;
                 refreshUIVisibility();
                 setTab('register');
             }
+        };
+
+        // --- DATA MANAGEMENT ---
+        window.promptResetAll = () => {
+            document.getElementById('resetConfirmText').value = '';
+            document.getElementById('confirmResetDataModal').classList.remove('hidden');
+        };
+
+        window.executeResetData = () => {
+            const conf = document.getElementById('resetConfirmText').value.trim().toUpperCase();
+            if (conf !== 'RESET') return alert("Ketik 'RESET' untuk melanjutkan!");
+            
+            Promise.all([
+                set(ref(db, 'participants'), null),
+                set(ref(db, 'attendance'), null),
+                set(ref(db, 'gifts'), null)
+            ]).then(() => {
+                alert("Seluruh data telah dihapus!");
+                closeModal('confirmResetDataModal');
+                updateDashboard();
+            });
         };
 
         function refreshUIVisibility() {
@@ -539,7 +542,7 @@
             if (state.isAdmin || state.isStaff) {
                 logoutBtn.classList.remove('hidden');
                 roleBadge.classList.remove('hidden');
-                roleBadge.innerText = state.isAdmin ? "Administrator" : "Petugas Lapangan";
+                roleBadge.innerText = state.isAdmin ? "Mode Administrator" : "Petugas Lapangan";
             } else {
                 logoutBtn.classList.add('hidden');
                 roleBadge.classList.add('hidden');
@@ -557,84 +560,92 @@
         window.addStaff = () => {
             const name = document.getElementById('newStaffName').value.trim().toUpperCase();
             const pin = document.getElementById('newStaffPin').value.trim();
-            if(!name || pin.length !== 4) return alert("Lengkapi Nama & PIN 4 Digit!");
+            if(!name || pin.length !== 4) return alert("Lengkapi Form Petugas!");
             push(ref(db, 'staff'), { name, pin }).then(() => {
                 document.getElementById('newStaffName').value = '';
                 document.getElementById('newStaffPin').value = '';
-                alert("Petugas berhasil ditambahkan!");
             });
         };
 
-        window.deleteStaff = (id) => { if(confirm("Hapus akses petugas ini?")) remove(ref(db, 'staff/' + id)); };
+        window.deleteStaff = (id) => { if(confirm("Hapus petugas ini?")) remove(ref(db, 'staff/' + id)); };
 
         function renderStaffList() {
             const area = document.getElementById('staffListArea');
             if(!area) return;
             area.innerHTML = state.staff.length > 0 ? state.staff.map(s => `
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center shadow-sm">
+                <div class="bg-white p-5 rounded-[1.5rem] border border-slate-100 flex justify-between items-center shadow-sm">
                     <div>
                         <div class="font-black text-slate-800 text-sm tracking-tight uppercase">${s.name}</div>
-                        <div class="text-[9px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5">PIN LOGIN: ${s.pin}</div>
+                        <div class="text-[9px] font-black text-emerald-600 uppercase tracking-widest mt-1">PIN: ${s.pin}</div>
                     </div>
-                    <button onclick="window.deleteStaff('${s.firebaseId}')" class="w-10 h-10 flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all">
-                        <i class="fas fa-trash-alt"></i>
+                    <button onclick="window.deleteStaff('${s.firebaseId}')" class="w-12 h-12 flex items-center justify-center text-red-400 bg-red-50 rounded-2xl">
+                        <i class="fas fa-trash-can"></i>
                     </button>
                 </div>
-            `).join('') : `<div class="p-10 text-center text-slate-300 font-bold text-xs uppercase italic tracking-widest">Belum ada petugas lapangan</div>`;
+            `).join('') : `<div class="p-10 text-center text-slate-300 font-black text-[10px] uppercase tracking-widest italic">Belum ada staf</div>`;
         }
 
-        // --- TABS & CORE LOGIC ---
+        // --- CORE UI ---
         window.setTab = async (t) => {
             if(state.scanner) { try { await state.scanner.stop(); } catch(e){} state.scanner = null; }
             state.tab = t;
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.id === `tab-${t}`));
             const area = document.getElementById('content-area');
+            
             if(t === 'register') {
                 area.innerHTML = `
-                <div class="bg-white rounded-3xl p-6 shadow-xl mb-8 border border-slate-50">
-                    <h3 class="text-lg font-black text-slate-800 mb-6 flex items-center gap-2 uppercase tracking-tight"><i class="fas fa-pencil-alt text-emerald-600"></i> Form Pendaftaran</h3>
-                    <div class="space-y-4">
-                        <input id="inName" type="text" class="form-input w-full rounded-xl p-4 font-bold uppercase" placeholder="NAMA LENGKAP">
-                        <div class="grid grid-cols-2 gap-4">
-                            <select id="inStatus" class="form-input w-full rounded-xl p-4 font-bold">
-                                <option value="Orangtua">Orangtua</option><option value="Pemuda">Pemuda</option><option value="Sekolah Minggu">Sekolah Minggu</option><option value="Tamu">Tamu</option>
-                            </select>
-                            <select id="inMarga" class="form-input w-full rounded-xl p-4 font-bold">
-                                <option value="Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere">Bere</option>
-                            </select>
+                <div class="bg-white rounded-[2.5rem] p-8 shadow-2xl mb-10 border border-slate-100 animate-[modalUp_0.5s]">
+                    <h3 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3 uppercase royal-font tracking-tight"><i class="fas fa-id-card text-emerald-600"></i> Form Pendaftaran</h3>
+                    <div class="space-y-5">
+                        <div class="group">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 block pl-2">Nama Lengkap Sesuai KTP</label>
+                            <input id="inName" type="text" class="form-input w-full rounded-2xl p-5 font-black uppercase" placeholder="CONTOH: BUDI MANIHURUK">
                         </div>
-                        <input id="inPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-4 font-black text-center text-xl tracking-[0.5em]" placeholder="BUAT PIN 4 DIGIT">
-                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg btn-hover uppercase tracking-widest">Daftar Sekarang</button>
+                        <div class="grid grid-cols-2 gap-5">
+                            <div>
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 block pl-2">Kategori Peserta</label>
+                                <select id="inStatus" class="form-input w-full rounded-2xl p-5 font-black uppercase">
+                                    <option value="Orangtua">Orangtua</option><option value="Pemuda">Pemuda</option><option value="Sekolah Minggu">Sekolah Minggu</option><option value="Tamu">Tamu</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 block pl-2">Silsilah Marga</label>
+                                <select id="inMarga" class="form-input w-full rounded-2xl p-5 font-black uppercase">
+                                    <option value="Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere">Bere</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 block pl-2">Buat PIN Akses (4 Digit)</label>
+                            <input id="inPass" type="password" maxlength="4" class="form-input w-full rounded-2xl p-5 font-black text-center text-2xl tracking-[0.5em]" placeholder="••••">
+                        </div>
+                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-[1.5rem] py-5 font-black shadow-xl btn-hover btn-modern uppercase tracking-[0.2em] mt-4">DAFTARKAN SAYA</button>
                     </div>
                 </div>
-                <div id="participantList" class="space-y-3"></div>`;
+                <div id="participantList" class="space-y-4"></div>`;
                 renderParticipantList();
             } else if(t === 'find') {
                 area.innerHTML = `
-                <div class="bg-white rounded-3xl p-8 shadow-xl text-center border border-slate-50">
-                    <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 text-2xl shadow-inner"><i class="fas fa-search"></i></div>
-                    <h3 class="font-black text-xl mb-6 text-slate-800 uppercase tracking-tight">Cari Undangan Digital</h3>
-                    <div class="space-y-4">
-                        <input id="findName" type="text" placeholder="Masukkan Nama Anda" class="form-input w-full rounded-xl p-4 text-center font-bold uppercase tracking-wider">
-                        <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-xl py-4 font-black btn-hover shadow-xl uppercase tracking-widest">LIHAT TIKET</button>
+                <div class="bg-white rounded-[2.5rem] p-10 shadow-2xl text-center border border-slate-100 animate-[modalUp_0.5s]">
+                    <div class="w-24 h-24 bg-emerald-50 rounded-[2rem] flex items-center justify-center mx-auto mb-8 text-emerald-600 text-4xl shadow-inner"><i class="fas fa-magnifying-glass"></i></div>
+                    <h3 class="font-black text-2xl mb-8 text-slate-800 uppercase royal-font tracking-tight">Temukan Undangan</h3>
+                    <div class="space-y-6">
+                        <input id="findName" type="text" placeholder="Masukkan Nama Lengkap" class="form-input w-full rounded-2xl p-5 text-center font-black uppercase tracking-wider">
+                        <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-[1.5rem] py-5 font-black btn-hover btn-modern shadow-2xl uppercase tracking-[0.2em]">CARI TIKET SAYA</button>
                     </div>
                 </div>`;
             } else if(t === 'scan' || t === 'gift') {
-                const isScan = t === 'scan';
                 area.innerHTML = `
-                <div class="bg-white rounded-3xl p-6 shadow-xl text-center border border-slate-50">
-                    <h3 class="font-black mb-6 text-slate-800 tracking-tight uppercase">Scanner ${isScan ? 'Kehadiran' : 'Berkat'}</h3>
-                    <div id="scanMsg" class="hidden p-3 rounded-xl mb-4 text-white font-bold shadow-lg transition-all duration-300"></div>
-                    <div class="relative rounded-2xl overflow-hidden bg-black aspect-square max-w-sm mx-auto mb-6 shadow-2xl">
+                <div class="bg-white rounded-[2.5rem] p-8 shadow-2xl text-center border border-slate-100 animate-[modalUp_0.5s]">
+                    <h3 class="font-black mb-8 text-slate-800 tracking-tight uppercase royal-font text-xl">SCAN QR ${t === 'scan' ? 'KEHADIRAN' : 'BERKAT'}</h3>
+                    <div id="scanMsg" class="hidden p-4 rounded-2xl mb-6 text-white font-black shadow-xl transition-all"></div>
+                    <div class="relative rounded-3xl overflow-hidden bg-black aspect-square max-w-sm mx-auto mb-10 shadow-inner">
                         <div id="reader"></div>
                         <div class="scan-frame"></div>
                     </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <button onclick="window.openManualInput('${t}')"
-                                class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs shadow-xl flex items-center justify-center gap-3 btn-hover uppercase tracking-widest">
-                            <i class="fas fa-keyboard"></i> Masukkan Nama Manual
-                        </button>
-                    </div>
+                    <button onclick="window.openManualInput('${t}')" class="w-full py-5 bg-slate-900 text-white rounded-[1.5rem] font-black text-xs shadow-2xl flex items-center justify-center gap-4 btn-hover uppercase tracking-widest">
+                        <i class="fas fa-keyboard"></i> INPUT NAMA MANUAL
+                    </button>
                 </div>`;
                 setTimeout(initScanner, 300);
             } else if(t === 'data') renderAdminPanel();
@@ -643,49 +654,52 @@
         window.processRegister = () => {
             const name = document.getElementById('inName').value.trim();
             const pass = document.getElementById('inPass').value;
-            if(!name || pass.length < 4) return alert("Lengkapi Form & PIN 4 Digit!");
+            if(!name || pass.length < 4) return alert("Harap lengkapi semua data!");
             const code = `MN-${Date.now().toString().slice(-6)}`;
             const data = { name: name.toUpperCase(), status: document.getElementById('inStatus').value, marga: document.getElementById('inMarga').value, password: pass, qrCode: code, registeredAt: new Date().toLocaleString() };
-            push(ref(db, 'participants'), data).then(() => { alert("Pendaftaran Sukses!"); window.showTicket(data); document.getElementById('inName').value = ''; document.getElementById('inPass').value = ''; });
+            push(ref(db, 'participants'), data).then(() => { alert("Pendaftaran Berhasil!"); window.showTicket(data); });
         };
 
         window.findTicket = () => {
-            const query = document.getElementById('findName').value.toLowerCase().trim();
-            if(!query) return alert("Masukkan nama!");
-            const matches = state.participants.filter(x => x.name.toLowerCase().includes(query));
+            const q = document.getElementById('findName').value.toLowerCase().trim();
+            if(!q) return alert("Masukkan nama!");
+            const matches = state.participants.filter(x => x.name.toLowerCase().includes(q));
             if(!matches.length) alert("Data tidak ditemukan!");
             else if(matches.length === 1) window.startAuth(matches[0]);
-            else alert("Beberapa nama ditemukan. Harap gunakan nama lengkap.");
+            else alert("Nama terlalu umum, gunakan nama lengkap!");
         };
 
         function renderAdminPanel() {
             const area = document.getElementById('content-area');
             area.innerHTML = `
-            <div class="space-y-6">
-                <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100">
-                    <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
-                        <h3 class="font-black text-slate-800 flex items-center gap-2 tracking-tight uppercase"><i class="fas fa-shield-alt text-emerald-600"></i> Panel Administrator</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <button onclick="window.openStaffManager()" class="bg-amber-50 px-4 py-2.5 rounded-xl text-amber-700 text-[10px] font-black hover:bg-amber-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm">
+            <div class="space-y-8 animate-[modalUp_0.5s]">
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100">
+                    <div class="flex flex-wrap justify-between items-center gap-5 mb-10">
+                        <h3 class="text-xl font-black text-slate-800 flex items-center gap-3 tracking-tight uppercase royal-font"><i class="fas fa-crown text-emerald-600"></i> Panel Admin Utama</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="window.openStaffManager()" class="bg-amber-50 px-5 py-3 rounded-2xl text-amber-700 text-[10px] font-black hover:bg-amber-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm">
                                 <i class="fas fa-users-cog"></i> KELOLA PETUGAS
                             </button>
-                            <button onclick="window.exportToCSV()" class="bg-emerald-50 px-4 py-2.5 rounded-xl text-emerald-700 text-[10px] font-black hover:bg-emerald-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm">
-                                <i class="fas fa-file-export"></i> EKSPORT CSV
+                            <button onclick="window.exportToCSV()" class="bg-emerald-50 px-5 py-3 rounded-2xl text-emerald-700 text-[10px] font-black hover:bg-emerald-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm">
+                                <i class="fas fa-file-csv"></i> EKSPOR DATA
+                            </button>
+                            <button onclick="window.promptResetAll()" class="bg-red-50 px-5 py-3 rounded-2xl text-red-700 text-[10px] font-black hover:bg-red-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm border border-red-100">
+                                <i class="fas fa-trash-can"></i> RESET SEMUA DATA
                             </button>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <input type="text" onkeyup="window.handleAdminSearch(this.value)" placeholder="Cari Nama / Kode..." class="form-input w-full rounded-xl p-3 text-sm uppercase">
-                        <select onchange="window.updateTableFilter(this.value)" class="form-input rounded-xl px-3 py-3 text-sm font-bold bg-slate-50 border-slate-200">
-                            <option value="Semua">Semua Kategori</option>
-                            <option value="Orangtua">Orangtua</option>
-                            <option value="Pemuda">Pemuda</option>
-                            <option value="Sekolah Minggu">Sekolah Minggu</option>
-                            <option value="Tamu">Tamu</option>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <input type="text" onkeyup="window.handleAdminSearch(this.value)" placeholder="CARI PESERTA..." class="form-input w-full rounded-2xl p-4 text-sm font-black uppercase">
+                        <select onchange="window.updateTableFilter(this.value)" class="form-input rounded-2xl px-5 py-4 text-sm font-black bg-slate-50 border-slate-200">
+                            <option value="Semua">TAMPILKAN SEMUA KATEGORI</option>
+                            <option value="Orangtua">ORANGTUA</option>
+                            <option value="Pemuda">PEMUDA</option>
+                            <option value="Sekolah Minggu">SEKOLAH MINGGU</option>
+                            <option value="Tamu">TAMU</option>
                         </select>
                     </div>
                 </div>
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+                <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100">
                     <div id="adminTableContainer" class="overflow-x-auto custom-scrollbar"></div>
                 </div>
             </div>`;
@@ -698,12 +712,39 @@
             let filtered = state.participants;
             if(state.filterStatus !== "Semua") filtered = filtered.filter(p => p.status === state.filterStatus);
             if(state.adminSearchQuery) filtered = filtered.filter(p => p.name.toLowerCase().includes(state.adminSearchQuery));
-            container.innerHTML = `<table class="w-full text-left text-xs"><thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100"><tr><th class="p-4">Identitas</th><th class="p-4">Kategori</th><th class="p-4 text-center">Aksi</th></tr></thead><tbody class="divide-y divide-slate-50">${filtered.map(p => `<tr><td class="p-4"><div class="font-black text-slate-800 text-sm uppercase">${p.name}</div><div class="text-[9px] font-mono text-slate-400 mt-1">${p.qrCode}</div></td><td class="p-4 font-bold text-slate-600">${p.status}</td><td class="p-4 text-center"><button onclick="window.adminDeleteUser('${p.firebaseId}')" class="text-red-400 hover:text-red-600 w-8 h-8 flex items-center justify-center bg-red-50 rounded-lg mx-auto"><i class="fas fa-trash"></i></button></td></tr>`).join('')}</tbody></table>`;
+            
+            container.innerHTML = `
+            <table class="w-full text-left text-[11px]">
+                <thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100">
+                    <tr>
+                        <th class="p-6">Informasi Peserta</th>
+                        <th class="p-6">Kategori</th>
+                        <th class="p-6 text-center">Aksi Kontrol</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    ${filtered.map(p => `
+                        <tr class="hover:bg-slate-50/50 transition-all">
+                            <td class="p-6">
+                                <div class="font-black text-slate-800 text-sm uppercase leading-tight">${p.name}</div>
+                                <div class="text-[9px] font-mono text-emerald-500 mt-1 font-bold">${p.qrCode}</div>
+                            </td>
+                            <td class="p-6">
+                                <span class="bg-slate-100 px-3 py-1 rounded-full font-black text-slate-500">${p.status}</span>
+                            </td>
+                            <td class="p-6 text-center">
+                                <button onclick="window.adminDeleteUser('${p.firebaseId}')" class="text-red-400 hover:text-red-600 w-10 h-10 flex items-center justify-center bg-red-50 rounded-xl mx-auto transition-all">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>`).join('')}
+                </tbody>
+            </table>`;
         };
 
         function renderParticipantList() {
             const list = document.getElementById('participantList'); if(!list) return;
-            list.innerHTML = `<h5 class="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest pl-1">Pendaftar Terbaru</h5>` + state.participants.slice(-3).reverse().map(p => `<div class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm border border-slate-50 mb-2"><div class="font-bold text-sm text-slate-800 uppercase">${p.name}</div><div class="text-[8px] font-black bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full uppercase">${p.status}</div></div>`).join('');
+            list.innerHTML = `<h5 class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-[0.3em] pl-4">Pendaftar Terkini</h5>` + state.participants.slice(-3).reverse().map(p => `<div class="bg-white p-5 rounded-[1.5rem] flex justify-between items-center shadow-lg border border-slate-100 mb-3 animate-[modalUp_0.4s]"><div class="font-black text-sm text-slate-800 uppercase">${p.name}</div><div class="text-[9px] font-black bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full uppercase border border-emerald-100">${p.status}</div></div>`).join('');
         }
 
         window.showTicket = async (user) => {
@@ -717,10 +758,10 @@
             qrLoader.classList.remove('hidden');
             document.getElementById('ticketModal').classList.remove('hidden');
             try {
-                const url = await QRCode.toDataURL(user.qrCode, { errorCorrectionLevel: 'H', margin: 2, width: 600, color: { dark: "#064e3b" } });
+                const url = await QRCode.toDataURL(user.qrCode, { errorCorrectionLevel: 'H', margin: 2, width: 800, color: { dark: "#064e3b", light: "#ffffff" } });
                 qrImg.src = url;
                 qrImg.onload = () => { qrLoader.classList.add('hidden'); qrImg.classList.remove('hidden'); };
-            } catch (e) { qrLoader.innerHTML = `<span class="text-xs text-red-500">ERROR</span>`; }
+            } catch (e) { qrLoader.innerHTML = `<span class="text-xs text-red-500">QR ERROR</span>`; }
         };
 
         window.startAuth = (user) => {
@@ -740,42 +781,26 @@
         function initScanner() {
             const msgEl = document.getElementById('scanMsg');
             state.scanner = new Html5Qrcode("reader");
-            
-            state.scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (text) => {
-                // LOCK agar tidak dobel scan
+            state.scanner.start({ facingMode: "environment" }, { fps: 20, qrbox: 280 }, (text) => {
                 if (state.isProcessingScan) return;
                 state.isProcessingScan = true;
-
-                // Normalisasi kode QR yang discan
                 const scannedText = text.trim().toUpperCase();
                 const p = state.participants.find(x => x.qrCode && x.qrCode.trim().toUpperCase() === scannedText);
                 
                 if(!p) {
-                    msgEl.innerText = "QR CODE TIDAK TERDAFTAR!";
-                    msgEl.className = "p-3 rounded-xl mb-4 bg-red-500 text-white font-bold block shadow-lg animate-pulse";
+                    msgEl.innerText = "KODE TIDAK DIKENALI!";
+                    msgEl.className = "p-4 rounded-2xl mb-6 bg-red-600 text-white font-black block shadow-xl animate-shake";
                     setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 2000);
                     return;
                 }
 
-                // Cek apakah sudah pernah scan (opsional, tapi bagus untuk validasi)
                 const path = state.tab === 'scan' ? 'attendance' : 'gifts';
-                const label = state.tab === 'scan' ? 'Kehadiran' : 'Berkat';
-
-                push(ref(db, path), { 
-                    name: p.name, 
-                    qrCode: p.qrCode, 
-                    scannedBy: state.isStaff ? state.staff.find(s => s.firebaseId)?.name || 'Staff' : 'Admin',
-                    timestamp: new Date().toLocaleString() 
-                }).then(() => {
-                    msgEl.innerText = `${label} Berhasil: ${p.name}`;
-                    msgEl.className = "p-3 rounded-xl mb-4 bg-emerald-600 text-white font-bold block shadow-lg";
+                push(ref(db, path), { name: p.name, qrCode: p.qrCode, timestamp: new Date().toLocaleString() }).then(() => {
+                    msgEl.innerText = `${p.name} TERVERIFIKASI!`;
+                    msgEl.className = "p-4 rounded-2xl mb-6 bg-emerald-600 text-white font-black block shadow-xl animate-bounce";
                     setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 3000);
                 });
-
-            }).catch(() => {
-                alert("Izin Kamera Ditolak atau Error!");
-                state.isProcessingScan = false;
-            });
+            }).catch(() => { alert("Harap Izinkan Akses Kamera!"); state.isProcessingScan = false; });
         }
 
         window.exportToCSV = () => {
@@ -785,8 +810,8 @@
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
-            link.setAttribute("href", url);
-            link.setAttribute("download", `Data_Bonataon_2026.csv`);
+            link.href = url;
+            link.download = `Data_Pendaftar_Bonataon_2026.csv`;
             link.click();
         };
 
@@ -796,9 +821,9 @@
         window.adminDeleteUser = (id) => { if(confirm("Hapus pendaftar ini secara permanen?")) remove(ref(db, 'participants/' + id)); };
         
         window.downloadTicketImage = () => {
-            html2canvas(document.getElementById('vipTicketCard'), { scale: 2, backgroundColor: '#0f172a' }).then(canvas => {
+            html2canvas(document.getElementById('vipTicketCard'), { scale: 3, backgroundColor: '#0f172a' }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `Tiket_${state.activeUser.name.replace(/\s+/g, '_')}.png`;
+                link.download = `Tiket_Bonataon_${state.activeUser.name.replace(/\s+/g, '_')}.png`;
                 link.href = canvas.toDataURL();
                 link.click();
             });
@@ -807,12 +832,10 @@
         window.openManualInput = (type) => {
             const q = prompt("Masukkan Nama atau Kode QR:");
             if (!q) return;
-            const query = q.toLowerCase().trim();
-            const matches = state.participants.filter(x => (x.name && x.name.toLowerCase().includes(query)) || (x.qrCode && x.qrCode.toLowerCase().includes(query)));
-            if (!matches.length) return alert("Data tidak ditemukan!");
+            const matches = state.participants.filter(x => (x.name && x.name.toLowerCase().includes(q.toLowerCase())) || (x.qrCode && x.qrCode.toLowerCase().includes(q.toLowerCase())));
+            if (!matches.length) return alert("Nama tidak ditemukan!");
             const target = matches[0];
-            const path = type === 'scan' ? 'attendance' : 'gifts';
-            push(ref(db, path), { name: target.name, qrCode: target.qrCode, timestamp: new Date().toLocaleString(), type: 'Manual' }).then(() => alert(`Input Manual Berhasil: ${target.name}`));
+            push(ref(db, type === 'scan' ? 'attendance' : 'gifts'), { name: target.name, qrCode: target.qrCode, timestamp: new Date().toLocaleString(), type: 'Manual' }).then(() => alert(`Input Manual Sukses: ${target.name}`));
         };
 
         refreshUIVisibility();
