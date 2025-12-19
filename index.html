@@ -808,7 +808,13 @@
                         <h3 class="text-xl font-black text-slate-800 flex items-center gap-3 tracking-tight uppercase royal-font"><i class="fas fa-crown text-emerald-600"></i> Admin Panel</h3>
                         <div class="flex flex-wrap gap-3">
                             <button onclick="window.exportToCSV()" class="bg-emerald-50 px-5 py-3 rounded-2xl text-emerald-700 text-[10px] font-black hover:bg-emerald-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm">
-                                <i class="fas fa-file-csv"></i> EKSPOR CSV
+                                <i class="fas fa-file-csv"></i> EKSPOR PESERTA
+                            </button>
+                            <button onclick="window.exportAttendanceToCSV()" class="bg-blue-50 px-5 py-3 rounded-2xl text-blue-700 text-[10px] font-black hover:bg-blue-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm border border-blue-100">
+                                <i class="fas fa-clipboard-user"></i> EKSPOR ABSENSI
+                            </button>
+                            <button onclick="window.exportGiftsToCSV()" class="bg-amber-50 px-5 py-3 rounded-2xl text-amber-700 text-[10px] font-black hover:bg-amber-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm border border-amber-100">
+                                <i class="fas fa-gift"></i> EKSPOR BERKAT
                             </button>
                             <button onclick="window.promptResetAll()" class="bg-red-50 px-5 py-3 rounded-2xl text-red-700 text-[10px] font-black hover:bg-red-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm border border-red-100">
                                 <i class="fas fa-trash-can"></i> RESET SEMUA
@@ -990,6 +996,26 @@
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url; link.download = "Pendaftar_Bonataon2026.csv"; link.click();
+        };
+
+        window.exportAttendanceToCSV = () => {
+            if (state.attendance.length === 0) return alert("Belum ada data absensi!");
+            const rows = state.attendance.map(a => [`"${a.name}"`, `"${a.qrCode}"`, `"${a.timestamp}"`]);
+            let csv = "\ufeffNama,Kode QR,Waktu Hadir\n" + rows.map(e => e.join(",")).join("\n");
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url; link.download = "Absensi_Bonataon2026.csv"; link.click();
+        };
+
+        window.exportGiftsToCSV = () => {
+            if (state.gifts.length === 0) return alert("Belum ada data pembagian berkat!");
+            const rows = state.gifts.map(g => [`"${g.name}"`, `"${g.qrCode}"`, `"${g.timestamp}"`]);
+            let csv = "\ufeffNama,Kode QR,Waktu Terima Berkat\n" + rows.map(e => e.join(",")).join("\n");
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url; link.download = "Berkat_Bonataon2026.csv"; link.click();
         };
 
         window.openManualInput = (type) => {
