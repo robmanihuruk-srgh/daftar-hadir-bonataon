@@ -235,7 +235,7 @@
                 <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-user-shield text-2xl"></i>
                 </div>
-                <h3 class="text-xl font-black text-slate-800 tracking-tight">Akses Panitia</h3>
+                <h3 class="text-xl font-black text-slate-800 tracking-tight uppercase">Akses Panitia</h3>
                 <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-widest">Masukkan PIN Anda</p>
             </div>
             <input type="password" id="adminPassword" placeholder="••••" maxlength="8" class="form-input w-full rounded-2xl p-4 text-center text-3xl font-black mb-4 tracking-[0.5em]">
@@ -248,14 +248,14 @@
     <div id="recoveryModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('recoveryModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 text-center mb-2 tracking-tight">Reset PIN Admin</h3>
+            <h3 class="text-xl font-black text-slate-800 text-center mb-2 tracking-tight uppercase">Reset PIN Admin</h3>
             <p class="text-xs text-slate-400 text-center mb-6">Verifikasi identitas dengan PIN lama atau Kode Pemulihan ('BONA2026').</p>
             <div class="space-y-4">
                 <input type="text" id="recoveryKeyInput" placeholder="PIN LAMA / KODE" class="form-input w-full rounded-2xl p-4 text-center font-black text-lg tracking-wider">
                 <input type="password" id="recoveryNewPin" maxlength="4" placeholder="PIN BARU (4 DIGIT)" class="form-input w-full rounded-2xl p-4 text-center font-black text-2xl tracking-[0.5em]">
                 <div class="grid grid-cols-2 gap-3 pt-4">
-                    <button onclick="closeModal('recoveryModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover">BATAL</button>
-                    <button onclick="window.processRecovery()" class="py-4 bg-amber-500 text-white rounded-2xl font-black btn-hover shadow-lg shadow-amber-100">RESET PIN</button>
+                    <button onclick="closeModal('recoveryModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover uppercase tracking-widest">BATAL</button>
+                    <button onclick="window.processRecovery()" class="py-4 bg-amber-500 text-white rounded-2xl font-black btn-hover shadow-lg shadow-amber-100 uppercase tracking-widest">RESET PIN</button>
                 </div>
             </div>
         </div>
@@ -285,11 +285,11 @@
         </div>
     </div>
 
-    <!-- Regular Modals (Search, Auth, Ticket, Edit, Settings, Confirm) -->
+    <!-- Regular Modals -->
     <div id="searchResultsModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('searchResultsModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 mb-4 tracking-tight" id="searchResultsTitle">Hasil Pencarian</h3>
+            <h3 class="text-xl font-black text-slate-800 mb-4 tracking-tight uppercase" id="searchResultsTitle">Hasil Pencarian</h3>
             <p class="text-xs text-slate-400 mb-4 uppercase font-bold tracking-tight">Pilih nama yang sesuai:</p>
             <div id="searchResultsList" class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar p-1"></div>
             <button onclick="closeModal('searchResultsModal')" class="w-full mt-6 py-4 border-2 rounded-2xl font-bold text-slate-400 uppercase tracking-widest">Tutup</button>
@@ -316,7 +316,7 @@
             <div class="space-y-4">
                 <div>
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Nama Lengkap</label>
-                    <input id="editName" type="text" class="form-input w-full rounded-xl p-3 font-bold">
+                    <input id="editName" type="text" class="form-input w-full rounded-xl p-3 font-bold uppercase">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -417,9 +417,9 @@
             <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl animate-pulse shadow-inner">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <h3 class="text-xl font-black text-slate-800 mb-2 tracking-tight">Konfirmasi Hapus</h3>
+            <h3 class="text-xl font-black text-slate-800 mb-2 tracking-tight uppercase">Konfirmasi Hapus</h3>
             <p class="text-xs text-slate-500 mb-8 leading-relaxed">
-                Apakah Anda yakin ingin menghapus <span id="deleteTargetName" class="font-bold text-red-600"></span>?<br>Tindakan ini permanen.
+                Apakah Anda yakin ingin menghapus <span id="deleteTargetName" class="font-bold text-red-600 uppercase"></span>?<br>Tindakan ini permanen.
             </p>
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="closeModal('confirmDeleteModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover uppercase tracking-widest">Batal</button>
@@ -434,9 +434,9 @@
             <div class="w-20 h-20 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-inner">
                 <i class="fas fa-key"></i>
             </div>
-            <h3 class="text-xl font-black text-slate-800 mb-2 tracking-tight">Reset PIN Peserta</h3>
+            <h3 class="text-xl font-black text-slate-800 mb-2 tracking-tight uppercase">Reset PIN Peserta</h3>
             <p class="text-xs text-slate-500 mb-8 leading-relaxed">
-                PIN untuk <span id="resetTargetName" class="font-bold text-amber-600"></span> akan diatur ulang ke <span class="font-bold text-emerald-600">0000</span>.
+                PIN untuk <span id="resetTargetName" class="font-bold text-amber-600 uppercase"></span> akan diatur ulang ke <span class="font-bold text-emerald-600">0000</span>.
             </p>
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="closeModal('confirmResetModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400 btn-hover uppercase tracking-widest">Batal</button>
@@ -555,23 +555,20 @@
             alert("PIN Salah atau Tidak Terdaftar!");
         };
 
-        // UI Enforcement: Hide Sensitive Tabs on Mobile for Public
+        // UI Enforcement: Manage visibility based on authentication and screen width
         function refreshUIVisibility() {
             const adminTabs = document.querySelectorAll('.admin-tab');
-            const staffTabs = document.querySelectorAll('.staff-tab');
-            
-            // Default: Hide all sensitive tabs on mobile via max-sm:hidden
-            // If logged in as Admin, show all including Admin panel
-            // If logged in as Staff, show only Scan/Gift tabs
             
             adminTabs.forEach(tab => {
-                if (state.isAdmin) {
-                    tab.classList.remove('max-sm:hidden', 'hidden');
-                    tab.classList.add('nav-btn-animate');
-                } else if (state.isStaff && tab.classList.contains('staff-tab')) {
+                const isStaffTab = tab.classList.contains('staff-tab');
+                const shouldShow = state.isAdmin || (state.isStaff && isStaffTab);
+                
+                if (shouldShow) {
+                    // Logged in: Always show, even on mobile
                     tab.classList.remove('max-sm:hidden', 'hidden');
                     tab.classList.add('nav-btn-animate');
                 } else {
+                    // Not logged in: Hide on mobile specifically as per request
                     tab.classList.add('max-sm:hidden');
                     tab.classList.remove('nav-btn-animate');
                 }
@@ -606,7 +603,7 @@
             area.innerHTML = state.staff.length > 0 ? state.staff.map(s => `
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center shadow-sm">
                     <div>
-                        <div class="font-black text-slate-800 text-sm tracking-tight">${s.name}</div>
+                        <div class="font-black text-slate-800 text-sm tracking-tight uppercase">${s.name}</div>
                         <div class="text-[9px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5">PIN: ${s.pin}</div>
                     </div>
                     <button onclick="window.deleteStaff('${s.firebaseId}')" class="w-8 h-8 flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all">
@@ -616,7 +613,7 @@
             `).join('') : `<div class="p-10 text-center text-slate-300 font-bold text-xs uppercase italic tracking-widest">Belum ada petugas lapangan</div>`;
         }
 
-        // Core App Logic (Pendaftaran, Tiket, Scanner)
+        // Core App Logic
         window.setTab = async (t) => {
             if(state.scanner) { try { await state.scanner.stop(); } catch(e){} state.scanner = null; }
             state.tab = t;
@@ -628,7 +625,7 @@
                 <div class="bg-white rounded-3xl p-6 shadow-xl mb-8 border border-slate-50">
                     <h3 class="text-lg font-black text-slate-800 mb-6 flex items-center gap-2 uppercase tracking-tight"><i class="fas fa-pencil-alt text-emerald-600"></i> Pendaftaran Peserta</h3>
                     <div class="space-y-4">
-                        <input id="inName" type="text" class="form-input w-full rounded-xl p-4 font-bold" placeholder="Nama Lengkap">
+                        <input id="inName" type="text" class="form-input w-full rounded-xl p-4 font-bold uppercase" placeholder="Nama Lengkap">
                         <div class="grid grid-cols-2 gap-4">
                             <select id="inStatus" class="form-input w-full rounded-xl p-4 font-bold">
                                 <option value="Orangtua">Orangtua</option><option value="Pemuda">Pemuda</option><option value="Sekolah Minggu">Sekolah Minggu</option><option value="Tamu">Tamu</option>
@@ -637,8 +634,8 @@
                                 <option value="Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere">Bere</option>
                             </select>
                         </div>
-                        <input id="inPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-4 font-black text-center text-xl tracking-[0.5em]" placeholder="Buat PIN 4 Digit">
-                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg btn-hover uppercase tracking-widest">Daftarkan</button>
+                        <input id="inPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-4 font-black text-center text-xl tracking-[0.5em]" placeholder="PIN 4 Digit">
+                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg btn-hover uppercase tracking-widest">Daftarkan Sekarang</button>
                     </div>
                 </div>
                 <div id="participantList" class="space-y-3"></div>`;
@@ -647,15 +644,15 @@
                 area.innerHTML = `
                 <div class="bg-white rounded-3xl p-8 shadow-xl text-center border border-slate-50">
                     <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 text-2xl shadow-inner"><i class="fas fa-search"></i></div>
-                    <h3 class="font-black text-xl mb-6 text-slate-800 uppercase tracking-tight">Cari Undangan</h3>
+                    <h3 class="font-black text-xl mb-6 text-slate-800 uppercase tracking-tight">Cari Undangan Digital</h3>
                     <div class="space-y-4">
-                        <input id="findName" type="text" placeholder="Masukkan Nama Anda" class="form-input w-full rounded-xl p-4 text-center font-bold">
+                        <input id="findName" type="text" placeholder="Masukkan Nama Lengkap" class="form-input w-full rounded-xl p-4 text-center font-bold uppercase">
                         <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-xl py-4 font-black btn-hover shadow-xl uppercase tracking-widest">Lihat Tiket</button>
                     </div>
                 </div>`;
             } else if(t === 'scan' || t === 'gift') {
                 if(!state.isAdmin && !state.isStaff) {
-                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest italic">Akses Terbatas</div>`;
+                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest italic">Akses Terbatas Panitia</div>`;
                     window.showAdminLogin();
                     return;
                 }
@@ -678,7 +675,7 @@
                 setTimeout(initScanner, 300);
             } else if(t === 'data') {
                 if(!state.isAdmin) {
-                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest italic">Akses Admin</div>`;
+                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest italic">Akses Admin Utama</div>`;
                     window.showAdminLogin();
                 } else {
                     renderAdminPanel();
@@ -693,17 +690,17 @@
                 <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100">
                     <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
                         <h3 class="font-black text-slate-800 flex items-center gap-2 tracking-tight uppercase">
-                            <i class="fas fa-shield-alt text-emerald-600"></i> Panel Manajemen
+                            <i class="fas fa-shield-alt text-emerald-600"></i> Konsol Kontrol
                         </h3>
                         <div class="flex flex-wrap gap-2">
-                            <button onclick="window.openStaffManager()" class="bg-amber-50 px-4 py-2.5 rounded-xl text-amber-700 text-[10px] font-black hover:bg-amber-100 transition-all flex items-center gap-2 uppercase tracking-widest">
+                            <button onclick="window.openStaffManager()" class="bg-amber-50 px-4 py-2.5 rounded-xl text-amber-700 text-[10px] font-black hover:bg-amber-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm">
                                 <i class="fas fa-users-cog"></i> PETUGAS
                             </button>
-                            <button onclick="window.exportToCSV()" class="bg-emerald-50 px-4 py-2.5 rounded-xl text-emerald-700 text-[10px] font-black hover:bg-emerald-100 transition-all flex items-center gap-2 uppercase tracking-widest">
+                            <button onclick="window.exportToCSV()" class="bg-emerald-50 px-4 py-2.5 rounded-xl text-emerald-700 text-[10px] font-black hover:bg-emerald-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm">
                                 <i class="fas fa-file-export"></i> EKSPORT
                             </button>
-                            <button onclick="window.openAdminSettings()" class="bg-slate-50 px-4 py-2.5 rounded-xl text-slate-700 text-[10px] font-black hover:bg-slate-100 transition-all flex items-center gap-2 uppercase tracking-widest">
-                                <i class="fas fa-key"></i> SETEL PIN
+                            <button onclick="window.openAdminSettings()" class="bg-slate-50 px-4 py-2.5 rounded-xl text-slate-700 text-[10px] font-black hover:bg-slate-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm">
+                                <i class="fas fa-key"></i> PIN
                             </button>
                             <button onclick="window.adminLogout()" class="bg-red-50 p-2.5 rounded-xl text-red-600 text-sm hover:bg-red-100 transition-all shadow-sm"><i class="fas fa-sign-out-alt"></i></button>
                         </div>
@@ -711,7 +708,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="relative">
                             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" onkeyup="window.handleAdminSearch(this.value)" placeholder="Cari Nama / Kode QR..." class="form-input w-full rounded-xl pl-11 p-3 text-sm">
+                            <input type="text" onkeyup="window.handleAdminSearch(this.value)" placeholder="Cari Nama / Kode QR..." class="form-input w-full rounded-xl pl-11 p-3 text-sm uppercase">
                         </div>
                         <select onchange="window.updateTableFilter(this.value)" class="form-input rounded-xl px-3 py-3 text-sm font-bold bg-slate-50 border-slate-200">
                             <option value="Semua">Semua Kategori</option>
@@ -729,13 +726,13 @@
             renderDataTable();
         }
 
-        // Dashboard & App Logic (Sama seperti sebelumnya)
+        // Dashboard & App Logic
         window.processRegister = () => {
             const name = document.getElementById('inName').value.trim();
             const pass = document.getElementById('inPass').value;
             if(!name || pass.length < 4) return alert("Lengkapi data dan PIN 4 digit!");
             const code = `MN-${Date.now().toString().slice(-6)}`;
-            const data = { name, status: document.getElementById('inStatus').value, marga: document.getElementById('inMarga').value, password: pass, qrCode: code, registeredAt: new Date().toLocaleString() };
+            const data = { name: name.toUpperCase(), status: document.getElementById('inStatus').value, marga: document.getElementById('inMarga').value, password: pass, qrCode: code, registeredAt: new Date().toLocaleString() };
             push(ref(db, 'participants'), data).then(() => { alert("Pendaftaran Berhasil!"); window.showTicket(data); document.getElementById('inName').value = ''; document.getElementById('inPass').value = ''; });
         };
 
@@ -811,7 +808,7 @@
 
         window.saveUserEdit = () => {
             const id = state.activeUser.firebaseId;
-            const updates = { name: document.getElementById('editName').value.trim(), status: document.getElementById('editStatus').value, marga: document.getElementById('editMarga').value, password: document.getElementById('editPass').value.trim(), lastUpdatedAt: new Date().toLocaleString() };
+            const updates = { name: document.getElementById('editName').value.trim().toUpperCase(), status: document.getElementById('editStatus').value, marga: document.getElementById('editMarga').value, password: document.getElementById('editPass').value.trim(), lastUpdatedAt: new Date().toLocaleString() };
             if(!updates.name || updates.password.length < 4) return alert("Nama dan PIN 4 digit wajib diisi!");
             update(ref(db, 'participants/' + id), updates).then(() => {
                 alert("Profil diperbarui!"); closeModal('editUserModal');
