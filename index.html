@@ -283,7 +283,7 @@
         </div>
     </div>
 
-    <!-- Other Modals (Ticket, Edit, Search) -->
+    <!-- Search Results Modal -->
     <div id="searchResultsModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('searchResultsModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
@@ -368,7 +368,7 @@
             participants: [],
             attendance: [],
             gifts: [],
-            staff: [], // Data petugas
+            staff: [], // Data petugas lapangan
             tab: 'register',
             scanner: null,
             isAdmin: false,
@@ -387,6 +387,8 @@
 
         // Realtime Listeners
         onValue(ref(db, 'settings/adminPin'), s => { if(s.val()) state.adminPass = s.val(); });
+        
+        // Listener Khusus Petugas
         onValue(ref(db, 'staff'), s => { 
             const data = s.val();
             state.staff = data ? Object.keys(data).map(k => ({...data[k], firebaseId: k})) : [];
@@ -410,7 +412,7 @@
             setTimeout(() => document.getElementById('loading')?.classList.add('hidden'), 500);
         }
 
-        // --- AUTH LOGIC ---
+        // --- AUTH & SECURITY ---
         window.showAdminLogin = () => {
             if (state.isAdmin || state.isStaff) return;
             document.getElementById('adminPassword').value = '';
@@ -419,7 +421,8 @@
 
         window.verifyAdmin = () => {
             const p = document.getElementById('adminPassword').value;
-            // Verifikasi Super Admin
+            
+            // 1. Cek Super Admin
             if(p === state.adminPass) {
                 state.isAdmin = true;
                 state.isStaff = false;
@@ -428,7 +431,8 @@
                 setTab('data');
                 return;
             }
-            // Verifikasi Petugas
+            
+            // 2. Cek Petugas Lapangan (Dinamis dari Firebase)
             const staffMatch = state.staff.find(s => s.pin === p);
             if(staffMatch) {
                 state.isStaff = true;
@@ -436,10 +440,11 @@
                 closeModal('adminModal');
                 refreshUIVisibility();
                 setTab('scan');
-                alert(`Login Petugas: ${staffMatch.name} Berhasil!`);
+                alert(`Login Petugas Lapangan: ${staffMatch.name} Berhasil!`);
                 return;
             }
-            alert("PIN Salah atau Akses Ditolak!");
+            
+            alert("PIN Salah atau Akun Petugas Tidak Ditemukan!");
         };
 
         window.showRecoveryModal = () => {
@@ -456,15 +461,15 @@
                 if(newPin.length === 4) {
                     set(ref(db, 'settings/adminPin'), newPin).then(() => {
                         state.adminPass = newPin;
-                        alert("PIN Admin Utama diperbarui!");
+                        alert("PIN Admin Utama Berhasil Diperbarui!");
                         closeModal('recoveryModal');
                         window.showAdminLogin();
                     });
-                } else alert("PIN Baru harus 4 digit!");
-            } else alert("Kode Verifikasi Salah!");
+                } else alert("PIN Baru Wajib 4 Digit!");
+            } else alert("Verifikasi Gagal: Kode Salah!");
         };
 
-        // --- STAFF MANAGEMENT LOGIC ---
+        // --- STAFF MANAGEMENT (PANEL ADMIN) ---
         window.openStaffManager = () => {
             document.getElementById('newStaffName').value = '';
             document.getElementById('newStaffPin').value = '';
@@ -475,7 +480,7 @@
         window.addStaff = () => {
             const name = document.getElementById('newStaffName').value.trim().toUpperCase();
             const pin = document.getElementById('newStaffPin').value.trim();
-            if(!name || pin.length !== 4) return alert("Lengkapi Nama & PIN 4 Digit!");
+            if(!name || pin.length !== 4) return alert("Nama Lengkap & PIN 4 Digit Wajib Diisi!");
             push(ref(db, 'staff'), { name, pin }).then(() => {
                 document.getElementById('newStaffName').value = '';
                 document.getElementById('newStaffPin').value = '';
@@ -483,7 +488,7 @@
         };
 
         window.deleteStaff = (id) => {
-            if(confirm("Hapus akun petugas ini?")) remove(ref(db, 'staff/' + id));
+            if(confirm("Hapus akses petugas ini?")) remove(ref(db, 'staff/' + id));
         };
 
         function renderStaffList() {
@@ -493,25 +498,28 @@
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center shadow-sm">
                     <div>
                         <div class="font-black text-slate-800 text-sm tracking-tight uppercase">${s.name}</div>
-                        <div class="text-[9px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5 tracking-tighter">PETUGAS | PIN: ${s.pin}</div>
+                        <div class="text-[9px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5 tracking-tighter">PETUGAS | PIN AKSES: ${s.pin}</div>
                     </div>
-                    <button onclick="window.deleteStaff('${s.firebaseId}')" class="w-8 h-8 flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all">
+                    <button onclick="window.deleteStaff('${s.firebaseId}')" class="w-10 h-10 flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
-            `).join('') : `<div class="p-10 text-center text-slate-300 font-bold text-xs uppercase italic tracking-widest">Belum ada petugas lapangan</div>`;
+            `).join('') : `<div class="p-10 text-center text-slate-300 font-bold text-xs uppercase italic tracking-widest">Belum ada petugas lapangan terdaftar</div>`;
         }
 
-        // --- UI & TAB SYSTEM ---
+        // --- UI VISIBILITY & NAVIGATION ---
         function refreshUIVisibility() {
             const adminTabs = document.querySelectorAll('.admin-tab');
             adminTabs.forEach(tab => {
                 const isStaffTab = tab.classList.contains('staff-tab');
                 const shouldShow = state.isAdmin || (state.isStaff && isStaffTab);
+                
                 if (shouldShow) {
+                    // Tampilkan tab (Scan/Gift untuk Staff, Semua untuk Admin)
                     tab.classList.remove('max-sm:hidden', 'hidden');
                     tab.classList.add('nav-btn-animate');
                 } else {
+                    // Sembunyikan dari Publik di Mobile
                     tab.classList.add('max-sm:hidden');
                     tab.classList.remove('nav-btn-animate');
                 }
@@ -527,7 +535,7 @@
             if(t === 'register') {
                 area.innerHTML = `
                 <div class="bg-white rounded-3xl p-6 shadow-xl mb-8 border border-slate-50">
-                    <h3 class="text-lg font-black text-slate-800 mb-6 flex items-center gap-2 uppercase tracking-tight"><i class="fas fa-pencil-alt text-emerald-600"></i> Form Pendaftaran</h3>
+                    <h3 class="text-lg font-black text-slate-800 mb-6 flex items-center gap-2 uppercase tracking-tight"><i class="fas fa-pencil-alt text-emerald-600"></i> Form Pendaftaran Peserta</h3>
                     <div class="space-y-4">
                         <input id="inName" type="text" class="form-input w-full rounded-xl p-4 font-bold uppercase" placeholder="NAMA LENGKAP">
                         <div class="grid grid-cols-2 gap-4">
@@ -539,7 +547,7 @@
                             </select>
                         </div>
                         <input id="inPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-4 font-black text-center text-xl tracking-[0.5em]" placeholder="BUAT PIN 4 DIGIT">
-                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg btn-hover uppercase tracking-widest">DAFTAR SEKARANG</button>
+                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg btn-hover uppercase tracking-widest">Daftar Sekarang</button>
                     </div>
                 </div>
                 <div id="participantList" class="space-y-3"></div>`;
@@ -556,7 +564,7 @@
                 </div>`;
             } else if(t === 'scan' || t === 'gift') {
                 if(!state.isAdmin && !state.isStaff) {
-                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest italic">Akses Terbatas Panitia</div>`;
+                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest italic">Hanya Untuk Panitia Lapangan</div>`;
                     window.showAdminLogin();
                     return;
                 }
@@ -572,14 +580,14 @@
                     <div class="pt-4 border-t border-slate-100">
                         <button onclick="window.openManualInput('${t}')"
                                 class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs shadow-xl flex items-center justify-center gap-3 btn-hover uppercase tracking-widest">
-                            <i class="fas fa-keyboard"></i> Input Manual
+                            <i class="fas fa-keyboard"></i> Input Manual Nama
                         </button>
                     </div>
                 </div>`;
                 setTimeout(initScanner, 300);
             } else if(t === 'data') {
                 if(!state.isAdmin) {
-                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest italic tracking-widest">Hanya Untuk Admin Utama</div>`;
+                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest italic tracking-widest">Khusus Admin Utama</div>`;
                     window.showAdminLogin();
                 } else {
                     renderAdminPanel();
@@ -594,7 +602,7 @@
                 <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100">
                     <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
                         <h3 class="font-black text-slate-800 flex items-center gap-2 tracking-tight uppercase">
-                            <i class="fas fa-shield-alt text-emerald-600"></i> Panel Admin Utama
+                            <i class="fas fa-shield-alt text-emerald-600"></i> Dashboard Admin
                         </h3>
                         <div class="flex flex-wrap gap-2">
                             <button onclick="window.openStaffManager()" class="bg-amber-50 px-4 py-2.5 rounded-xl text-amber-700 text-[10px] font-black hover:bg-amber-100 transition-all flex items-center gap-2 uppercase tracking-widest shadow-sm">
@@ -627,11 +635,11 @@
             renderDataTable();
         }
 
-        // --- HELPER FUNCTIONS ---
+        // --- CORE HELPERS ---
         window.processRegister = () => {
             const name = document.getElementById('inName').value.trim();
             const pass = document.getElementById('inPass').value;
-            if(!name || pass.length < 4) return alert("Lengkapi Form & PIN!");
+            if(!name || pass.length < 4) return alert("Lengkapi Form & Buat PIN 4 Digit!");
             const code = `MN-${Date.now().toString().slice(-6)}`;
             const data = { name: name.toUpperCase(), status: document.getElementById('inStatus').value, marga: document.getElementById('inMarga').value, password: pass, qrCode: code, registeredAt: new Date().toLocaleString() };
             push(ref(db, 'participants'), data).then(() => { alert("Pendaftaran Sukses!"); window.showTicket(data); document.getElementById('inName').value = ''; document.getElementById('inPass').value = ''; });
@@ -639,7 +647,7 @@
 
         window.findTicket = () => {
             const query = document.getElementById('findName').value.toLowerCase().trim();
-            if(!query) return alert("Masukkan nama!");
+            if(!query) return alert("Wajib isi nama!");
             const matches = state.participants.filter(x => x.name.toLowerCase().includes(query));
             if(!matches.length) alert("Data tidak ditemukan!");
             else if(matches.length === 1) window.startAuth(matches[0]);
@@ -672,7 +680,7 @@
             try {
                 const url = await QRCode.toDataURL(user.qrCode, { errorCorrectionLevel: 'H', margin: 2, width: 600, color: { dark: "#064e3b" } });
                 qrImg.src = url; qrImg.onload = () => { qrLoader.classList.add('hidden'); qrImg.classList.remove('hidden'); };
-            } catch (e) { qrLoader.innerHTML = `<span class="text-red-500">ERROR QR</span>`; }
+            } catch (e) { qrLoader.innerHTML = `<span class="text-red-500">QR GAGAL</span>`; }
         };
 
         window.handleAdminSearch = (val) => { state.adminSearchQuery = val.toLowerCase(); renderDataTable(); };
@@ -687,7 +695,7 @@
             container.innerHTML = `
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100">
-                    <tr><th class="p-4">Nama & Kode</th><th class="p-4">Kategori</th><th class="p-4 text-center">Aksi</th></tr>
+                    <tr><th class="p-4">Nama Peserta</th><th class="p-4">Kategori</th><th class="p-4 text-center">Aksi</th></tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
                     ${filtered.length > 0 ? filtered.map(p => `
@@ -695,9 +703,9 @@
                         <td class="p-4"><div class="font-black text-slate-800 text-sm tracking-tight uppercase">${p.name}</div><div class="text-[9px] font-mono text-slate-400 mt-1 uppercase tracking-tighter">${p.qrCode}</div></td>
                         <td class="p-4"><div class="font-bold text-slate-600">${p.status}</div><div class="text-[8px] text-slate-400 uppercase font-black tracking-widest">${p.marga}</div></td>
                         <td class="p-4"><div class="flex justify-center gap-2">
-                            <button onclick="window.adminDeleteUser('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-600 rounded-lg shadow-sm"><i class="fas fa-trash"></i></button>
+                            <button onclick="window.adminDeleteUser('${p.firebaseId}')" class="w-10 h-10 flex items-center justify-center bg-red-50 text-red-600 rounded-xl shadow-sm hover:bg-red-100 transition-all"><i class="fas fa-trash"></i></button>
                         </div></td>
-                    </tr>`).join('') : `<tr><td colspan="3" class="p-20 text-center text-slate-400 font-bold uppercase tracking-widest italic">Tidak ada data</td></tr>`}
+                    </tr>`).join('') : `<tr><td colspan="3" class="p-20 text-center text-slate-400 font-bold uppercase tracking-widest italic">Belum ada data pendaftar</td></tr>`}
                 </tbody>
             </table>`;
         };
@@ -719,12 +727,12 @@
             state.scanner = new Html5Qrcode("reader");
             state.scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (text) => {
                 const p = state.participants.find(x => x.qrCode === text);
-                if(!p) return alert("QR Tidak Terdaftar!");
+                if(!p) return alert("QR Code Tidak Valid!");
                 const path = state.tab === 'scan' ? 'attendance' : 'gifts';
                 push(ref(db, path), { name: p.name, qrCode: p.qrCode, timestamp: new Date().toLocaleString() }).then(() => {
-                    alert(`SUKSES: ${p.name}`);
+                    alert(`KONFIRMASI: ${p.name} BERHASIL DI-SCAN!`);
                 });
-            }).catch(() => alert("Kamera Error!"));
+            }).catch(() => alert("Izin Kamera Ditolak atau Error!"));
         }
 
         refreshUIVisibility();
