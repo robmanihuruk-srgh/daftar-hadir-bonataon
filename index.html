@@ -575,7 +575,7 @@
                 area.innerHTML = `
                 <div class="bg-white rounded-[2.5rem] p-10 shadow-2xl text-center border border-slate-100 animate-[modalUp_0.5s]">
                     <div class="w-24 h-24 bg-emerald-50 rounded-[2rem] flex items-center justify-center mx-auto mb-8 text-emerald-600 text-4xl shadow-inner"><i class="fas fa-magnifying-glass"></i></div>
-                    <h3 class="font-black text-2xl mb-8 text-slate-800 uppercase royal-font tracking-tight">Cari Undangan</h3>
+                    <h3 class="font-black text-2xl mb-8 text-slate-800 uppercase royal-font tracking-tight">Temukan Undangan</h3>
                     <div class="space-y-6">
                         <input id="findName" type="text" placeholder="Masukkan Nama Anda" class="form-input w-full rounded-2xl p-5 text-center font-black uppercase tracking-wider">
                         <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-[1.5rem] py-5 font-black btn-hover btn-modern shadow-2xl uppercase tracking-[0.2em]">CARI TIKET</button>
@@ -843,7 +843,7 @@
                 const p = state.participants.find(x => x.qrCode && x.qrCode.trim().toUpperCase() === scannedText);
                 
                 if(!p) {
-                    msgEl.innerText = "KODE TIDAK DIKENALI!";
+                    msgEl.innerText = "Kode QR tidak terdaftar atau kadaluarsa.";
                     msgEl.className = "p-4 rounded-2xl mb-6 bg-red-600 text-white font-black block shadow-xl";
                     setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 2000);
                     return;
