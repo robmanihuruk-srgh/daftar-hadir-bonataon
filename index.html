@@ -287,7 +287,7 @@
         </div>
     </div>
 
-    <!-- Rest of existing Modals (Find Results, Auth, Edit, Ticket, Confirm Delete, Confirm Reset) -->
+    <!-- Rest of existing Modals -->
     <div id="searchResultsModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('searchResultsModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
@@ -422,7 +422,8 @@
             filterStatus: "Semua",
             adminSearchQuery: "",
             manualContext: null,
-            authContext: 'view'
+            authContext: 'view',
+            isProcessingScan: false // Lock untuk mencegah scan ganda
         };
 
         // Realtime Listeners
@@ -468,8 +469,6 @@
 
         window.verifyAdmin = () => {
             const p = document.getElementById('adminPassword').value;
-            
-            // 1. Master Admin Check
             if(p === state.adminPass) {
                 state.isAdmin = true;
                 state.isStaff = false;
@@ -478,8 +477,6 @@
                 setTab('data');
                 return;
             }
-            
-            // 2. Staff Check
             const staffMatch = state.staff.find(s => s.pin === p);
             if(staffMatch) {
                 state.isStaff = true;
@@ -490,7 +487,6 @@
                 alert(`Login Petugas Berhasil: Selamat Bekerja ${staffMatch.name}!`);
                 return;
             }
-            
             alert("PIN Salah atau Petugas Tidak Terdaftar!");
         };
 
@@ -504,14 +500,8 @@
         window.handleResetAdminPin = () => {
             const recoveryInput = document.getElementById('recoveryKeyInput').value.trim();
             const newPin = document.getElementById('newAdminPinReset').value.trim();
-            
-            if (recoveryInput !== state.recoveryKey) {
-                return alert("Kode Pemulihan Salah!");
-            }
-            if (newPin.length < 4) {
-                return alert("PIN Baru minimal 4 digit!");
-            }
-            
+            if (recoveryInput !== state.recoveryKey) return alert("Kode Pemulihan Salah!");
+            if (newPin.length < 4) return alert("PIN Baru minimal 4 digit!");
             set(ref(db, 'settings/adminPin'), newPin).then(() => {
                 alert("PIN Admin berhasil direset!");
                 closeModal('resetAdminModal');
@@ -533,15 +523,12 @@
             const navButtons = document.querySelectorAll('.nav-btn');
             const logoutBtn = document.getElementById('tab-logout');
             const roleBadge = document.getElementById('roleBadge');
-
             navButtons.forEach(btn => {
                 const isStaffTab = btn.classList.contains('staff-tab');
                 const isAdminTab = btn.classList.contains('admin-tab');
                 const isPublicTab = btn.classList.contains('public-tab');
-                
-                if (state.isAdmin) {
-                    btn.classList.remove('hidden');
-                } else if (state.isStaff) {
+                if (state.isAdmin) btn.classList.remove('hidden');
+                else if (state.isStaff) {
                     if (isStaffTab) btn.classList.remove('hidden');
                     else btn.classList.add('hidden');
                 } else {
@@ -549,7 +536,6 @@
                     else btn.classList.add('hidden');
                 }
             });
-
             if (state.isAdmin || state.isStaff) {
                 logoutBtn.classList.remove('hidden');
                 roleBadge.classList.remove('hidden');
@@ -579,9 +565,7 @@
             });
         };
 
-        window.deleteStaff = (id) => {
-            if(confirm("Hapus akses petugas ini?")) remove(ref(db, 'staff/' + id));
-        };
+        window.deleteStaff = (id) => { if(confirm("Hapus akses petugas ini?")) remove(ref(db, 'staff/' + id)); };
 
         function renderStaffList() {
             const area = document.getElementById('staffListArea');
@@ -604,7 +588,6 @@
             if(state.scanner) { try { await state.scanner.stop(); } catch(e){} state.scanner = null; }
             state.tab = t;
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.id === `tab-${t}`));
-            
             const area = document.getElementById('content-area');
             if(t === 'register') {
                 area.innerHTML = `
@@ -641,7 +624,7 @@
                 area.innerHTML = `
                 <div class="bg-white rounded-3xl p-6 shadow-xl text-center border border-slate-50">
                     <h3 class="font-black mb-6 text-slate-800 tracking-tight uppercase">Scanner ${isScan ? 'Kehadiran' : 'Berkat'}</h3>
-                    <div id="scanMsg" class="hidden p-3 rounded-xl mb-4 text-white font-bold animate-pulse shadow-lg"></div>
+                    <div id="scanMsg" class="hidden p-3 rounded-xl mb-4 text-white font-bold shadow-lg transition-all duration-300"></div>
                     <div class="relative rounded-2xl overflow-hidden bg-black aspect-square max-w-sm mx-auto mb-6 shadow-2xl">
                         <div id="reader"></div>
                         <div class="scan-frame"></div>
@@ -654,9 +637,7 @@
                     </div>
                 </div>`;
                 setTimeout(initScanner, 300);
-            } else if(t === 'data') {
-                renderAdminPanel();
-            }
+            } else if(t === 'data') renderAdminPanel();
         };
 
         window.processRegister = () => {
@@ -757,15 +738,44 @@
         };
 
         function initScanner() {
+            const msgEl = document.getElementById('scanMsg');
             state.scanner = new Html5Qrcode("reader");
+            
             state.scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (text) => {
-                const p = state.participants.find(x => x.qrCode === text);
-                if(!p) return alert("QR Code Tidak Terdaftar!");
+                // LOCK agar tidak dobel scan
+                if (state.isProcessingScan) return;
+                state.isProcessingScan = true;
+
+                // Normalisasi kode QR yang discan
+                const scannedText = text.trim().toUpperCase();
+                const p = state.participants.find(x => x.qrCode && x.qrCode.trim().toUpperCase() === scannedText);
+                
+                if(!p) {
+                    msgEl.innerText = "QR CODE TIDAK TERDAFTAR!";
+                    msgEl.className = "p-3 rounded-xl mb-4 bg-red-500 text-white font-bold block shadow-lg animate-pulse";
+                    setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 2000);
+                    return;
+                }
+
+                // Cek apakah sudah pernah scan (opsional, tapi bagus untuk validasi)
                 const path = state.tab === 'scan' ? 'attendance' : 'gifts';
-                push(ref(db, path), { name: p.name, qrCode: p.qrCode, timestamp: new Date().toLocaleString() }).then(() => {
-                    alert(`BERHASIL: ${p.name} Terverifikasi!`);
+                const label = state.tab === 'scan' ? 'Kehadiran' : 'Berkat';
+
+                push(ref(db, path), { 
+                    name: p.name, 
+                    qrCode: p.qrCode, 
+                    scannedBy: state.isStaff ? state.staff.find(s => s.firebaseId)?.name || 'Staff' : 'Admin',
+                    timestamp: new Date().toLocaleString() 
+                }).then(() => {
+                    msgEl.innerText = `${label} Berhasil: ${p.name}`;
+                    msgEl.className = "p-3 rounded-xl mb-4 bg-emerald-600 text-white font-bold block shadow-lg";
+                    setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 3000);
                 });
-            }).catch(() => alert("Izin Kamera Ditolak!"));
+
+            }).catch(() => {
+                alert("Izin Kamera Ditolak atau Error!");
+                state.isProcessingScan = false;
+            });
         }
 
         window.exportToCSV = () => {
@@ -797,11 +807,12 @@
         window.openManualInput = (type) => {
             const q = prompt("Masukkan Nama atau Kode QR:");
             if (!q) return;
-            const matches = state.participants.filter(x => x.name.toLowerCase().includes(q.toLowerCase()) || x.qrCode.toLowerCase().includes(q.toLowerCase()));
+            const query = q.toLowerCase().trim();
+            const matches = state.participants.filter(x => (x.name && x.name.toLowerCase().includes(query)) || (x.qrCode && x.qrCode.toLowerCase().includes(query)));
             if (!matches.length) return alert("Data tidak ditemukan!");
             const target = matches[0];
             const path = type === 'scan' ? 'attendance' : 'gifts';
-            push(ref(db, path), { name: target.name, qrCode: target.qrCode, timestamp: new Date().toLocaleString() }).then(() => alert(`Input Manual Berhasil: ${target.name}`));
+            push(ref(db, path), { name: target.name, qrCode: target.qrCode, timestamp: new Date().toLocaleString(), type: 'Manual' }).then(() => alert(`Input Manual Berhasil: ${target.name}`));
         };
 
         refreshUIVisibility();
