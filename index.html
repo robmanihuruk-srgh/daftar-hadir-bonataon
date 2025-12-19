@@ -158,7 +158,6 @@
         <header class="header-bg p-8 pb-20 shadow-2xl relative z-20">
             <div class="flex justify-between items-start">
                 <div class="flex items-center gap-4">
-                    <!-- Admin login trigger hidden in logo -->
                     <div onclick="window.showAdminLogin()" class="logo-frame w-14 h-14 md:w-20 md:h-20 p-1.5 border-2 border-white/30">
                         <img src="logo tugu manihuruk.png" alt="Logo" class="w-full h-full object-contain">
                     </div>
@@ -189,20 +188,19 @@
 
         <nav id="mainNav" class="flex px-6 -mt-10 relative z-30 gap-2 overflow-x-auto pb-4 custom-scrollbar">
             <button onclick="setTab('register')" id="tab-register" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover">
-                <i class="fas fa-user-plus"></i><span class="text-[10px] font-bold uppercase">Daftar</span>
+                <i class="fas fa-user-plus text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Daftar</span>
             </button>
             <button onclick="setTab('find')" id="tab-find" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover">
-                <i class="fas fa-search"></i><span class="text-[10px] font-bold uppercase">Undangan</span>
+                <i class="fas fa-search text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Undangan</span>
             </button>
-            <!-- Admin-only tabs hidden by default -->
-            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover hidden admin-tab">
-                <i class="fas fa-qrcode"></i><span class="text-[10px] font-bold uppercase">Absensi</span>
+            <button onclick="setTab('scan')" id="tab-scan" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover max-sm:hidden admin-tab staff-tab">
+                <i class="fas fa-qrcode text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Absensi</span>
             </button>
-            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover hidden admin-tab">
-                <i class="fas fa-gift"></i><span class="text-[10px] font-bold uppercase">Berkat</span>
+            <button onclick="setTab('gift')" id="tab-gift" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover max-sm:hidden admin-tab staff-tab">
+                <i class="fas fa-gift text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Berkat</span>
             </button>
-            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover hidden admin-tab">
-                <i class="fas fa-database"></i><span class="text-[10px] font-bold uppercase">Admin</span>
+            <button onclick="setTab('data')" id="tab-data" class="nav-btn flex-1 min-w-[100px] bg-white rounded-2xl shadow-xl border border-slate-100 btn-hover max-sm:hidden admin-tab">
+                <i class="fas fa-database text-emerald-600"></i><span class="text-[10px] font-bold uppercase">Admin</span>
             </button>
         </nav>
 
@@ -220,7 +218,63 @@
         </footer>
     </div>
 
-    <!-- Modal Search Results -->
+    <!-- Modal Admin Login -->
+    <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('adminModal')"></div>
+        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-user-shield text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-black text-slate-800">Akses Panitia</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-widest">Gunakan PIN Admin/Petugas</p>
+            </div>
+            <input type="password" id="adminPassword" placeholder="PIN ANDA" class="form-input w-full rounded-2xl p-4 text-center text-2xl font-black mb-4 tracking-widest">
+            <button onclick="window.verifyAdmin()" class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black btn-hover shadow-lg">MASUK SISTEM</button>
+            <button onclick="window.showRecoveryModal()" class="w-full mt-4 text-[10px] font-black text-slate-400 hover:text-emerald-600 uppercase tracking-widest">Lupa PIN Admin Utama?</button>
+        </div>
+    </div>
+
+    <!-- Modal Admin Recovery -->
+    <div id="recoveryModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('recoveryModal')"></div>
+        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
+            <h3 class="text-xl font-black text-slate-800 text-center mb-2">Reset PIN Admin</h3>
+            <p class="text-xs text-slate-400 text-center mb-6">Masukkan Kode Pemulihan Rahasia untuk menyetel PIN baru.</p>
+            <input type="text" id="recoveryKeyInput" placeholder="KODE PEMULIHAN" class="form-input w-full rounded-2xl p-4 text-center font-black mb-4">
+            <input type="password" id="recoveryNewPin" maxlength="4" placeholder="PIN BARU (4 DIGIT)" class="form-input w-full rounded-2xl p-4 text-center font-black mb-6 tracking-widest">
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="closeModal('recoveryModal')" class="py-4 border-2 rounded-2xl font-bold text-slate-400">BATAL</button>
+                <button onclick="window.processRecovery()" class="py-4 bg-amber-500 text-white rounded-2xl font-black btn-hover">RESET PIN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Kelola Petugas -->
+    <div id="staffManagerModal" class="fixed inset-0 z-[9200] flex items-center justify-center hidden p-6">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('staffManagerModal')"></div>
+        <div class="card max-w-md w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s] flex flex-col max-h-[85vh]">
+            <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2"><i class="fas fa-user-plus text-emerald-600"></i> Manajemen Petugas</h3>
+            
+            <div class="bg-emerald-50 p-5 rounded-2xl mb-6 border border-emerald-100">
+                <p class="text-[10px] font-black text-emerald-700 uppercase mb-3 tracking-widest">Tambah Petugas Lapangan</p>
+                <div class="space-y-3">
+                    <input id="newStaffName" type="text" placeholder="Nama Petugas" class="form-input w-full rounded-xl p-3 text-sm font-bold">
+                    <div class="flex gap-2">
+                        <input id="newStaffPin" type="password" maxlength="4" placeholder="PIN 4 Digit" class="form-input flex-1 rounded-xl p-3 text-center font-black tracking-widest">
+                        <button onclick="window.addStaff()" class="bg-emerald-600 text-white px-6 rounded-xl font-black btn-hover"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Daftar Petugas Aktif</p>
+            <div id="staffListArea" class="flex-1 overflow-y-auto custom-scrollbar space-y-2 pr-1"></div>
+            
+            <button onclick="closeModal('staffManagerModal')" class="w-full mt-6 py-4 border-2 rounded-2xl font-bold text-slate-400">TUTUP</button>
+        </div>
+    </div>
+
+    <!-- Modals (Results, Search, Ticket, dsb) -->
     <div id="searchResultsModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('searchResultsModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
@@ -231,7 +285,6 @@
         </div>
     </div>
 
-    <!-- Modal PIN Peserta -->
     <div id="authTicketModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('authTicketModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
@@ -245,7 +298,6 @@
         </div>
     </div>
 
-    <!-- Modal Edit User -->
     <div id="editUserModal" class="fixed inset-0 z-[9500] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('editUserModal')"></div>
         <div class="card max-w-md w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
@@ -286,7 +338,6 @@
         </div>
     </div>
 
-    <!-- Modal Tiket -->
     <div id="ticketModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden p-4 overflow-y-auto">
         <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-xl" onclick="closeModal('ticketModal')"></div>
         <div class="relative w-full max-w-sm my-10 animate-[modalUp_0.4s]">
@@ -326,17 +377,6 @@
         </div>
     </div>
 
-    <!-- Modal Admin Login -->
-    <div id="adminModal" class="fixed inset-0 z-[9000] flex items-center justify-center hidden p-6">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('adminPassword').value = ''; closeModal('adminModal')"></div>
-        <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
-            <h3 class="text-xl font-black text-slate-800 text-center mb-6">Akses Panitia</h3>
-            <input type="password" id="adminPassword" placeholder="PIN ADMIN" class="form-input w-full rounded-2xl p-4 text-center text-2xl font-black mb-6">
-            <button onclick="window.verifyAdmin()" class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black btn-hover">MASUK</button>
-        </div>
-    </div>
-
-    <!-- Modal Admin Settings -->
     <div id="adminSettingsModal" class="fixed inset-0 z-[9600] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('adminSettingsModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s]">
@@ -359,7 +399,6 @@
         </div>
     </div>
 
-    <!-- Modal Konfirmasi Hapus -->
     <div id="confirmDeleteModal" class="fixed inset-0 z-[9700] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('confirmDeleteModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s] text-center">
@@ -377,7 +416,6 @@
         </div>
     </div>
 
-    <!-- Modal Konfirmasi Reset PIN -->
     <div id="confirmResetModal" class="fixed inset-0 z-[9700] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onclick="closeModal('confirmResetModal')"></div>
         <div class="card max-w-sm w-full relative z-10 p-8 bg-white rounded-[2rem] shadow-2xl animate-[modalUp_0.3s] text-center">
@@ -416,9 +454,11 @@
             participants: [],
             attendance: [],
             gifts: [],
+            staff: [], // Koleksi petugas lapangan
             tab: 'register',
             scanner: null,
             isAdmin: false,
+            isStaff: false,
             adminPass: "1234",
             recoveryKey: "BONA2026",
             activeUser: null,
@@ -428,12 +468,15 @@
             manualContext: null,
             deleteTargetId: null,
             resetTargetId: null,
-            authContext: 'view' // 'view' or 'edit'
+            authContext: 'view'
         };
 
-        // LOAD ADMIN PIN FROM FIREBASE
-        onValue(ref(db, 'settings/adminPin'), s => {
-            if(s.val()) state.adminPass = s.val();
+        // LOAD SETTINGS & STAFF
+        onValue(ref(db, 'settings/adminPin'), s => { if(s.val()) state.adminPass = s.val(); });
+        onValue(ref(db, 'staff'), s => { 
+            const data = s.val();
+            state.staff = data ? Object.keys(data).map(k => ({...data[k], firebaseId: k})) : [];
+            if(!document.getElementById('staffManagerModal').classList.contains('hidden')) renderStaffList();
         });
 
         // UI & CLOCK
@@ -441,7 +484,7 @@
             const now = new Date();
             const time = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
             const date = now.toLocaleDateString('id-ID', { day:'numeric', month:'short' });
-            const html = `<div class="text-xs font-bold opacity-70">${date}</div><div class="text-xl font-black">${time}</div>`;
+            const html = `<div class="text-xs font-bold opacity-70 uppercase tracking-tighter">${date}</div><div class="text-xl font-black">${time}</div>`;
             if(document.getElementById('liveClock')) document.getElementById('liveClock').innerHTML = html;
         }
         setInterval(updateClock, 1000); updateClock();
@@ -456,9 +499,9 @@
         onValue(ref(db, 'gifts'), s => { state.gifts = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
 
         function updateDashboard() {
-            document.getElementById('statRegistered').innerText = state.participants.length;
-            document.getElementById('statPresent').innerText = state.attendance.length;
-            document.getElementById('statGifts').innerText = state.gifts.length;
+            if(document.getElementById('statRegistered')) document.getElementById('statRegistered').innerText = state.participants.length;
+            if(document.getElementById('statPresent')) document.getElementById('statPresent').innerText = state.attendance.length;
+            if(document.getElementById('statGifts')) document.getElementById('statGifts').innerText = state.gifts.length;
             
             if(state.tab === 'register') renderParticipantList();
             if(state.tab === 'data') renderDataTable();
@@ -466,24 +509,115 @@
             setTimeout(() => document.getElementById('loading')?.classList.add('hidden'), 500);
         }
 
-        // Toggle Restricted UI visibility
+        // Feature 1: Recovery Admin PIN
+        window.showRecoveryModal = () => {
+            closeModal('adminModal');
+            document.getElementById('recoveryKeyInput').value = '';
+            document.getElementById('recoveryNewPin').value = '';
+            document.getElementById('recoveryModal').classList.remove('hidden');
+        };
+
+        window.processRecovery = () => {
+            const key = document.getElementById('recoveryKeyInput').value.trim();
+            const newPin = document.getElementById('recoveryNewPin').value.trim();
+            
+            if(key === state.recoveryKey) {
+                if(newPin.length === 4) {
+                    set(ref(db, 'settings/adminPin'), newPin).then(() => {
+                        alert("PIN Admin Utama berhasil diperbarui!");
+                        closeModal('recoveryModal');
+                        window.showAdminLogin();
+                    });
+                } else alert("PIN Baru harus 4 digit!");
+            } else alert("Kode Pemulihan Salah!");
+        };
+
+        // Multi-role Verification (Admin vs Staff)
+        window.verifyAdmin = () => {
+            const p = document.getElementById('adminPassword').value;
+            
+            // Cek Admin Utama
+            if(p === state.adminPass) {
+                state.isAdmin = true;
+                state.isStaff = false;
+                closeModal('adminModal');
+                refreshUIVisibility();
+                setTab('data');
+                return;
+            }
+
+            // Cek Petugas Lapangan
+            const staffMatch = state.staff.find(s => s.pin === p);
+            if(staffMatch) {
+                state.isStaff = true;
+                state.isAdmin = false;
+                closeModal('adminModal');
+                refreshUIVisibility();
+                setTab('scan');
+                alert(`Login Berhasil: Petugas ${staffMatch.name}`);
+                return;
+            }
+
+            alert("PIN Salah atau Tidak Terdaftar!");
+        };
+
+        // Feature 2: Staff Management
+        window.openStaffManager = () => {
+            document.getElementById('newStaffName').value = '';
+            document.getElementById('newStaffPin').value = '';
+            renderStaffList();
+            document.getElementById('staffManagerModal').classList.remove('hidden');
+        };
+
+        window.addStaff = () => {
+            const name = document.getElementById('newStaffName').value.trim();
+            const pin = document.getElementById('newStaffPin').value.trim();
+            if(!name || pin.length !== 4) return alert("Lengkapi nama dan PIN 4 digit!");
+            
+            push(ref(db, 'staff'), { name, pin }).then(() => {
+                document.getElementById('newStaffName').value = '';
+                document.getElementById('newStaffPin').value = '';
+            });
+        };
+
+        window.deleteStaff = (id) => {
+            if(confirm("Hapus akses petugas ini?")) {
+                remove(ref(db, 'staff/' + id));
+            }
+        };
+
+        function renderStaffList() {
+            const area = document.getElementById('staffListArea');
+            if(!area) return;
+            area.innerHTML = state.staff.length > 0 ? state.staff.map(s => `
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center animate-fade-in shadow-sm">
+                    <div>
+                        <div class="font-black text-slate-800 text-sm">${s.name}</div>
+                        <div class="text-[9px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5">PIN: ${s.pin}</div>
+                    </div>
+                    <button onclick="window.deleteStaff('${s.firebaseId}')" class="w-8 h-8 flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            `).join('') : `<div class="p-10 text-center text-slate-300 font-bold text-xs uppercase italic">Belum ada petugas lapangan</div>`;
+        }
+
         function refreshUIVisibility() {
             const adminTabs = document.querySelectorAll('.admin-tab');
+            const staffOnlyTabs = document.querySelectorAll('.staff-tab');
+            
             adminTabs.forEach(tab => {
                 if (state.isAdmin) {
-                    tab.classList.remove('hidden');
+                    tab.classList.remove('max-sm:hidden', 'hidden');
+                } else if (state.isStaff && tab.classList.contains('staff-tab')) {
+                    tab.classList.remove('max-sm:hidden', 'hidden');
                 } else {
-                    tab.classList.add('hidden');
+                    tab.classList.add('max-sm:hidden');
                 }
             });
         }
 
-        window.showAdminLogin = () => {
-            if (state.isAdmin) return;
-            document.getElementById('adminPassword').value = '';
-            document.getElementById('adminModal').classList.remove('hidden');
-        };
-
+        // Navigation Logic
         window.setTab = async (t) => {
             if(state.scanner) { try { await state.scanner.stop(); } catch(e){} state.scanner = null; }
             state.tab = t;
@@ -492,10 +626,10 @@
             const area = document.getElementById('content-area');
             if(t === 'register') {
                 area.innerHTML = `
-                <div class="bg-white rounded-3xl p-6 shadow-xl mb-8">
-                    <h3 class="text-lg font-black text-slate-800 mb-6">Pendaftaran Peserta</h3>
+                <div class="bg-white rounded-3xl p-6 shadow-xl mb-8 border border-slate-50">
+                    <h3 class="text-lg font-black text-slate-800 mb-6 flex items-center gap-2"><i class="fas fa-pencil-alt text-emerald-600"></i> Pendaftaran Peserta</h3>
                     <div class="space-y-4">
-                        <input id="inName" type="text" class="form-input w-full rounded-xl p-4 font-bold" placeholder="Nama Lengkap Sesuai KTP">
+                        <input id="inName" type="text" class="form-input w-full rounded-xl p-4 font-bold" placeholder="Nama Lengkap">
                         <div class="grid grid-cols-2 gap-4">
                             <select id="inStatus" class="form-input w-full rounded-xl p-4 font-bold">
                                 <option value="Orangtua">Orangtua</option><option value="Pemuda">Pemuda</option><option value="Sekolah Minggu">Sekolah Minggu</option><option value="Tamu">Tamu</option>
@@ -504,47 +638,48 @@
                                 <option value="Manihuruk">Manihuruk</option><option value="Boru">Boru</option><option value="Bere">Bere</option>
                             </select>
                         </div>
-                        <input id="inPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-4 font-black text-center text-xl" placeholder="Buat PIN (4 Digit)">
-                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg btn-hover">DAFTARKAN</button>
+                        <input id="inPass" type="password" maxlength="4" class="form-input w-full rounded-xl p-4 font-black text-center text-xl tracking-widest" placeholder="Buat PIN 4 Digit">
+                        <button onclick="window.processRegister()" class="w-full bg-emerald-600 text-white rounded-xl py-4 font-black shadow-lg btn-hover tracking-widest">DAFTARKAN SEKARANG</button>
                     </div>
                 </div>
                 <div id="participantList" class="space-y-3"></div>`;
                 renderParticipantList();
             } else if(t === 'find') {
                 area.innerHTML = `
-                <div class="bg-white rounded-3xl p-8 shadow-xl text-center">
-                    <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 text-2xl"><i class="fas fa-ticket-alt"></i></div>
-                    <h3 class="font-black text-xl mb-6">Buka Undangan</h3>
+                <div class="bg-white rounded-3xl p-8 shadow-xl text-center border border-slate-50">
+                    <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 text-2xl shadow-inner"><i class="fas fa-search"></i></div>
+                    <h3 class="font-black text-xl mb-6 text-slate-800">Cari Undangan Digital</h3>
                     <div class="space-y-4">
-                        <input id="findName" type="text" placeholder="Masukkan Nama Lengkap" class="form-input w-full rounded-xl p-4 text-center font-bold">
-                        <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-xl py-4 font-black btn-hover">CARI DATA</button>
+                        <input id="findName" type="text" placeholder="Masukkan Nama Anda" class="form-input w-full rounded-xl p-4 text-center font-bold">
+                        <button onclick="window.findTicket()" class="w-full bg-emerald-700 text-white rounded-xl py-4 font-black btn-hover shadow-xl">LIHAT TIKET SAYA</button>
                     </div>
                 </div>`;
             } else if(t === 'scan' || t === 'gift') {
+                if(!state.isAdmin && !state.isStaff) {
+                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest">Akses Terbatas</div>`;
+                    window.showAdminLogin();
+                    return;
+                }
                 const isScan = t === 'scan';
                 area.innerHTML = `
-                <div class="bg-white rounded-3xl p-6 shadow-xl text-center">
-                    <h3 class="font-black mb-6">Scan QR ${isScan ? 'Kehadiran' : 'Berkat'}</h3>
-                    <div id="scanMsg" class="hidden p-3 rounded-xl mb-4 text-white font-bold"></div>
-                    <div class="relative rounded-2xl overflow-hidden bg-black aspect-square max-w-sm mx-auto mb-6">
+                <div class="bg-white rounded-3xl p-6 shadow-xl text-center border border-slate-50">
+                    <h3 class="font-black mb-6 text-slate-800 tracking-tight">Kamera Scanner ${isScan ? 'Absensi' : 'Tukar Berkat'}</h3>
+                    <div id="scanMsg" class="hidden p-3 rounded-xl mb-4 text-white font-bold animate-pulse shadow-lg"></div>
+                    <div class="relative rounded-2xl overflow-hidden bg-black aspect-square max-w-sm mx-auto mb-6 shadow-2xl">
                         <div id="reader"></div>
                         <div class="scan-frame"></div>
                     </div>
                     <div class="pt-4 border-t border-slate-100">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase mb-4">Fallback Admin</p>
-                        <button id="${isScan ? 'manualCheckinBtn' : 'manualGiftBtn'}" 
-                                ${state.isAdmin ? '' : 'disabled'} 
-                                style="opacity: ${state.isAdmin ? '1' : '0.5'}"
-                                onclick="window.openManualInput('${t}')"
-                                class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm shadow-xl flex items-center justify-center gap-3 btn-hover transition-all">
-                            <i class="fas fa-keyboard"></i> INPUT MANUAL (PANITIA)
+                        <button onclick="window.openManualInput('${t}')"
+                                class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs shadow-xl flex items-center justify-center gap-3 btn-hover uppercase tracking-widest">
+                            <i class="fas fa-keyboard"></i> Masukkan Manual
                         </button>
                     </div>
                 </div>`;
                 setTimeout(initScanner, 300);
             } else if(t === 'data') {
                 if(!state.isAdmin) {
-                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold">Akses Terbatas</div>`;
+                    area.innerHTML = `<div class="p-20 text-center text-slate-300 font-bold uppercase tracking-widest">Akses Admin</div>`;
                     window.showAdminLogin();
                 } else {
                     renderAdminPanel();
@@ -552,204 +687,32 @@
             }
         };
 
-        // REGISTER
-        window.processRegister = () => {
-            const name = document.getElementById('inName').value.trim();
-            const pass = document.getElementById('inPass').value;
-            if(!name || pass.length < 4) return alert("Lengkapi data dan PIN 4 digit!");
-            
-            const code = `MN-${Date.now().toString().slice(-6)}`;
-            const data = {
-                name, 
-                status: document.getElementById('inStatus').value,
-                marga: document.getElementById('inMarga').value,
-                password: pass,
-                qrCode: code,
-                registeredAt: new Date().toLocaleString()
-            };
-            
-            push(ref(db, 'participants'), data).then(() => {
-                alert("Pendaftaran Berhasil!");
-                window.showTicket(data);
-                document.getElementById('inName').value = '';
-                document.getElementById('inPass').value = '';
-            });
-        };
-
-        // SHOW TICKET & QR
-        window.showTicket = async (user) => {
-            state.activeUser = user;
-            document.getElementById('ticName').innerText = user.name;
-            document.getElementById('ticCode').innerText = user.qrCode;
-            document.getElementById('ticMeta').innerText = `${user.marga} • ${user.status}`;
-            
-            const qrImg = document.getElementById('ticQR');
-            const qrLoader = document.getElementById('qrLoading');
-            
-            qrImg.classList.add('hidden');
-            qrLoader.classList.remove('hidden');
-            document.getElementById('ticketModal').classList.remove('hidden');
-
-            try {
-                const qrOptions = { errorCorrectionLevel: 'H', margin: 2, width: 600, color: { dark: "#064e3b" } };
-                if (typeof QRCode !== 'undefined') {
-                    const url = await QRCode.toDataURL(user.qrCode, qrOptions);
-                    qrImg.src = url;
-                    qrImg.onload = () => { qrLoader.classList.add('hidden'); qrImg.classList.remove('hidden'); };
-                } else { throw new Error(); }
-            } catch (e) {
-                qrLoader.innerHTML = `<span class="text-[10px] text-red-500 font-bold">QR ERROR</span>`;
-            }
-        };
-
-        // FIND TICKET
-        window.findTicket = () => {
-            const query = document.getElementById('findName').value.toLowerCase().trim();
-            if(!query) return alert("Masukkan nama!");
-            
-            const matches = state.participants.filter(x => x.name.toLowerCase().includes(query));
-            
-            if(matches.length === 0) {
-                alert("Data tidak ditemukan!");
-            } else if(matches.length === 1) {
-                window.startAuth(matches[0]);
-            } else {
-                state.manualContext = 'find';
-                window.showSearchMatches(matches);
-            }
-        };
-
-        window.showSearchMatches = (matches) => {
-            const list = document.getElementById('searchResultsList');
-            const title = document.getElementById('searchResultsTitle');
-            title.innerText = state.manualContext === 'find' ? 'Hasil Pencarian' : 'Pilih Peserta (Manual)';
-            
-            list.innerHTML = matches.map(m => `
-                <div onclick="window.selectForContext('${m.firebaseId}')" class="p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 rounded-xl cursor-pointer transition-colors flex justify-between items-center">
-                    <div>
-                        <div class="font-black text-slate-800 text-sm">${m.name}</div>
-                        <div class="text-[9px] font-bold text-slate-400 uppercase">${m.marga} - ${m.status}</div>
-                    </div>
-                    <i class="fas fa-chevron-right text-slate-300"></i>
-                </div>
-            `).join('');
-            document.getElementById('searchResultsModal').classList.remove('hidden');
-        };
-
-        window.selectForContext = (id) => {
-            const user = state.participants.find(p => p.firebaseId === id);
-            closeModal('searchResultsModal');
-            
-            if (state.manualContext === 'scan' || state.manualContext === 'gift') {
-                processAttendance(user, state.manualContext === 'scan' ? 'attendance' : 'gifts');
-            } else {
-                window.startAuth(user);
-            }
-        };
-
-        window.startAuth = (user, context = 'view') => {
-            state.tempUser = user;
-            state.authContext = context;
-            
-            const title = document.getElementById('authTitle');
-            const desc = document.getElementById('authDesc');
-            
-            if (context === 'edit') {
-                title.innerText = "Verifikasi Edit Profil";
-                desc.innerHTML = `Masukkan PIN 4 digit untuk mengedit data <span class="font-bold text-emerald-600">${user.name}</span>`;
-            } else {
-                title.innerText = "Verifikasi PIN";
-                desc.innerHTML = `Masukkan PIN 4 digit untuk <span class="font-bold text-emerald-600">${user.name}</span>`;
-            }
-            
-            document.getElementById('ticketPassInput').value = '';
-            document.getElementById('authTicketModal').classList.remove('hidden');
-        };
-
-        window.verifyTicketPass = () => {
-            const pin = document.getElementById('ticketPassInput').value;
-            if(state.tempUser && pin === state.tempUser.password) {
-                if (state.authContext === 'edit') {
-                    state.activeUser = state.tempUser;
-                    closeModal('authTicketModal');
-                    window.openSelfEdit(true); 
-                } else {
-                    window.showTicket(state.tempUser);
-                    closeModal('authTicketModal');
-                }
-            } else alert("PIN Salah!");
-        };
-
-        // EDIT FACILITY
-        window.openSelfEdit = (verified = false) => {
-            if(!state.activeUser) return;
-            if (!state.isAdmin && !verified) {
-                window.startAuth(state.activeUser, 'edit');
-                return;
-            }
-            document.getElementById('editName').value = state.activeUser.name;
-            document.getElementById('editStatus').value = state.activeUser.status;
-            document.getElementById('editMarga').value = state.activeUser.marga;
-            document.getElementById('editPass').value = state.activeUser.password;
-            document.getElementById('editUserModal').classList.remove('hidden');
-        };
-
-        window.saveUserEdit = () => {
-            const id = state.activeUser.firebaseId;
-            const updates = {
-                name: document.getElementById('editName').value.trim(),
-                status: document.getElementById('editStatus').value,
-                marga: document.getElementById('editMarga').value,
-                password: document.getElementById('editPass').value.trim(),
-                lastUpdatedAt: new Date().toLocaleString()
-            };
-            if(!updates.name || updates.password.length < 4) return alert("Nama dan PIN 4 digit wajib diisi!");
-            update(ref(db, 'participants/' + id), updates).then(() => {
-                alert("Profil berhasil diperbarui!");
-                closeModal('editUserModal');
-                if (state.activeUser && state.activeUser.firebaseId === id) {
-                    state.activeUser = {...state.activeUser, ...updates};
-                    if (document.getElementById('ticName')) document.getElementById('ticName').innerText = updates.name;
-                    if (document.getElementById('ticMeta')) document.getElementById('ticMeta').innerText = `${updates.marga} • ${updates.status}`;
-                }
-                if(state.tab === 'register') renderParticipantList();
-            });
-        };
-
-        // ADMIN FEATURES
-        window.verifyAdmin = () => {
-            const p = document.getElementById('adminPassword').value;
-            if(p === state.adminPass) {
-                state.isAdmin = true;
-                closeModal('adminModal');
-                refreshUIVisibility();
-                setTab('data');
-            } else alert("PIN Salah!");
-        };
-
         function renderAdminPanel() {
             const area = document.getElementById('content-area');
             area.innerHTML = `
             <div class="space-y-6">
-                <div class="bg-white p-6 rounded-3xl shadow-lg space-y-4 border border-slate-100">
-                    <div class="flex flex-wrap justify-between items-center gap-3">
+                <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100">
+                    <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
                         <h3 class="font-black text-slate-800 flex items-center gap-2 tracking-tight">
-                            <i class="fas fa-user-shield text-emerald-600"></i> Kelola Peserta
+                            <i class="fas fa-shield-alt text-emerald-600"></i> Panel Manajemen
                         </h3>
                         <div class="flex flex-wrap gap-2">
-                            <button onclick="window.exportToCSV()" class="bg-emerald-50 px-4 py-2.5 rounded-xl text-emerald-700 text-[10px] font-black hover:bg-emerald-100 transition-colors flex items-center gap-2">
-                                <i class="fas fa-file-export"></i> EKSPORT CSV
+                            <button onclick="window.openStaffManager()" class="bg-amber-50 px-4 py-2.5 rounded-xl text-amber-700 text-[10px] font-black hover:bg-amber-100 transition-all flex items-center gap-2 uppercase tracking-widest">
+                                <i class="fas fa-users-cog"></i> PETUGAS
                             </button>
-                            <button onclick="window.openAdminSettings()" class="bg-slate-50 px-4 py-2.5 rounded-xl text-slate-700 text-[10px] font-black hover:bg-slate-100 transition-colors flex items-center gap-2">
-                                <i class="fas fa-key"></i> PIN ADMIN
+                            <button onclick="window.exportToCSV()" class="bg-emerald-50 px-4 py-2.5 rounded-xl text-emerald-700 text-[10px] font-black hover:bg-emerald-100 transition-all flex items-center gap-2 uppercase tracking-widest">
+                                <i class="fas fa-file-export"></i> EKSPORT
                             </button>
-                            <button onclick="window.adminLogout()" class="bg-red-50 p-2.5 rounded-xl text-red-600 text-sm hover:bg-red-100 transition-colors"><i class="fas fa-sign-out-alt"></i></button>
+                            <button onclick="window.openAdminSettings()" class="bg-slate-50 px-4 py-2.5 rounded-xl text-slate-700 text-[10px] font-black hover:bg-slate-100 transition-all flex items-center gap-2 uppercase tracking-widest">
+                                <i class="fas fa-key"></i> SETEL PIN
+                            </button>
+                            <button onclick="window.adminLogout()" class="bg-red-50 p-2.5 rounded-xl text-red-600 text-sm hover:bg-red-100 transition-all shadow-sm"><i class="fas fa-sign-out-alt"></i></button>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="relative">
                             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" onkeyup="window.handleAdminSearch(this.value)" placeholder="Cari Nama / Kode..." class="form-input w-full rounded-xl pl-11 p-3 text-sm">
+                            <input type="text" onkeyup="window.handleAdminSearch(this.value)" placeholder="Cari Nama / Kode QR..." class="form-input w-full rounded-xl pl-11 p-3 text-sm">
                         </div>
                         <select onchange="window.updateTableFilter(this.value)" class="form-input rounded-xl px-3 py-3 text-sm font-bold bg-slate-50 border-slate-200">
                             <option value="Semua">Semua Kategori</option>
@@ -767,16 +730,110 @@
             renderDataTable();
         }
 
+        // Dashboard & Data Logic (Sama seperti sebelumnya)
+        window.processRegister = () => {
+            const name = document.getElementById('inName').value.trim();
+            const pass = document.getElementById('inPass').value;
+            if(!name || pass.length < 4) return alert("Lengkapi data dan PIN 4 digit!");
+            const code = `MN-${Date.now().toString().slice(-6)}`;
+            const data = { name, status: document.getElementById('inStatus').value, marga: document.getElementById('inMarga').value, password: pass, qrCode: code, registeredAt: new Date().toLocaleString() };
+            push(ref(db, 'participants'), data).then(() => { alert("Pendaftaran Berhasil!"); window.showTicket(data); document.getElementById('inName').value = ''; document.getElementById('inPass').value = ''; });
+        };
+
+        window.showTicket = async (user) => {
+            state.activeUser = user;
+            document.getElementById('ticName').innerText = user.name;
+            document.getElementById('ticCode').innerText = user.qrCode;
+            document.getElementById('ticMeta').innerText = `${user.marga} • ${user.status}`;
+            const qrImg = document.getElementById('ticQR');
+            const qrLoader = document.getElementById('qrLoading');
+            qrImg.classList.add('hidden'); qrLoader.classList.remove('hidden');
+            document.getElementById('ticketModal').classList.remove('hidden');
+            try {
+                const url = await QRCode.toDataURL(user.qrCode, { errorCorrectionLevel: 'H', margin: 2, width: 600, color: { dark: "#064e3b" } });
+                qrImg.src = url; qrImg.onload = () => { qrLoader.classList.add('hidden'); qrImg.classList.remove('hidden'); };
+            } catch (e) { qrLoader.innerHTML = `<span class="text-[10px] text-red-500 font-bold uppercase tracking-widest">QR ERROR</span>`; }
+        };
+
+        window.findTicket = () => {
+            const query = document.getElementById('findName').value.toLowerCase().trim();
+            if(!query) return alert("Masukkan nama!");
+            const matches = state.participants.filter(x => x.name.toLowerCase().includes(query));
+            if(!matches.length) alert("Data tidak ditemukan!");
+            else if(matches.length === 1) window.startAuth(matches[0]);
+            else { state.manualContext = 'find'; window.showSearchMatches(matches); }
+        };
+
+        window.showSearchMatches = (matches) => {
+            const list = document.getElementById('searchResultsList');
+            document.getElementById('searchResultsTitle').innerText = state.manualContext === 'find' ? 'Hasil Pencarian' : 'Pilih Peserta';
+            list.innerHTML = matches.map(m => `
+                <div onclick="window.selectForContext('${m.firebaseId}')" class="p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 rounded-xl cursor-pointer transition-all flex justify-between items-center group shadow-sm">
+                    <div>
+                        <div class="font-black text-slate-800 text-sm group-hover:text-emerald-700 transition-colors">${m.name}</div>
+                        <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">${m.marga} - ${m.status}</div>
+                    </div>
+                    <i class="fas fa-chevron-right text-slate-200 group-hover:text-emerald-300 transition-all"></i>
+                </div>`).join('');
+            document.getElementById('searchResultsModal').classList.remove('hidden');
+        };
+
+        window.selectForContext = (id) => {
+            const user = state.participants.find(p => p.firebaseId === id);
+            closeModal('searchResultsModal');
+            if (state.manualContext === 'scan' || state.manualContext === 'gift') processAttendance(user, state.manualContext === 'scan' ? 'attendance' : 'gifts');
+            else window.startAuth(user);
+        };
+
+        window.startAuth = (user, context = 'view') => {
+            state.tempUser = user; state.authContext = context;
+            document.getElementById('authUserName').innerText = user.name;
+            document.getElementById('ticketPassInput').value = '';
+            document.getElementById('authTicketModal').classList.remove('hidden');
+        };
+
+        window.verifyTicketPass = () => {
+            const pin = document.getElementById('ticketPassInput').value;
+            if(state.tempUser && pin === state.tempUser.password) {
+                if (state.authContext === 'edit') { state.activeUser = state.tempUser; closeModal('authTicketModal'); window.openSelfEdit(true); }
+                else { window.showTicket(state.tempUser); closeModal('authTicketModal'); }
+            } else alert("PIN Salah!");
+        };
+
+        window.openSelfEdit = (verified = false) => {
+            if(!state.activeUser) return;
+            if (!state.isAdmin && !verified) { window.startAuth(state.activeUser, 'edit'); return; }
+            document.getElementById('editName').value = state.activeUser.name;
+            document.getElementById('editStatus').value = state.activeUser.status;
+            document.getElementById('editMarga').value = state.activeUser.marga;
+            document.getElementById('editPass').value = state.activeUser.password;
+            document.getElementById('editUserModal').classList.remove('hidden');
+        };
+
+        window.saveUserEdit = () => {
+            const id = state.activeUser.firebaseId;
+            const updates = { name: document.getElementById('editName').value.trim(), status: document.getElementById('editStatus').value, marga: document.getElementById('editMarga').value, password: document.getElementById('editPass').value.trim(), lastUpdatedAt: new Date().toLocaleString() };
+            if(!updates.name || updates.password.length < 4) return alert("Nama dan PIN 4 digit wajib diisi!");
+            update(ref(db, 'participants/' + id), updates).then(() => {
+                alert("Profil diperbarui!"); closeModal('editUserModal');
+                if (state.activeUser && state.activeUser.firebaseId === id) {
+                    state.activeUser = {...state.activeUser, ...updates};
+                    document.getElementById('ticName').innerText = updates.name;
+                    document.getElementById('ticMeta').innerText = `${updates.marga} • ${updates.status}`;
+                }
+                if(state.tab === 'register') renderParticipantList();
+            });
+        };
+
         window.exportToCSV = () => {
-            if (!state.participants || state.participants.length === 0) return alert("Tidak ada data untuk dieksport.");
+            if (!state.participants.length) return alert("Tidak ada data!");
             const headers = ["Nama", "Kategori", "Marga", "Kode QR", "PIN"];
             const rows = state.participants.map(p => [`"${p.name}"`, `"${p.status}"`, `"${p.marga}"`, `"${p.qrCode}"`, `"${p.password}"`]);
             let csvContent = "\ufeff" + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
-            link.setAttribute("href", url);
-            link.setAttribute("download", `Peserta_Bonataon_2026_${new Date().toISOString().slice(0,10)}.csv`);
+            link.setAttribute("href", url); link.setAttribute("download", `Data_Peserta_Bonataon_2026.csv`);
             link.click();
         };
 
@@ -788,167 +845,66 @@
             if(!container) return;
             let filtered = state.participants;
             if(state.filterStatus !== "Semua") filtered = filtered.filter(p => p.status === state.filterStatus);
-            if(state.adminSearchQuery) {
-                filtered = filtered.filter(p => p.name.toLowerCase().includes(state.adminSearchQuery) || p.qrCode.toLowerCase().includes(state.adminSearchQuery));
-            }
+            if(state.adminSearchQuery) filtered = filtered.filter(p => p.name.toLowerCase().includes(state.adminSearchQuery) || p.qrCode.toLowerCase().includes(state.adminSearchQuery));
             container.innerHTML = `
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100">
-                    <tr><th class="p-4">Identitas</th><th class="p-4">Kategori</th><th class="p-4">Akses</th><th class="p-4 text-center">Aksi</th></tr>
+                    <tr><th class="p-4">Identitas</th><th class="p-4">Kategori</th><th class="p-4">PIN</th><th class="p-4 text-center">Aksi</th></tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
                     ${filtered.length > 0 ? filtered.map(p => `
                     <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="p-4">
-                            <div class="font-black text-slate-800 text-sm">${p.name}</div>
-                            <div class="text-[9px] font-mono text-slate-400 mt-1">${p.qrCode}</div>
-                        </td>
-                        <td class="p-4">
-                            <div class="font-bold text-slate-600">${p.status}</div>
-                            <div class="text-[8px] text-slate-400 uppercase font-black">${p.marga}</div>
-                        </td>
+                        <td class="p-4"><div class="font-black text-slate-800 text-sm">${p.name}</div><div class="text-[9px] font-mono text-slate-400 mt-1 uppercase tracking-tighter">${p.qrCode}</div></td>
+                        <td class="p-4"><div class="font-bold text-slate-600">${p.status}</div><div class="text-[8px] text-slate-400 uppercase font-black tracking-widest">${p.marga}</div></td>
                         <td class="p-4 font-mono font-black text-emerald-600 text-[10px] tracking-widest">${p.password}</td>
-                        <td class="p-4">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="window.adminEditUser('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition-colors"><i class="fas fa-edit"></i></button>
-                                <button onclick="window.adminResetPin('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors"><i class="fas fa-key"></i></button>
-                                <button onclick="window.adminDeleteUser('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>`).join('') : `<tr><td colspan="4" class="p-20 text-center text-slate-400 font-bold">Tidak ada data ditemukan</td></tr>`}
+                        <td class="p-4"><div class="flex justify-center gap-2">
+                            <button onclick="window.adminEditUser('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition-all"><i class="fas fa-edit"></i></button>
+                            <button onclick="window.adminResetPin('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-all"><i class="fas fa-key"></i></button>
+                            <button onclick="window.adminDeleteUser('${p.firebaseId}')" class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-all"><i class="fas fa-trash"></i></button>
+                        </div></td>
+                    </tr>`).join('') : `<tr><td colspan="4" class="p-20 text-center text-slate-400 font-bold uppercase tracking-widest italic">Tidak ada data ditemukan</td></tr>`}
                 </tbody>
             </table>`;
         };
 
-        window.adminEditUser = (id) => {
-            const user = state.participants.find(p => p.firebaseId === id);
-            state.activeUser = user;
-            window.openSelfEdit(true); 
-        };
+        window.adminEditUser = (id) => { const user = state.participants.find(p => p.firebaseId === id); state.activeUser = user; window.openSelfEdit(true); };
+        window.adminResetPin = (id) => { const user = state.participants.find(p => p.firebaseId === id); state.resetTargetId = id; document.getElementById('resetTargetName').innerText = user.name; document.getElementById('confirmResetModal').classList.remove('hidden'); };
+        window.confirmPermanentReset = () => { if(!state.resetTargetId) return; update(ref(db, 'participants/' + state.resetTargetId), { password: '0000', lastUpdatedAt: new Date().toLocaleString() }).then(() => { alert("PIN Berhasil direset ke 0000"); closeModal('confirmResetModal'); state.resetTargetId = null; }); };
+        window.adminDeleteUser = (id) => { const user = state.participants.find(p => p.firebaseId === id); state.deleteTargetId = id; document.getElementById('deleteTargetName').innerText = user.name; document.getElementById('confirmDeleteModal').classList.remove('hidden'); };
+        window.confirmPermanentDelete = () => { if (!state.deleteTargetId) return; remove(ref(db, 'participants/' + state.deleteTargetId)).then(() => { alert("Data Berhasil Dihapus."); closeModal('confirmDeleteModal'); state.deleteTargetId = null; }); };
+        window.updateAdminPin = () => { const v = document.getElementById('verifyAdminInput').value; const n = document.getElementById('newAdminPin').value; if(v !== state.adminPass && v !== state.recoveryKey) return alert("Verifikasi Gagal!"); if(n.length < 4) return alert("Minimal 4 digit!"); set(ref(db, 'settings/adminPin'), n).then(() => { state.adminPass = n; alert("PIN Admin diperbarui!"); closeModal('adminSettingsModal'); }); };
+        window.adminLogout = () => { state.isAdmin = false; state.isStaff = false; refreshUIVisibility(); setTab('register'); };
 
-        window.adminResetPin = (id) => {
-            const user = state.participants.find(p => p.firebaseId === id);
-            state.resetTargetId = id;
-            document.getElementById('resetTargetName').innerText = user.name;
-            document.getElementById('confirmResetModal').classList.remove('hidden');
-        };
-
-        window.confirmPermanentReset = () => {
-            if(!state.resetTargetId) return;
-            update(ref(db, 'participants/' + state.resetTargetId), { password: '0000', lastUpdatedAt: new Date().toLocaleString() }).then(() => {
-                alert("PIN Berhasil direset ke 0000");
-                closeModal('confirmResetModal');
-                state.resetTargetId = null;
-            });
-        };
-
-        window.adminDeleteUser = (id) => {
-            const user = state.participants.find(p => p.firebaseId === id);
-            state.deleteTargetId = id;
-            document.getElementById('deleteTargetName').innerText = user.name;
-            document.getElementById('confirmDeleteModal').classList.remove('hidden');
-        };
-
-        window.confirmPermanentDelete = () => {
-            if (!state.deleteTargetId) return;
-            remove(ref(db, 'participants/' + state.deleteTargetId)).then(() => {
-                alert("Data Berhasil Dihapus.");
-                closeModal('confirmDeleteModal');
-                state.deleteTargetId = null;
-            });
-        };
-
-        window.updateAdminPin = () => {
-            const v = document.getElementById('verifyAdminInput').value;
-            const n = document.getElementById('newAdminPin').value;
-            if(v !== state.adminPass && v !== state.recoveryKey) return alert("PIN Lama Salah!");
-            if(n.length < 4) return alert("Minimal 4 digit!");
-            set(ref(db, 'settings/adminPin'), n).then(() => {
-                state.adminPass = n;
-                alert("PIN Admin diperbarui!");
-                closeModal('adminSettingsModal');
-            });
-        };
-
-        window.adminLogout = () => { 
-            state.isAdmin = false; 
-            refreshUIVisibility();
-            setTab('register'); 
-        };
-
-        // SCANNER LOGIC
+        // Scanner Handlers
         window.initScanner = () => {
             state.scanner = new Html5Qrcode("reader");
-            state.scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, onScanSuccess).catch(err => {
-                showFeedback('Gagal Akses Kamera', 'bg-red-600');
-            });
+            state.scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, onScanSuccess).catch(() => { showFeedback('Gagal Akses Kamera', 'bg-red-600'); });
         };
-
-        function onScanSuccess(text) {
-            const p = state.participants.find(x => x.qrCode === text);
-            if(!p) return showFeedback('QR TIDAK VALID', 'bg-red-600');
-            processAttendance(p, state.tab === 'scan' ? 'attendance' : 'gifts');
-        }
-
+        function onScanSuccess(text) { const p = state.participants.find(x => x.qrCode === text); if(!p) return showFeedback('QR TIDAK VALID', 'bg-red-600'); processAttendance(p, state.tab === 'scan' ? 'attendance' : 'gifts'); }
         function processAttendance(p, path) {
             const list = state[path === 'attendance' ? 'attendance' : 'gifts'];
             const already = list.some(l => l.qrCode === p.qrCode && (new Date() - new Date(l.timestamp)) < 300000);
             if(already) return showFeedback('SUDAH TERCATAT', 'bg-amber-500');
-            push(ref(db, path), { name: p.name, qrCode: p.qrCode, timestamp: new Date().toLocaleString() }).then(() => {
-                showFeedback(`BERHASIL: ${p.name}`, 'bg-emerald-600');
-                beep();
-            });
+            push(ref(db, path), { name: p.name, qrCode: p.qrCode, timestamp: new Date().toLocaleString() }).then(() => { showFeedback(`BERHASIL: ${p.name}`, 'bg-emerald-600'); beep(); });
         }
+        window.openManualInput = (type) => { const q = prompt("Nama atau Kode QR:"); if (!q) return; const matches = state.participants.filter(x => x.name.toLowerCase().includes(q.toLowerCase()) || x.qrCode.toLowerCase().includes(q.toLowerCase())); if (!matches.length) return alert("Data tidak ditemukan!"); state.manualContext = type; window.showSearchMatches(matches); };
+        function showFeedback(txt, cls) { const el = document.getElementById('scanMsg'); if(!el) return; el.innerText = txt; el.className = `p-3 rounded-xl mb-4 text-white font-bold shadow-lg ${cls} animate-bounce`; el.classList.remove('hidden'); setTimeout(() => el.classList.add('hidden'), 3000); }
 
-        window.openManualInput = (type) => {
-            if (!state.isAdmin) return alert("Akses Terbatas Panitia!");
-            const q = prompt("Nama atau Kode QR:");
-            if (!q) return;
-            const matches = state.participants.filter(x => x.name.toLowerCase().includes(q.toLowerCase()) || x.qrCode.toLowerCase().includes(q.toLowerCase()));
-            if (matches.length === 0) return alert("Data tidak ditemukan!");
-            state.manualContext = type;
-            window.showSearchMatches(matches);
-        };
-
-        function showFeedback(txt, cls) {
-            const el = document.getElementById('scanMsg');
-            if(!el) return;
-            el.innerText = txt; el.className = `p-3 rounded-xl mb-4 text-white font-bold shadow-lg ${cls}`;
-            el.classList.remove('hidden'); setTimeout(() => el.classList.add('hidden'), 3000);
-        }
-
-        // HELPERS
+        // Core UI Helpers
         window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
-        
-        function beep() {
-            try {
-                const a = new (window.AudioContext || window.webkitAudioContext)();
-                const o = a.createOscillator();
-                o.connect(a.destination); o.frequency.value = 880; o.start(); o.stop(a.currentTime + 0.1);
-            } catch (e) {}
-        }
-
-        window.downloadTicketImage = () => {
-            const target = document.getElementById('vipTicketCard');
-            html2canvas(target, { scale: 2, backgroundColor: '#0f172a' }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Tiket_Bonataon_${state.activeUser.name.replace(/\s+/g, '_')}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-            });
-        };
-
+        function beep() { try { const a = new (window.AudioContext || window.webkitAudioContext)(); const o = a.createOscillator(); o.connect(a.destination); o.frequency.value = 880; o.start(); o.stop(a.currentTime + 0.1); } catch (e) {} }
+        window.downloadTicketImage = () => { html2canvas(document.getElementById('vipTicketCard'), { scale: 2, backgroundColor: '#0f172a' }).then(canvas => { const link = document.createElement('a'); link.download = `Tiket_Bonataon_${state.activeUser.name}.png`; link.href = canvas.toDataURL(); link.click(); }); };
         function renderParticipantList() {
-            const list = document.getElementById('participantList');
-            if(!list) return;
-            list.innerHTML = `<h5 class="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Pendaftar Terbaru</h5>` + 
+            const list = document.getElementById('participantList'); if(!list) return;
+            list.innerHTML = `<h5 class="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest pl-1">Pendaftar Terbaru</h5>` + 
                 state.participants.slice(-3).reverse().map(p => `
-                <div class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm border border-slate-50">
+                <div class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm border border-slate-50 animate-fade-in hover:shadow-md transition-all">
                     <div class="font-bold text-sm text-slate-800">${p.name}</div>
-                    <div class="text-[8px] font-black bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full uppercase">${p.status}</div>
+                    <div class="text-[8px] font-black bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full uppercase tracking-tighter">${p.status}</div>
                 </div>`).join('');
         }
 
+        refreshUIVisibility();
         setTab('register');
     </script>
 </body>
