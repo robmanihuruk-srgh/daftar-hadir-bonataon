@@ -258,7 +258,7 @@
             <button onclick="setTab('gift')" id="tab-gift" class="nav-btn admin-tab staff-tab flex-1 min-w-[110px] bg-white shadow-2xl btn-hover btn-modern hidden">
                 <i class="fas fa-gift text-emerald-600"></i><span class="text-[10px] font-black uppercase tracking-widest">Berkat</span>
             </button>
-            <button onclick="setTab('report')" id="tab-report" class="nav-btn admin-tab staff-tab flex-1 min-w-[110px] bg-white shadow-2xl btn-hover btn-modern hidden">
+            <button onclick="setTab('report')" id="tab-report" class="nav-btn admin-tab flex-1 min-w-[110px] bg-white shadow-2xl btn-hover btn-modern hidden">
                 <i class="fas fa-chart-line text-emerald-600"></i><span class="text-[10px] font-black uppercase tracking-widest">Report</span>
             </button>
             <button onclick="setTab('data')" id="tab-data" class="nav-btn admin-tab flex-1 min-w-[110px] bg-white shadow-2xl btn-hover btn-modern hidden">
@@ -486,6 +486,9 @@
         onValue(ref(db, 'staff'), s => { 
             const data = s.val();
             state.staff = data ? Object.keys(data).map(k => ({...data[k], firebaseId: k})) : [];
+            if(state.tab === 'data') {
+                renderStaffList();
+            }
         });
         onValue(ref(db, 'participants'), s => { 
             const data = s.val();
@@ -509,7 +512,10 @@
             if(document.getElementById('statGifts')) document.getElementById('statGifts').innerText = state.gifts.length;
             
             if(state.tab === 'register') renderParticipantList();
-            if(state.tab === 'data') renderDataTable();
+            if(state.tab === 'data') {
+                renderDataTable();
+                renderStaffList();
+            }
             if(state.tab === 'report') renderLiveReport();
             
             setTimeout(() => document.getElementById('loading')?.classList.add('hidden'), 500);
@@ -591,9 +597,12 @@
                 const isStaffTab = btn.classList.contains('staff-tab');
                 const isAdminTab = btn.classList.contains('admin-tab');
                 const isPublicTab = btn.classList.contains('public-tab');
-                if (state.isAdmin) btn.classList.remove('hidden');
-                else if (state.isStaff) {
-                    if (isStaffTab) btn.classList.remove('hidden');
+                
+                if (state.isAdmin) {
+                    btn.classList.remove('hidden');
+                } else if (state.isStaff) {
+                    // Petugas hanya bisa scan dan akses menu publik
+                    if (isStaffTab || isPublicTab) btn.classList.remove('hidden');
                     else btn.classList.add('hidden');
                 } else {
                     if (isPublicTab) btn.classList.remove('hidden');
@@ -821,7 +830,9 @@
                             </button>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                    <!-- Filter & Search -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
                         <input type="text" onkeyup="window.handleAdminSearch(this.value)" placeholder="CARI PESERTA..." class="form-input w-full rounded-2xl p-4 text-sm font-black uppercase">
                         <select onchange="window.updateTableFilter(this.value)" class="form-input rounded-2xl px-5 py-4 text-sm font-black bg-slate-50 border-slate-200">
                             <option value="Semua">TAMPILKAN SEMUA</option>
@@ -831,12 +842,38 @@
                             <option value="Tamu">TAMU</option>
                         </select>
                     </div>
+
+                    <!-- Staff Management section -->
+                    <div class="border-t border-slate-100 pt-10">
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs shadow-sm">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest">Manajemen Petugas Lapangan</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8">
+                            <div class="md:col-span-5">
+                                <input id="newStaffName" type="text" placeholder="NAMA LENGKAP PETUGAS" class="form-input w-full rounded-2xl p-4 text-[11px] font-black uppercase">
+                            </div>
+                            <div class="md:col-span-3">
+                                <input id="newStaffPin" type="password" maxlength="6" placeholder="PIN (MIN 4 DIGIT)" class="form-input w-full rounded-2xl p-4 text-[11px] font-black text-center">
+                            </div>
+                            <div class="md:col-span-4">
+                                <button onclick="window.addStaffMember()" class="w-full h-full bg-emerald-600 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest btn-hover shadow-lg py-4 md:py-0">
+                                    <i class="fas fa-plus mr-2"></i> TAMBAH AKSES
+                                </button>
+                            </div>
+                        </div>
+                        <div id="staffListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
                 </div>
+
                 <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100">
                     <div id="adminTableContainer" class="overflow-x-auto custom-scrollbar"></div>
                 </div>
             </div>`;
             renderDataTable();
+            renderStaffList();
         }
 
         window.renderDataTable = () => {
@@ -865,6 +902,44 @@
                         </tr>`).join('')}
                 </tbody>
             </table>`;
+        };
+
+        window.renderStaffList = () => {
+            const container = document.getElementById('staffListContainer');
+            if(!container) return;
+            container.innerHTML = state.staff.map(s => `
+                <div class="bg-slate-50 p-5 rounded-[1.5rem] border border-slate-100 flex justify-between items-center animate-[modalUp_0.3s] shadow-sm">
+                    <div>
+                        <div class="font-black text-slate-800 text-[11px] uppercase tracking-wide">${s.name}</div>
+                        <div class="text-[9px] text-emerald-600 font-black uppercase mt-1 bg-emerald-50 px-2 py-0.5 rounded-full inline-block border border-emerald-100">PIN: ${s.pin}</div>
+                    </div>
+                    <button onclick="window.removeStaffMember('${s.firebaseId}')" class="text-red-400 hover:text-red-600 w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-inner border border-slate-100 transition-colors">
+                        <i class="fas fa-trash-can text-xs"></i>
+                    </button>
+                </div>
+            `).join('') || '<div class="col-span-full text-center py-10 text-slate-300 font-black text-[10px] uppercase border-2 border-dashed border-slate-100 rounded-[1.5rem]">Belum ada petugas lapangan</div>';
+        };
+
+        window.addStaffMember = () => {
+            const name = document.getElementById('newStaffName').value.trim().toUpperCase();
+            const pin = document.getElementById('newStaffPin').value.trim();
+            if(!name || pin.length < 4) return alert("Harap isi Nama dan PIN (Min. 4 Digit)");
+            
+            if(state.staff.some(s => s.pin === pin) || pin === state.adminPass) {
+                return alert("PIN sudah digunakan. Gunakan PIN lain.");
+            }
+            
+            push(ref(db, 'staff'), { name, pin }).then(() => {
+                document.getElementById('newStaffName').value = '';
+                document.getElementById('newStaffPin').value = '';
+                alert("Petugas berhasil ditambahkan!");
+            });
+        };
+
+        window.removeStaffMember = (id) => {
+            if(confirm("Hapus akses petugas ini?")) {
+                remove(ref(db, 'staff/' + id)).then(() => alert("Akses petugas dihapus."));
+            }
         };
 
         // --- TICKETS & SCANNER ---
