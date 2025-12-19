@@ -182,6 +182,15 @@
             animation: pulse-red 2s infinite;
         }
 
+        #reader {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        #reader video {
+            object-fit: cover !important;
+        }
+
         @keyframes pulse-red {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
             70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
@@ -276,7 +285,7 @@
 
     <!-- MODALS -->
 
-    <!-- Modal Edit User (Digunakan Admin & Peserta) -->
+    <!-- Modal Edit User -->
     <div id="editUserModal" class="fixed inset-0 z-[9500] flex items-center justify-center hidden p-6">
         <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-xl" onclick="closeModal('editUserModal')"></div>
         <div class="card max-w-md w-full relative z-10 p-10 bg-white rounded-[3rem] shadow-2xl animate-[modalUp_0.4s]">
@@ -351,6 +360,33 @@
             </div>
             <input type="password" id="adminPassword" placeholder="••••" maxlength="8" class="form-input w-full rounded-2xl p-5 text-center text-4xl font-black mb-6 tracking-[0.5em] shadow-inner">
             <button onclick="window.verifyAdmin()" class="w-full py-5 bg-emerald-600 text-white rounded-[1.5rem] font-black btn-hover btn-modern shadow-xl uppercase tracking-widest">MASUK SEKARANG</button>
+            
+            <!-- Link Lupa PIN -->
+            <div class="mt-6 text-center">
+                <button onclick="window.openResetFacility()" class="text-xs font-black text-emerald-600 hover:text-emerald-800 uppercase tracking-widest underline underline-offset-8 transition-colors">Lupa PIN Admin?</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Reset Admin PIN -->
+    <div id="resetAdminModal" class="fixed inset-0 z-[9100] flex items-center justify-center hidden p-6">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-xl" onclick="closeModal('resetAdminModal')"></div>
+        <div class="card max-w-sm w-full relative z-10 p-10 bg-white rounded-[3rem] shadow-2xl animate-[modalUp_0.4s]">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-amber-50 text-amber-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner">
+                    <i class="fas fa-key-skeleton text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Pemulihan Akses</h3>
+                <p class="text-[10px] text-slate-400 font-black uppercase mt-2 tracking-[0.2em]">Masukkan Kode Pemulihan</p>
+            </div>
+            <div class="space-y-4">
+                <input type="text" id="recoveryKeyInput" placeholder="KODE PEMULIHAN" class="form-input w-full rounded-2xl p-4 text-center font-black uppercase tracking-widest text-emerald-700">
+                <div class="pt-4">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block pl-2">Setel PIN Admin Baru</label>
+                    <input type="password" id="newAdminPinReset" placeholder="••••" maxlength="8" class="form-input w-full rounded-2xl p-4 text-center text-3xl font-black tracking-[0.5em]">
+                </div>
+                <button onclick="window.handleResetAdminPin()" class="w-full py-5 bg-emerald-600 text-white rounded-2xl font-black shadow-xl uppercase tracking-widest text-xs btn-hover btn-modern">Simpan PIN Baru</button>
+            </div>
         </div>
     </div>
 
@@ -437,8 +473,8 @@
             isStaff: false,
             adminPass: "1234",
             recoveryKey: "BONA2026",
-            activeUser: null, // User yang sedang melihat tiketnya
-            tempUser: null,   // User hasil pencarian yang menunggu PIN
+            activeUser: null,
+            tempUser: null,
             filterStatus: "Semua",
             adminSearchQuery: "",
             isProcessingScan: false,
@@ -517,6 +553,36 @@
             }
         };
 
+        // --- LUPA PIN ADMIN FACILITY ---
+        window.openResetFacility = () => {
+            closeModal('adminModal');
+            document.getElementById('recoveryKeyInput').value = '';
+            document.getElementById('newAdminPinReset').value = '';
+            document.getElementById('resetAdminModal').classList.remove('hidden');
+        };
+
+        window.handleResetAdminPin = () => {
+            const recoveryInput = document.getElementById('recoveryKeyInput').value.trim().toUpperCase();
+            const newPin = document.getElementById('newAdminPinReset').value.trim();
+            
+            if (recoveryInput !== state.recoveryKey) {
+                return alert("Kode Pemulihan Salah!");
+            }
+            
+            if (newPin.length < 4) {
+                return alert("PIN Baru minimal 4 digit!");
+            }
+            
+            set(ref(db, 'settings/adminPin'), newPin).then(() => {
+                alert("PIN Admin Berhasil Diperbarui!");
+                state.adminPass = newPin;
+                closeModal('resetAdminModal');
+                window.showAdminLogin();
+            }).catch(e => {
+                alert("Gagal memperbarui PIN di server.");
+            });
+        };
+
         function refreshUIVisibility() {
             const navButtons = document.querySelectorAll('.nav-btn');
             const logoutBtn = document.getElementById('tab-logout');
@@ -546,7 +612,14 @@
 
         // --- CORE TAB LOGIC ---
         window.setTab = async (t) => {
-            if(state.scanner) { try { await state.scanner.stop(); } catch(e){} state.scanner = null; }
+            if(state.scanner) { 
+                try { 
+                    await state.scanner.stop(); 
+                } catch(e) {
+                    console.log("Scanner stop error ignored:", e);
+                } 
+                state.scanner = null; 
+            }
             state.tab = t;
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.id === `tab-${t}`));
             const area = document.getElementById('content-area');
@@ -630,7 +703,6 @@
             const userRef = ref(db, 'participants/' + state.activeUser.firebaseId);
             update(userRef, { name, status, marga, password: pass }).then(() => {
                 alert("Profil Berhasil Diperbarui!");
-                // Update local state to reflect changes in UI
                 const updatedUser = { ...state.activeUser, name, status, marga, password: pass };
                 state.activeUser = updatedUser;
                 closeModal('editUserModal');
@@ -652,7 +724,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Chart 1: Komposisi Peserta -->
                     <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100">
                         <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Demografi Pendaftar</h4>
                         <div class="relative aspect-square">
@@ -660,7 +731,6 @@
                         </div>
                     </div>
                     
-                    <!-- Activity Feed -->
                     <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 flex flex-col max-h-[400px]">
                         <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Aktivitas Terkini</h4>
                         <div class="flex-1 overflow-y-auto custom-scrollbar space-y-3">
@@ -702,7 +772,6 @@
                 </div>
             </div>`;
 
-            // Render Charts
             const ctx = document.getElementById('categoryChart').getContext('2d');
             const catData = ['Orangtua', 'Pemuda', 'Sekolah Minggu', 'Tamu'].map(c => state.participants.filter(p => p.status === c).length);
             
@@ -835,27 +904,56 @@
 
         function initScanner() {
             const msgEl = document.getElementById('scanMsg');
-            state.scanner = new Html5Qrcode("reader");
-            state.scanner.start({ facingMode: "environment" }, { fps: 20, qrbox: 280 }, (text) => {
-                if (state.isProcessingScan) return;
-                state.isProcessingScan = true;
-                const scannedText = text.trim().toUpperCase();
-                const p = state.participants.find(x => x.qrCode && x.qrCode.trim().toUpperCase() === scannedText);
-                
-                if(!p) {
-                    msgEl.innerText = "Kode QR tidak terdaftar atau kadaluarsa.";
-                    msgEl.className = "p-4 rounded-2xl mb-6 bg-red-600 text-white font-black block shadow-xl";
-                    setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 2000);
-                    return;
-                }
+            const readerDiv = document.getElementById('reader');
+            if (!readerDiv) return;
 
-                const path = state.tab === 'scan' ? 'attendance' : 'gifts';
-                push(ref(db, path), { name: p.name, qrCode: p.qrCode, timestamp: new Date().toLocaleString() }).then(() => {
-                    msgEl.innerText = `${p.name} BERHASIL!`;
-                    msgEl.className = "p-4 rounded-2xl mb-6 bg-emerald-600 text-white font-black block shadow-xl animate-bounce";
-                    setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 3000);
-                });
-            }).catch(() => { alert("Izin Kamera Diperlukan!"); state.isProcessingScan = false; });
+            state.scanner = new Html5Qrcode("reader");
+            
+            // Konfigurasi QR dinamis agar pas di layar mobile
+            const config = { 
+                fps: 10, 
+                qrbox: (viewWidth, viewHeight) => {
+                    const minEdge = Math.min(viewWidth, viewHeight);
+                    const boxSize = Math.floor(minEdge * 0.7); // 70% dari area terkecil
+                    return { width: boxSize, height: boxSize };
+                },
+                aspectRatio: 1.0,
+                showTorchButtonIfSupported: true
+            };
+
+            state.scanner.start(
+                { facingMode: "environment" }, 
+                config, 
+                (text) => {
+                    if (state.isProcessingScan) return;
+                    state.isProcessingScan = true;
+                    const scannedText = text.trim().toUpperCase();
+                    const p = state.participants.find(x => x.qrCode && x.qrCode.trim().toUpperCase() === scannedText);
+                    
+                    if(!p) {
+                        msgEl.innerText = "Kode QR tidak terdaftar atau kadaluarsa.";
+                        msgEl.className = "p-4 rounded-2xl mb-6 bg-red-600 text-white font-black block shadow-xl";
+                        setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 3000);
+                        return;
+                    }
+
+                    const path = state.tab === 'scan' ? 'attendance' : 'gifts';
+                    push(ref(db, path), { name: p.name, qrCode: p.qrCode, timestamp: new Date().toLocaleString() }).then(() => {
+                        msgEl.innerText = `${p.name} BERHASIL!`;
+                        msgEl.className = "p-4 rounded-2xl mb-6 bg-emerald-600 text-white font-black block shadow-xl animate-bounce";
+                        setTimeout(() => { state.isProcessingScan = false; msgEl.classList.add('hidden'); }, 3000);
+                    });
+                },
+                (errorMessage) => {
+                    // Abaikan kesalahan pembacaan frame per frame (biasa terjadi)
+                }
+            ).catch(err => {
+                console.error("Camera access error:", err);
+                msgEl.innerText = "Kamera Gagal Diakses. Pastikan Izin Kamera Aktif.";
+                msgEl.className = "p-4 rounded-2xl mb-6 bg-red-600 text-white font-black block shadow-xl";
+                msgEl.classList.remove('hidden');
+                state.isProcessingScan = false;
+            });
         }
 
         // --- MISC UTILITIES ---
