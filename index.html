@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -301,6 +302,7 @@
         // --- CORE UI UTILS ---
         const showToast = (title, body) => {
             const container = document.getElementById('notification-container');
+            if(!container) return;
             const toast = document.createElement('div');
             toast.className = 'glass-panel p-5 rounded-3xl shadow-2xl border-l-4 border-emerald-500 flex items-center gap-4 animate-[modalUp_0.4s]';
             toast.innerHTML = `
@@ -316,6 +318,7 @@
 
         const openModal = (html, id = 'dynamicModal') => {
             const container = document.getElementById('modal-container');
+            if(!container) return;
             container.innerHTML = `
                 <div id="${id}" class="fixed inset-0 z-[9000] flex items-center justify-center p-6 overflow-y-auto">
                     <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-xl" onclick="document.getElementById('${id}').classList.add('hidden')"></div>
@@ -330,9 +333,12 @@
 
         // --- DATA BINDING ---
         const updateDashboard = () => {
-            document.getElementById('statRegistered').innerText = state.participants.length;
-            document.getElementById('statPresent').innerText = state.attendance.length;
-            document.getElementById('statGifts').innerText = state.gifts.length;
+            const sr = document.getElementById('statRegistered');
+            const sp = document.getElementById('statPresent');
+            const sg = document.getElementById('statGifts');
+            if(sr) sr.innerText = state.participants.length;
+            if(sp) sp.innerText = state.attendance.length;
+            if(sg) sg.innerText = state.gifts.length;
             
             if (state.tab === 'register') renderRegister();
             if (state.tab === 'report') renderReport();
@@ -345,6 +351,7 @@
         // --- VIEWS RENDERING ---
         const renderRegister = () => {
             const area = document.getElementById('content-area');
+            if(!area) return;
             const recent = state.participants.slice(-10).reverse();
             area.innerHTML = `
                 <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl mb-10 border border-slate-100 animate-[modalUp_0.5s]">
@@ -369,15 +376,22 @@
                     </div>
                 </div>
             `;
-            document.getElementById('btnReg').onclick = handleRegistration;
+            const btnReg = document.getElementById('btnReg');
+            if(btnReg) btnReg.onclick = handleRegistration;
         };
 
         const handleRegistration = () => {
-            const n = document.getElementById('inName').value.trim().toUpperCase(), p = document.getElementById('inPass').value, s = document.getElementById('inStatus').value, m = document.getElementById('inMarga').value;
+            const nameEl = document.getElementById('inName'), passEl = document.getElementById('inPass'), statEl = document.getElementById('inStatus'), margaEl = document.getElementById('inMarga');
+            const n = nameEl.value.trim().toUpperCase(), p = passEl.value, s = statEl.value, m = margaEl.value;
             if (!n || p.length < 6) return alert("Harap lengkapi Nama & PIN (Min. 6 Digit)!");
             const code = `MN-${Date.now().toString().slice(-8)}`;
             const data = { name: n, status: s, marga: m, password: p, qrCode: code, registeredAt: new Date().toLocaleString() };
-            push(ref(db, 'participants'), data).then(() => { showToast("Pendaftaran Berhasil!", `${n} telah resmi terdaftar.`); showTicket(data); document.getElementById('inName').value = ''; document.getElementById('inPass').value = ''; });
+            push(ref(db, 'participants'), data).then(() => { 
+                showToast("Pendaftaran Berhasil!", `${n} telah resmi terdaftar.`); 
+                showTicket(data); 
+                nameEl.value = ''; 
+                passEl.value = ''; 
+            });
         };
 
         // --- TICKET VIEW ---
@@ -409,9 +423,15 @@
             `;
             openModal(html, 'ticketModal');
             const qrImg = document.getElementById('ticQR'), qrLoader = document.getElementById('qrLoading');
-            try { const url = await QRCode.toDataURL(user.qrCode, { errorCorrectionLevel: 'H', margin: 2, width: 800, color: { dark: "#064e3b", light: "#ffffff" } }); qrImg.src = url; qrImg.onload = () => { if (qrLoader) qrLoader.classList.add('hidden'); qrImg.classList.remove('hidden'); }; } catch (e) { console.error(e); }
-            document.getElementById('btnEditSelf').onclick = () => openEditUserModal(user);
-            document.getElementById('btnDlTicket').onclick = handleDownloadTicket;
+            try { 
+                const url = await QRCode.toDataURL(user.qrCode, { errorCorrectionLevel: 'H', margin: 2, width: 800, color: { dark: "#064e3b", light: "#ffffff" } }); 
+                if(qrImg) qrImg.src = url; 
+                if(qrImg) qrImg.onload = () => { if (qrLoader) qrLoader.classList.add('hidden'); qrImg.classList.remove('hidden'); }; 
+            } catch (e) { console.error(e); }
+            const editBtn = document.getElementById('btnEditSelf');
+            const dlBtn = document.getElementById('btnDlTicket');
+            if(editBtn) editBtn.onclick = () => openEditUserModal(user);
+            if(dlBtn) dlBtn.onclick = handleDownloadTicket;
         };
 
         const openEditUserModal = (user) => {
@@ -429,16 +449,25 @@
                 </div>
             `;
             openModal(html, 'editUserModal');
-            document.getElementById('btnSaveEdit').onclick = () => {
-                const n = document.getElementById('editName').value.trim().toUpperCase(), s = document.getElementById('editStatus').value, m = document.getElementById('editMarga').value, p = document.getElementById('editPass').value;
-                if (!n || p.length < 6) return alert("Validasi Gagal!");
-                const uId = state.participants.find(x => x.qrCode === user.qrCode).firebaseId;
-                update(ref(db, 'participants/' + uId), { name: n, status: s, marga: m, password: p }).then(() => { showToast("Profil Diperbarui", `Data untuk ${n} berhasil disimpan.`); closeModal('editUserModal'); window.showTicket({...user, name: n, status: s, marga: m, password: p}); });
-            };
+            const saveBtn = document.getElementById('btnSaveEdit');
+            if(saveBtn) {
+                saveBtn.onclick = () => {
+                    const n = document.getElementById('editName').value.trim().toUpperCase(), s = document.getElementById('editStatus').value, m = document.getElementById('editMarga').value, p = document.getElementById('editPass').value;
+                    if (!n || p.length < 6) return alert("Validasi Gagal!");
+                    const uId = user.firebaseId || state.participants.find(x => x.qrCode === user.qrCode)?.firebaseId;
+                    if(!uId) return alert("Data tidak ditemukan");
+                    update(ref(db, 'participants/' + uId), { name: n, status: s, marga: m, password: p }).then(() => { 
+                        showToast("Profil Diperbarui", `Data untuk ${n} berhasil disimpan.`); 
+                        closeModal('editUserModal'); 
+                        if(state.tab !== 'data') window.showTicket({...user, name: n, status: s, marga: m, password: p, firebaseId: uId}); 
+                    });
+                };
+            }
         };
 
         const handleDownloadTicket = () => {
             const card = document.getElementById('vipTicketCard');
+            if(!card) return;
             html2canvas(card, { scale: 3, backgroundColor: '#0f172a' }).then(canvas => {
                 const link = document.createElement('a'); link.download = `Tiket_Bonataon_${state.activeUser.name}.png`; link.href = canvas.toDataURL(); link.click();
             });
@@ -453,21 +482,27 @@
                 <div class="mt-6 text-center"><button id="btnForgotAdmin" class="text-xs font-black text-emerald-600 uppercase tracking-widest underline underline-offset-8">Lupa PIN Admin?</button></div>
             `;
             openModal(html, 'adminModal');
-            document.getElementById('btnLoginAdmin').onclick = () => {
-                const pin = document.getElementById('adminPassword').value;
-                if (pin === state.adminPass) { state.isAdmin = true; state.isStaff = false; closeModal('adminModal'); refreshUI(); setTab('report'); } 
-                else { const staff = state.staff.find(s => s.pin === pin); if (staff) { state.isStaff = true; state.isAdmin = false; closeModal('adminModal'); refreshUI(); setTab('scan'); } else { alert("PIN Salah!"); } }
-            };
-            document.getElementById('btnForgotAdmin').onclick = () => {
-                const key = prompt("Masukkan Kode Pemulihan:");
-                if (key === state.recoveryKey) { const newP = prompt("PIN Admin Baru (6+ digit):"); if (newP && newP.length >= 6) { set(ref(db, 'settings/adminPin'), newP).then(() => alert("PIN Diperbarui!")); } } else alert("Kode Salah!");
-            };
+            const loginBtn = document.getElementById('btnLoginAdmin');
+            if(loginBtn) {
+                loginBtn.onclick = () => {
+                    const pin = document.getElementById('adminPassword').value;
+                    if (pin === state.adminPass) { state.isAdmin = true; state.isStaff = false; closeModal('adminModal'); refreshUI(); setTab('report'); } 
+                    else { const staff = state.staff.find(s => s.pin === pin); if (staff) { state.isStaff = true; state.isAdmin = false; closeModal('adminModal'); refreshUI(); setTab('scan'); } else { alert("PIN Salah!"); } }
+                };
+            }
+            const forgotBtn = document.getElementById('btnForgotAdmin');
+            if(forgotBtn) {
+                forgotBtn.onclick = () => {
+                    const key = prompt("Masukkan Kode Pemulihan:");
+                    if (key === state.recoveryKey) { const newP = prompt("PIN Admin Baru (6+ digit):"); if (newP && newP.length >= 6) { set(ref(db, 'settings/adminPin'), newP).then(() => alert("PIN Diperbarui!")); } } else alert("Kode Salah!");
+                };
+            }
         };
 
         const refreshUI = () => {
             const roleBadge = document.getElementById('roleBadge'), logoutBtn = document.getElementById('nav-logout'), navItems = document.querySelectorAll('.nav-btn');
-            if (state.isAdmin || state.isStaff) { roleBadge.classList.remove('hidden'); roleBadge.innerText = state.isAdmin ? "Mode Administrator" : "Petugas Lapangan"; logoutBtn.classList.remove('hidden'); } 
-            else { roleBadge.classList.add('hidden'); logoutBtn.classList.add('hidden'); }
+            if (state.isAdmin || state.isStaff) { if(roleBadge) { roleBadge.classList.remove('hidden'); roleBadge.innerText = state.isAdmin ? "Mode Administrator" : "Petugas Lapangan"; } if(logoutBtn) logoutBtn.classList.remove('hidden'); } 
+            else { if(roleBadge) roleBadge.classList.add('hidden'); if(logoutBtn) logoutBtn.classList.add('hidden'); }
             navItems.forEach(btn => {
                 const isStaffT = btn.classList.contains('staff-tab'), isAdminT = btn.classList.contains('admin-tab'), isPublicT = btn.classList.contains('public-tab');
                 if (state.isAdmin) btn.classList.remove('hidden');
@@ -479,6 +514,7 @@
         // --- REPORT & CHARTS ---
         const renderReport = () => {
             const area = document.getElementById('content-area'), recentL = state.attendance.slice(-10).reverse();
+            if(!area) return;
             area.innerHTML = `
                 <div class="space-y-8 animate-[modalUp_0.5s]">
                     <div class="flex justify-between items-center px-4"><h3 class="text-2xl font-black text-slate-800 royal-font uppercase tracking-tight flex items-center gap-3"><span class="live-dot"></span> Live Monitoring</h3></div>
@@ -492,42 +528,71 @@
                     </div>
                 </div>
             `;
-            document.getElementById('repSearch').onkeyup = (e) => { state.reportSearch = e.target.value; renderReport(); };
-            const ctx = document.getElementById('catChart').getContext('2d');
-            const labels = ['Orangtua', 'Pemuda', 'Sekolah Minggu', 'Tamu'], data = labels.map(l => state.participants.filter(p => p.status === l).length);
-            new Chart(ctx, { type: 'doughnut', data: { labels, datasets: [{ data, backgroundColor: ['#064e3b', '#10b981', '#34d399', '#f59e0b'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { weight: '800', size: 10 }, padding: 20 } } }, cutout: '70%' } });
+            const searchIn = document.getElementById('repSearch');
+            if(searchIn) searchIn.onkeyup = (e) => { state.reportSearch = e.target.value; renderReport(); };
+            
+            const chartCanvas = document.getElementById('catChart');
+            if(chartCanvas) {
+                const ctx = chartCanvas.getContext('2d');
+                const labels = ['Orangtua', 'Pemuda', 'Sekolah Minggu', 'Tamu'], data = labels.map(l => state.participants.filter(p => p.status === l).length);
+                if (state.charts.catChart) state.charts.catChart.destroy();
+                state.charts.catChart = new Chart(ctx, { type: 'doughnut', data: { labels, datasets: [{ data, backgroundColor: ['#064e3b', '#10b981', '#34d399', '#f59e0b'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { weight: '800', size: 10 }, padding: 20 } } }, cutout: '70%' } });
+            }
         };
 
         // --- ADMIN PANEL ---
         const renderAdmin = () => {
             const area = document.getElementById('content-area');
+            if(!area) return;
             area.innerHTML = `
                 <div class="space-y-8 animate-[modalUp_0.5s]">
                     <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100">
                         <div class="flex flex-wrap justify-between items-center gap-5 mb-10"><h3 class="text-xl font-black text-slate-800 flex items-center gap-3 tracking-tight uppercase royal-font"><i class="fas fa-crown text-emerald-600"></i> Admin Panel</h3><div class="flex flex-wrap gap-3"><button id="btnExpPart" class="bg-emerald-50 px-5 py-3 rounded-2xl text-emerald-700 text-[10px] font-black uppercase tracking-widest shadow-sm">EKSPOR PENDAFTAR</button><button id="btnResetAll" class="bg-red-50 px-5 py-3 rounded-2xl text-red-700 text-[10px] font-black uppercase tracking-widest shadow-sm">RESET SISTEM</button></div></div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10"><div class="relative"><input type="text" id="admSearch" value="${state.adminSearch}" placeholder="CARI PESERTA..." class="form-input w-full rounded-2xl py-4 px-12 text-xs font-black uppercase"><i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i></div><select id="admFilter" class="form-input rounded-2xl px-5 py-4 text-xs font-black bg-slate-50 border-slate-200"><option value="Semua">SEMUA KATEGORI</option><option value="Orangtua" ${state.filterStatus==='Orangtua'?'selected':''}>ORANGTUA</option><option value="Pemuda" ${state.filterStatus==='Pemuda'?'selected':''}>PEMUDA</option><option value="Sekolah Minggu" ${state.filterStatus==='Sekolah Minggu'?'selected':''}>SEKOLAH MINGGU</option><option value="Tamu" ${state.filterStatus==='Tamu'?'selected':''}>TAMU</option></select></div>
-                        <div class="overflow-x-auto rounded-3xl border border-slate-100 mb-12"><table class="w-full text-left text-[11px]"><thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100"><tr><th class="p-6">Informasi</th><th class="p-6">Kategori</th><th class="p-6 text-center">Aksi</th></tr></thead><tbody class="divide-y divide-slate-50">${state.participants.filter(p => p.name.toLowerCase().includes(state.adminSearch.toLowerCase()) && (state.filterStatus==='Semua' || p.status===state.filterStatus)).map(p => `<tr><td class="p-6"><div class="font-black text-slate-800 text-sm uppercase">${p.name}</div><div class="text-[9px] font-mono text-emerald-500 mt-1 font-bold">${p.qrCode}</div></td><td class="p-6"><span class="bg-slate-100 px-3 py-1 rounded-full font-black text-slate-500">${p.status}</span></td><td class="p-6 text-center flex justify-center gap-3"><button onclick="window.adminResetPIN('${p.firebaseId}', '${p.name}')" class="text-amber-500 hover:text-amber-600 w-10 h-10 flex items-center justify-center bg-amber-50 rounded-xl shadow-sm border border-amber-100"><i class="fas fa-key"></i></button><button onclick="window.adminDeletePart('${p.firebaseId}')" class="text-red-400 hover:text-red-600 w-10 h-10 flex items-center justify-center bg-red-50 rounded-xl shadow-sm border border-red-100"><i class="fas fa-trash"></i></button></td></tr>`).join('')}</tbody></table></div>
+                        <div class="overflow-x-auto rounded-3xl border border-slate-100 mb-12"><table class="w-full text-left text-[11px]"><thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100"><tr><th class="p-6">Informasi</th><th class="p-6">Kategori</th><th class="p-6 text-center">Aksi</th></tr></thead><tbody class="divide-y divide-slate-50">${state.participants.filter(p => p.name.toLowerCase().includes(state.adminSearch.toLowerCase()) && (state.filterStatus==='Semua' || p.status===state.filterStatus)).map(p => `<tr><td class="p-6"><div class="font-black text-slate-800 text-sm uppercase">${p.name}</div><div class="text-[9px] font-mono text-emerald-500 mt-1 font-bold">${p.qrCode}</div></td><td class="p-6"><span class="bg-slate-100 px-3 py-1 rounded-full font-black text-slate-500">${p.status}</span></td><td class="p-6 text-center flex justify-center gap-2">
+                            <button onclick="window.adminEditPart('${p.firebaseId}')" class="text-blue-500 hover:text-blue-600 w-9 h-9 flex items-center justify-center bg-blue-50 rounded-xl shadow-sm border border-blue-100" title="Edit Data"><i class="fas fa-pen text-xs"></i></button>
+                            <button onclick="window.adminResetPIN('${p.firebaseId}', '${p.name}')" class="text-amber-500 hover:text-amber-600 w-9 h-9 flex items-center justify-center bg-amber-50 rounded-xl shadow-sm border border-amber-100" title="Reset PIN"><i class="fas fa-key text-xs"></i></button>
+                            <button onclick="window.adminDeletePart('${p.firebaseId}')" class="text-red-400 hover:text-red-600 w-9 h-9 flex items-center justify-center bg-red-50 rounded-xl shadow-sm border border-red-100" title="Hapus"><i class="fas fa-trash text-xs"></i></button>
+                        </td></tr>`).join('')}</tbody></table></div>
                         <div class="border-t border-slate-100 pt-12"><div class="flex items-center gap-3 mb-8"><div class="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center shadow-lg"><i class="fas fa-users-gear"></i></div><h4 class="text-xs font-black text-slate-800 uppercase tracking-widest">Manajemen Staff</h4></div><div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8"><div class="md:col-span-5"><input id="stfName" type="text" placeholder="NAMA LENGKAP" class="form-input w-full rounded-2xl p-4 text-[11px] font-black uppercase shadow-inner"></div><div class="md:col-span-3"><input id="stfPin" type="password" maxlength="6" placeholder="PIN (6 DIG)" class="form-input w-full rounded-2xl p-4 text-[11px] font-black text-center shadow-inner"></div><div class="md:col-span-4"><button id="btnAddStaff" class="w-full h-full bg-slate-900 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-black transition-all shadow-xl py-4 md:py-0">TAMBAH</button></div></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${state.staff.map(s => `<div class="bg-slate-50 p-5 rounded-[1.5rem] border border-slate-100 flex justify-between items-center shadow-sm"><div><div class="font-black text-slate-800 text-[11px] uppercase tracking-wide">${s.name}</div><div class="text-[9px] text-emerald-600 font-black uppercase mt-1 bg-emerald-50 px-2 py-0.5 rounded-full inline-block border border-emerald-100">PIN: ${s.pin}</div></div><button onclick="window.adminRemoveStaff('${s.firebaseId}')" class="text-red-400 hover:text-red-600 w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-inner border border-slate-100"><i class="fas fa-trash-can text-xs"></i></button></div>`).join('') || '<div class="col-span-full text-center py-10 text-slate-300 font-black text-[10px] uppercase">Belum Ada Petugas</div>'}</div></div>
                     </div>
                 </div>
             `;
-            document.getElementById('admSearch').onkeyup = (e) => { state.adminSearch = e.target.value; renderAdmin(); };
-            document.getElementById('admFilter').onchange = (e) => { state.filterStatus = e.target.value; renderAdmin(); };
-            document.getElementById('btnAddStaff').onclick = handleAddStaff;
-            document.getElementById('btnExpPart').onclick = () => exportToCSV(state.participants, "Pendaftar");
-            document.getElementById('btnResetAll').onclick = () => { if (confirm("Ketik 'RESET' untuk menghapus data?")) { const v = prompt("Ketik RESET:"); if (v === 'RESET') { Promise.all([set(ref(db, 'participants'), null), set(ref(db, 'attendance'), null), set(ref(db, 'gifts'), null)]).then(() => alert("Bersih!")); } } };
+            const searchIn = document.getElementById('admSearch');
+            const filterIn = document.getElementById('admFilter');
+            const staffAdd = document.getElementById('btnAddStaff');
+            const expBtn = document.getElementById('btnExpPart');
+            const resetBtn = document.getElementById('btnResetAll');
+            
+            if(searchIn) searchIn.onkeyup = (e) => { state.adminSearch = e.target.value; renderAdmin(); };
+            if(filterIn) filterIn.onchange = (e) => { state.filterStatus = e.target.value; renderAdmin(); };
+            if(staffAdd) staffAdd.onclick = handleAddStaff;
+            if(expBtn) expBtn.onclick = () => exportToCSV(state.participants, "Pendaftar");
+            if(resetBtn) resetBtn.onclick = () => { if (confirm("Ketik 'RESET' untuk menghapus data?")) { const v = prompt("Ketik RESET:"); if (v === 'RESET') { Promise.all([set(ref(db, 'participants'), null), set(ref(db, 'attendance'), null), set(ref(db, 'gifts'), null)]).then(() => alert("Bersih!")); } } };
         };
 
         const handleAddStaff = () => {
-            const n = document.getElementById('stfName').value.trim().toUpperCase(), p = document.getElementById('stfPin').value;
+            const nameEl = document.getElementById('stfName');
+            const pinEl = document.getElementById('stfPin');
+            const n = nameEl.value.trim().toUpperCase(), p = pinEl.value;
             if (!n || p.length < 6) return alert("Validasi Gagal!");
-            push(ref(db, 'staff'), { name: n, pin: p }).then(() => { showToast("Staff Ditambah", n); document.getElementById('stfName').value = ''; document.getElementById('stfPin').value = ''; });
+            push(ref(db, 'staff'), { name: n, pin: p }).then(() => { 
+                showToast("Staff Ditambah", n); 
+                nameEl.value = ''; 
+                pinEl.value = ''; 
+            });
         };
 
         const exportToCSV = (data, name) => {
+            if(!data.length) return alert("Data Kosong");
             const headers = Object.keys(data[0] || {}), rows = data.map(o => headers.map(h => `"${o[h]}"`).join(","));
             const content = "\ufeff" + headers.join(",") + "\n" + rows.join("\n"), blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `${name}_Bonataon2026.csv`; link.click();
+        };
+
+        window.adminEditPart = (id) => {
+            const user = state.participants.find(p => p.firebaseId === id);
+            if(user) openEditUserModal(user);
         };
 
         window.adminResetPIN = (id, name) => { const pin = prompt(`PIN baru untuk ${name}:`); if (pin && pin.length >= 6) update(ref(db, 'participants/' + id), { password: pin }).then(() => alert("Berhasil!")); };
@@ -537,6 +602,7 @@
         // --- SCANNER LOGIC ---
         const renderScan = (type) => {
             const area = document.getElementById('content-area');
+            if(!area) return;
             area.innerHTML = `
                 <div class="bg-white rounded-[2.5rem] p-10 shadow-2xl text-center border border-slate-100 animate-[modalUp_0.5s]">
                     <h3 class="font-black mb-8 text-slate-800 tracking-tight uppercase royal-font text-2xl">SCAN ${type === 'scan' ? 'KEHADIRAN' : 'BERKAT'}</h3>
@@ -547,16 +613,38 @@
             `;
             state.scanner = new Html5Qrcode("qrReader");
             state.scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (text) => handleScanProcess(text.trim().toUpperCase(), type)).catch(e => console.error(e));
-            document.getElementById('btnManual').onclick = () => { const code = prompt("Masukkan Kode (MN-XXXX):"); if (code) handleScanProcess(code.trim().toUpperCase(), type); };
+            const manualBtn = document.getElementById('btnManual');
+            if(manualBtn) manualBtn.onclick = () => { const code = prompt("Masukkan Kode (MN-XXXX):"); if (code) handleScanProcess(code.trim().toUpperCase(), type); };
         };
 
         const handleScanProcess = (code, type) => {
             if (state.isProcessingScan) return; state.isProcessingScan = true;
             const msg = document.getElementById('scanMsg'), p = state.participants.find(x => x.qrCode === code);
-            if (!p) { msg.innerText = "TIDAK TERDAFTAR!"; msg.className = "p-5 rounded-2xl mb-8 bg-red-600 text-white font-black block"; setTimeout(() => { msg.classList.add('hidden'); state.isProcessingScan = false; }, 3000); return; }
+            if (!p) { 
+                if(msg) {
+                    msg.innerText = "TIDAK TERDAFTAR!"; 
+                    msg.className = "p-5 rounded-2xl mb-8 bg-red-600 text-white font-black block"; 
+                    setTimeout(() => { if(msg) msg.classList.add('hidden'); state.isProcessingScan = false; }, 3000); 
+                } else { state.isProcessingScan = false; }
+                return; 
+            }
             const path = type === 'scan' ? 'attendance' : 'gifts', list = type === 'scan' ? state.attendance : state.gifts;
-            if (list.some(l => l.qrCode === code)) { msg.innerText = "SUDAH TERDATA!"; msg.className = "p-5 rounded-2xl mb-8 bg-amber-500 text-white font-black block"; setTimeout(() => { msg.classList.add('hidden'); state.isProcessingScan = false; }, 3000); return; }
-            push(ref(db, path), { name: p.name, qrCode: code, timestamp: new Date().toLocaleString() }).then(() => { msg.innerText = `SUKSES: ${p.name}!`; msg.className = "p-5 rounded-2xl mb-8 bg-emerald-600 text-white font-black block"; showToast("Berhasil!", p.name); setTimeout(() => { msg.classList.add('hidden'); state.isProcessingScan = false; }, 3000); });
+            if (list.some(l => l.qrCode === code)) { 
+                if(msg) {
+                    msg.innerText = "SUDAH TERDATA!"; 
+                    msg.className = "p-5 rounded-2xl mb-8 bg-amber-500 text-white font-black block"; 
+                    setTimeout(() => { if(msg) msg.classList.add('hidden'); state.isProcessingScan = false; }, 3000); 
+                } else { state.isProcessingScan = false; }
+                return; 
+            }
+            push(ref(db, path), { name: p.name, qrCode: code, timestamp: new Date().toLocaleString() }).then(() => { 
+                if(msg) {
+                    msg.innerText = `SUKSES: ${p.name}!`; 
+                    msg.className = "p-5 rounded-2xl mb-8 bg-emerald-600 text-white font-black block"; 
+                    showToast("Berhasil!", p.name); 
+                    setTimeout(() => { if(msg) msg.classList.add('hidden'); state.isProcessingScan = false; }, 3000); 
+                } else { state.isProcessingScan = false; }
+            });
         };
 
         // --- NAVIGATION ---
@@ -567,6 +655,7 @@
             if (t === 'register') renderRegister();
             else if (t === 'find') {
                 const area = document.getElementById('content-area');
+                if(!area) return;
                 area.innerHTML = `
                     <div class="bg-white rounded-[2.5rem] p-10 md:p-16 shadow-2xl text-center border border-slate-100 animate-[modalUp_0.4s]">
                         <div class="w-24 h-24 bg-emerald-50 rounded-[2rem] flex items-center justify-center mx-auto mb-10 text-emerald-600 text-4xl shadow-inner"><i class="fas fa-magnifying-glass"></i></div>
@@ -574,12 +663,15 @@
                         <div class="space-y-6"><input id="findIn" type="text" placeholder="Masukkan Nama Lengkap Anda" class="form-input w-full rounded-2xl p-6 text-center font-black uppercase text-lg shadow-inner"><button id="btnFind" class="w-full bg-emerald-700 text-white rounded-[1.5rem] py-6 font-black hover:bg-emerald-800 transition-all shadow-2xl uppercase tracking-[0.2em]">CARI TIKET</button></div>
                     </div>
                 `;
-                document.getElementById('btnFind').onclick = () => {
-                    const q = document.getElementById('findIn').value.trim().toLowerCase();
-                    const found = state.participants.filter(p => p.name.toLowerCase().includes(q));
-                    if (!found.length) return alert("Data tidak ditemukan!");
-                    if (found.length === 1) handleTicketAuth(found[0]); else alert("Ketik Nama Lebih Lengkap!");
-                };
+                const findBtn = document.getElementById('btnFind');
+                if(findBtn) {
+                    findBtn.onclick = () => {
+                        const q = document.getElementById('findIn').value.trim().toLowerCase();
+                        const found = state.participants.filter(p => p.name.toLowerCase().includes(q));
+                        if (!found.length) return alert("Data tidak ditemukan!");
+                        if (found.length === 1) handleTicketAuth(found[0]); else alert("Ketik Nama Lebih Lengkap!");
+                    };
+                }
             }
             else if (t === 'scan' || t === 'gift') renderScan(t);
             else if (t === 'report') renderReport();
@@ -589,7 +681,13 @@
         const handleTicketAuth = (user) => {
             const html = `<h3 class="text-2xl font-black text-slate-800 text-center uppercase royal-font mb-4 tracking-tight">Verifikasi</h3><p class="text-[10px] text-slate-400 font-black text-center mb-8 uppercase tracking-widest">Masukkan PIN untuk <span class="text-emerald-600">${user.name}</span></p><input type="password" id="pinAuth" maxlength="8" class="form-input w-full rounded-2xl p-6 text-center text-4xl font-black mb-8 tracking-[0.5em] shadow-inner" placeholder="••••••••"><div class="grid grid-cols-2 gap-4"><button onclick="document.getElementById('authModal').classList.add('hidden')" class="py-5 border-2 border-slate-100 rounded-2xl font-black text-slate-400 uppercase tracking-widest text-xs">Batal</button><button id="btnVerify" class="py-5 bg-emerald-600 text-white rounded-2xl font-black shadow-xl uppercase tracking-widest text-xs">KONFIRMASI</button></div>`;
             openModal(html, 'authModal');
-            document.getElementById('btnVerify').onclick = () => { const pin = document.getElementById('pinAuth').value; if (pin === user.password) { closeModal('authModal'); window.showTicket(user); } else alert("PIN Salah!"); };
+            const verifyBtn = document.getElementById('btnVerify');
+            if(verifyBtn) {
+                verifyBtn.onclick = () => { 
+                    const pin = document.getElementById('pinAuth').value; 
+                    if (pin === user.password) { closeModal('authModal'); window.showTicket(user); } else alert("PIN Salah!"); 
+                };
+            }
         };
 
         // --- DATA LISTENERS ---
@@ -603,14 +701,24 @@
         setInterval(() => { const el = document.getElementById('liveClock'); if (!el) return; const now = new Date(); el.innerHTML = `<div class="text-[10px] font-black opacity-60 uppercase tracking-widest mb-1">${now.toLocaleDateString('id-ID', {day:'numeric', month:'short'})}</div><div class="text-2xl font-black">${now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</div>`; }, 1000);
 
         // Events
-        document.getElementById('adminTrigger').onclick = renderAdminLogin;
-        document.getElementById('nav-register').onclick = () => setTab('register');
-        document.getElementById('nav-find').onclick = () => setTab('find');
-        document.getElementById('nav-scan').onclick = () => setTab('scan');
-        document.getElementById('nav-gift').onclick = () => setTab('gift');
-        document.getElementById('nav-report').onclick = () => setTab('report');
-        document.getElementById('nav-data').onclick = () => setTab('data');
-        document.getElementById('nav-logout').onclick = () => { if (confirm("Keluar?")) { state.isAdmin = false; state.isStaff = false; refreshUI(); setTab('register'); } };
+        const trigger = document.getElementById('adminTrigger');
+        if(trigger) trigger.onclick = renderAdminLogin;
+        
+        const navReg = document.getElementById('nav-register'),
+              navFind = document.getElementById('nav-find'),
+              navScan = document.getElementById('nav-scan'),
+              navGift = document.getElementById('nav-gift'),
+              navRep = document.getElementById('nav-report'),
+              navData = document.getElementById('nav-data'),
+              navLogout = document.getElementById('nav-logout');
+
+        if(navReg) navReg.onclick = () => setTab('register');
+        if(navFind) navFind.onclick = () => setTab('find');
+        if(navScan) navScan.onclick = () => setTab('scan');
+        if(navGift) navGift.onclick = () => setTab('gift');
+        if(navRep) navRep.onclick = () => setTab('report');
+        if(navData) navData.onclick = () => setTab('data');
+        if(navLogout) navLogout.onclick = () => { if (confirm("Keluar?")) { state.isAdmin = false; state.isStaff = false; refreshUI(); setTab('register'); } };
 
         setTab('register'); refreshUI();
     </script>
