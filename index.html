@@ -1,4 +1,4 @@
-<!DOCTYPE html>                      
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -18,8 +18,8 @@
         :root {
             --emerald-900: #064e3b;
             --emerald-600: #10b981;
-            --emerald-500: #34d399;
             --emerald-50: #ecfdf5;
+            --emerald-500: #34d399;
             --amber-500: #f59e0b;
             --slate-900: #0f172a;
             --slate-800: #1e293b;
@@ -656,7 +656,18 @@
             area.innerHTML = `
                 <div class="space-y-8 animate-[modalUp_0.5s]">
                     <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100">
-                        <div class="flex flex-wrap justify-between items-center gap-5 mb-10"><h3 class="text-xl font-black text-slate-800 flex items-center gap-3 tracking-tight uppercase royal-font"><i class="fas fa-crown text-emerald-600"></i> Admin Panel</h3><div class="flex flex-wrap gap-3"><button id="btnExpPart" class="bg-emerald-50 px-5 py-3 rounded-2xl text-emerald-700 text-[10px] font-black uppercase tracking-widest shadow-sm">EKSPOR PENDAFTAR</button><button id="btnResetAll" class="bg-red-50 px-5 py-3 rounded-2xl text-red-700 text-[10px] font-black uppercase tracking-widest shadow-sm">RESET SISTEM</button></div></div>
+                        <div class="flex flex-wrap justify-between items-center gap-5 mb-10">
+                            <h3 class="text-xl font-black text-slate-800 flex items-center gap-3 tracking-tight uppercase royal-font"><i class="fas fa-crown text-emerald-600"></i> Admin Panel</h3>
+                            <div class="flex flex-wrap gap-3">
+                                <button id="btnExpAll" class="bg-amber-100 px-5 py-3 rounded-2xl text-amber-900 text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-2 border border-amber-200">
+                                    <i class="fas fa-file-export"></i> EKSPOR SEMUA DATA
+                                </button>
+                                <button id="btnExpPart" class="bg-emerald-50 px-5 py-3 rounded-2xl text-emerald-700 text-[10px] font-black uppercase tracking-widest shadow-sm">PENDAFTAR</button>
+                                <button id="btnExpAtt" class="bg-emerald-50 px-5 py-3 rounded-2xl text-emerald-700 text-[10px] font-black uppercase tracking-widest shadow-sm">ABSENSI</button>
+                                <button id="btnExpGift" class="bg-emerald-50 px-5 py-3 rounded-2xl text-emerald-700 text-[10px] font-black uppercase tracking-widest shadow-sm">BERKAT</button>
+                                <button id="btnResetAll" class="bg-red-50 px-5 py-3 rounded-2xl text-red-700 text-[10px] font-black uppercase tracking-widest shadow-sm">RESET SISTEM</button>
+                            </div>
+                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10"><div class="relative"><input type="text" id="admSearch" value="${state.adminSearch}" placeholder="CARI PESERTA..." class="form-input w-full rounded-2xl py-4 px-12 text-xs font-black uppercase"><i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i></div><select id="admFilter" class="form-input rounded-2xl px-5 py-4 text-xs font-black bg-slate-50 border-slate-200"><option value="Semua">SEMUA KATEGORI</option><option value="Orangtua" ${state.filterStatus==='Orangtua'?'selected':''}>ORANGTUA</option><option value="Pemuda" ${state.filterStatus==='Pemuda'?'selected':''}>PEMUDA</option><option value="Sekolah Minggu" ${state.filterStatus==='Sekolah Minggu'?'selected':''}>SEKOLAH MINGGU</option><option value="Tamu" ${state.filterStatus==='Tamu'?'selected':''}>TAMU</option></select></div>
                         <div class="overflow-x-auto rounded-3xl border border-slate-100 mb-12"><table class="w-full text-left text-[11px]"><thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100"><tr><th class="p-6">Informasi</th><th class="p-6">Kategori</th><th class="p-6 text-center">Aksi</th></tr></thead><tbody class="divide-y divide-slate-50">${state.participants.filter(p => p.name.toLowerCase().includes(state.adminSearch.toLowerCase()) && (state.filterStatus==='Semua' || p.status===state.filterStatus)).map(p => `<tr><td class="p-6"><div class="font-black text-slate-800 text-sm uppercase">${p.name}</div><div class="text-[9px] font-mono text-emerald-500 mt-1 font-bold">${p.qrCode}</div></td><td class="p-6"><span class="bg-slate-100 px-3 py-1 rounded-full font-black text-slate-500">${p.status}</span></td><td class="p-6 text-center flex justify-center gap-2">
                             <button onclick="window.adminEditPart('${p.firebaseId}')" class="text-blue-500 hover:text-blue-600 w-9 h-9 flex items-center justify-center bg-blue-50 rounded-xl shadow-sm border border-blue-100" title="Edit Data"><i class="fas fa-pen text-xs"></i></button>
@@ -670,13 +681,30 @@
             const searchIn = document.getElementById('admSearch');
             const filterIn = document.getElementById('admFilter');
             const staffAdd = document.getElementById('btnAddStaff');
+            const expAllBtn = document.getElementById('btnExpAll');
             const expBtn = document.getElementById('btnExpPart');
+            const expAttBtn = document.getElementById('btnExpAtt');
+            const expGiftBtn = document.getElementById('btnExpGift');
             const resetBtn = document.getElementById('btnResetAll');
             
             if(searchIn) searchIn.onkeyup = (e) => { state.adminSearch = e.target.value; renderAdmin(); };
             if(filterIn) filterIn.onchange = (e) => { state.filterStatus = e.target.value; renderAdmin(); };
             if(staffAdd) staffAdd.onclick = handleAddStaff;
+            
+            if(expAllBtn) expAllBtn.onclick = () => {
+                if(!state.participants.length && !state.attendance.length && !state.gifts.length) {
+                    return alert("Tidak ada data untuk diekspor.");
+                }
+                exportToCSV(state.participants, "01_Data_Pendaftar_Lengkap");
+                setTimeout(() => exportToCSV(state.attendance, "02_Data_Absensi_Hadir"), 500);
+                setTimeout(() => exportToCSV(state.gifts, "03_Data_Penerima_Berkat"), 1000);
+                showToast("Ekspor Massal", "Ketiga file sedang diunduh secara berurutan.");
+            };
+
             if(expBtn) expBtn.onclick = () => exportToCSV(state.participants, "Pendaftar");
+            if(expAttBtn) expAttBtn.onclick = () => exportToCSV(state.attendance, "Absensi_Kehadiran");
+            if(expGiftBtn) expGiftBtn.onclick = () => exportToCSV(state.gifts, "Berkat_Diterima");
+            
             if(resetBtn) resetBtn.onclick = () => { if (confirm("Ketik 'RESET' untuk menghapus data?")) { const v = prompt("Ketik RESET:"); if (v === 'RESET') { Promise.all([set(ref(db, 'participants'), null), set(ref(db, 'attendance'), null), set(ref(db, 'gifts'), null)]).then(() => alert("Bersih!")); } } };
         };
 
@@ -693,8 +721,10 @@
         };
 
         const exportToCSV = (data, name) => {
-            if(!data.length) return alert("Data Kosong");
-            const headers = Object.keys(data[0] || {}), rows = data.map(o => headers.map(h => `"${o[h]}"`).join(","));
+            if(!data.length) return; // Silent return for mass export
+            // Membersihkan data dari firebaseId jika ada untuk ekspor yang lebih bersih
+            const cleanData = data.map(({ firebaseId, password, ...rest }) => rest);
+            const headers = Object.keys(cleanData[0] || {}), rows = cleanData.map(o => headers.map(h => `"${o[h]}"`).join(","));
             const content = "\ufeff" + headers.join(",") + "\n" + rows.join("\n"), blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `${name}_Bonataon2026.csv`; link.click();
         };
