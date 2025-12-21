@@ -175,7 +175,8 @@
             object-fit: cover !important;
             border-radius: 2rem;
         }
-    </style>
+                        
+  </style>
 </head>
 <body class="antialiased">
 
@@ -183,12 +184,11 @@
 
     <div id="app" class="relative z-10 w-full max-w-4xl mx-auto min-h-screen md:my-10 md:rounded-[3rem] overflow-hidden flex flex-col glass-panel shadow-2xl">
           
-        <!-- Loading State -->
         <div id="loading" class="absolute inset-0 z-[9999] bg-slate-50 flex flex-col justify-center items-center px-6 text-center">
-            <img src="logo tugu manihuruk.png" alt="Logo" class="w-32 h-32 animate-bounce mb-8">
+            <div class="w-32 h-32 mb-8 bg-emerald-100 rounded-full flex items-center justify-center text-4xl animate-bounce">🎄</div>
             <h2 class="text-3xl font-black text-emerald-900 mb-2 royal-font uppercase">BONATAON 2026</h2>
-            <div class="flex items-center gap-3 text-emerald-600 font-bold mt-4 bg-emerald-50 px-6 py-3 rounded-full shadow-sm">
-                <i class="fas fa-circle-notch fa-spin"></i> Menyiapkan Sistem...
+            <div id="loadingText" class="flex items-center gap-3 text-emerald-600 font-bold mt-4 bg-emerald-50 px-6 py-3 rounded-full shadow-sm">
+                <i class="fas fa-circle-notch fa-spin"></i> Menghubungkan ke Server...
             </div>
         </div>
 
@@ -196,13 +196,14 @@
             <div class="flex justify-between items-start relative z-10">
                 <div class="flex items-center gap-6">
                     <div id="adminTrigger" class="logo-frame w-16 h-16 md:w-24 md:h-24 p-2 border-2 border-white/20">
-                        <img src="logo tugu manihuruk.png" alt="Logo" class="w-full h-full object-contain">
+                         <img src="https://via.placeholder.com/150" alt="Logo" class="w-full h-full object-contain">
                     </div>
                     <div>
                         <h1 class="text-lg md:text-2xl font-black text-white royal-font tracking-wide uppercase leading-tight">
                             BONATAON MARGA MANIHURUK<br><span class="text-emerald-300">BORU BERE / PANAGOLAN 2026</span>
                         </h1>
                         <div id="roleBadge" class="hidden inline-block mt-3 px-4 py-1.5 bg-amber-400 text-amber-900 text-[10px] font-black rounded-full uppercase tracking-widest shadow-xl border border-amber-300"></div>
+                        <div id="authStatus" class="inline-block mt-2 px-3 py-1 bg-white/20 text-white text-[9px] rounded-lg">Checking Auth...</div>
                     </div>
                 </div>
                 <div id="liveClock" class="text-right text-white hidden md:block backdrop-blur-md bg-white/10 p-3 rounded-2xl border border-white/10"></div>
@@ -260,17 +261,17 @@
         </footer>
     </div>
 
-    <!-- Modals Container -->
     <div id="modal-container"></div>
 
-    <!-- LOGIKA APLIKASI (MODULE SCRIPT) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, onValue, set, update, remove, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        // IMPORT PENTING UNTUK LOGIN
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // --- FIREBASE INITIALIZATION ---
+        // --- KONFIGURASI FIREBASE ---
         const firebaseConfig = {
-            apiKey: "AIzaSyD1jqsGb3gIGEhg8qo37oMAANNcKDdDuFU",
+            apiKey: "AIzaSyD1jqsGb3gIGEhg8qo37oMAANNcKDdDuFU", // Pastikan ini sesuai Project Settings Anda
             authDomain: "bonataon-2026.firebaseapp.com",
             databaseURL: "https://bonataon-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "bonataon-2026",
@@ -278,8 +279,45 @@
             messagingSenderId: "392578784070",
             appId: "1:392578784070:web:f85870afad7f202a592347"
         };
+        
+        // Inisialisasi Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        // --- SISTEM LOGIN APLIKASI OTOMATIS (AGAR BISA TULIS DATABASE) ---
+        // Ganti email/pass ini dengan yang Anda buat di Authentication > Users
+        const APP_USER = "admin@test.com"; 
+        const APP_PASS = "password123"; 
+
+        function initAppAuth() {
+            const statusEl = document.getElementById('authStatus');
+            const loadingText = document.getElementById('loadingText');
+            
+            signInWithEmailAndPassword(auth, APP_USER, APP_PASS)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log("Aplikasi Terhubung ke Database sebagai: " + user.email);
+                if(statusEl) { statusEl.innerText = "Server Connected ✓"; statusEl.classList.replace("bg-white/20", "bg-emerald-500"); }
+                if(loadingText) loadingText.innerHTML = '<i class="fas fa-check"></i> Siap Digunakan!';
+                
+                // Mulai load data hanya setelah login berhasil
+                startDataListeners();
+                setTimeout(() => document.getElementById('loading').classList.add('hidden'), 1000);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error("Gagal Login Aplikasi:", errorCode, errorMessage);
+                if(loadingText) {
+                    loadingText.innerHTML = '<i class="fas fa-triangle-exclamation"></i> Gagal Koneksi Server';
+                    loadingText.classList.replace('text-emerald-600', 'text-red-600');
+                    loadingText.classList.replace('bg-emerald-50', 'bg-red-50');
+                }
+                alert("PENTING: Gagal login ke Firebase. Pastikan user 'admin@test.com' sudah dibuat di menu Authentication.");
+            });
+        }
 
         // --- GLOBAL STATE ---
         let state = {
@@ -291,7 +329,7 @@
             scanner: null,
             isAdmin: false,
             isStaff: false,
-            adminPass: "123456",
+            adminPass: "123456", // PIN Lokal untuk menu admin UI
             recoveryKey: "BONA2026",
             activeUser: null,
             tempUser: null,
@@ -350,9 +388,6 @@
             if (state.tab === 'register') renderRegister();
             if (state.tab === 'report') renderReport();
             if (state.tab === 'data') renderAdmin();
-            
-            const loader = document.getElementById('loading');
-            if (loader) setTimeout(() => loader.classList.add('hidden'), 500);
         };
 
         // --- VALIDATION HELPERS ---
@@ -363,8 +398,7 @@
 
             input.oninput = (e) => {
                 let val = e.target.value;
-                // Only allow digits
-                val = val.replace(/\D/g, '');
+                val = val.replace(/\D/g, ''); // Hanya angka
                 e.target.value = val;
 
                 if (val.length >= 6) {
@@ -440,11 +474,18 @@
 
             const code = `MN-${Date.now().toString().slice(-8)}`;
             const data = { name: n, status: s, marga: m, password: p, qrCode: code, registeredAt: new Date().toLocaleString() };
-            push(ref(db, 'participants'), data).then(() => { 
+            
+            // PUSH DATA KE FIREBASE
+            push(ref(db, 'participants'), data)
+            .then(() => { 
                 showToast("Pendaftaran Berhasil!", `${n} telah resmi terdaftar.`); 
                 showTicket(data); 
                 nameEl.value = ''; 
                 passEl.value = ''; 
+            })
+            .catch((err) => {
+                showToast("Gagal Menyimpan", "Cek koneksi internet atau login.", "error");
+                console.error(err);
             });
         };
 
@@ -454,7 +495,7 @@
             const html = `
                 <div id="vipTicketCard" class="vip-ticket rounded-[3rem] p-10 shadow-2xl border border-white/10 relative overflow-hidden">
                     <div class="relative z-10 text-center">
-                        <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl overflow-hidden"><img src="logo tugu manihuruk.png" class="w-14 h-14"></div>
+                         <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl overflow-hidden"><img src="https://via.placeholder.com/150" class="w-14 h-14"></div>
                         <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">OFFICIAL INVITATION</div>
                         <h2 class="royal-font text-3xl font-black gold-text uppercase leading-none mt-2">BONATAON 2026</h2>
                         <div class="my-10">
@@ -556,7 +597,6 @@
             if(forgotBtn) forgotBtn.onclick = renderAdminRecovery;
         };
 
-        // --- ADMIN RECOVERY (REFACTORED) ---
         const renderAdminRecovery = () => {
             closeModal('adminModal');
             const html = `
@@ -721,8 +761,7 @@
         };
 
         const exportToCSV = (data, name) => {
-            if(!data.length) return; // Silent return for mass export
-            // Membersihkan data dari firebaseId jika ada untuk ekspor yang lebih bersih
+            if(!data.length) return; 
             const cleanData = data.map(({ firebaseId, password, ...rest }) => rest);
             const headers = Object.keys(cleanData[0] || {}), rows = cleanData.map(o => headers.map(h => `"${o[h]}"`).join(","));
             const content = "\ufeff" + headers.join(",") + "\n" + rows.join("\n"), blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
@@ -734,7 +773,6 @@
             if(user) openEditUserModal(user);
         };
 
-        // --- PARTICIPANT RESET (REFACTORED) ---
         window.adminResetPIN = (id, name) => {
             const html = `
                 <div class="text-center mb-8">
@@ -865,11 +903,13 @@
         };
 
         // --- DATA LISTENERS ---
-        onValue(ref(db, 'participants'), s => { state.participants = s.val() ? Object.keys(s.val()).map(k => ({...s.val()[k], firebaseId: k})) : []; updateDashboard(); });
-        onValue(ref(db, 'attendance'), s => { state.attendance = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
-        onValue(ref(db, 'gifts'), s => { state.gifts = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
-        onValue(ref(db, 'staff'), s => { state.staff = s.val() ? Object.keys(s.val()).map(k => ({...s.val()[k], firebaseId: k})) : []; updateDashboard(); });
-        onValue(ref(db, 'settings/adminPin'), s => { if (s.val()) state.adminPass = s.val(); });
+        const startDataListeners = () => {
+            onValue(ref(db, 'participants'), s => { state.participants = s.val() ? Object.keys(s.val()).map(k => ({...s.val()[k], firebaseId: k})) : []; updateDashboard(); });
+            onValue(ref(db, 'attendance'), s => { state.attendance = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
+            onValue(ref(db, 'gifts'), s => { state.gifts = s.val() ? Object.values(s.val()) : []; updateDashboard(); });
+            onValue(ref(db, 'staff'), s => { state.staff = s.val() ? Object.keys(s.val()).map(k => ({...s.val()[k], firebaseId: k})) : []; updateDashboard(); });
+            onValue(ref(db, 'settings/adminPin'), s => { if (s.val()) state.adminPass = s.val(); });
+        };
 
         // Clock
         setInterval(() => { const el = document.getElementById('liveClock'); if (!el) return; const now = new Date(); el.innerHTML = `<div class="text-[10px] font-black opacity-60 uppercase tracking-widest mb-1">${now.toLocaleDateString('id-ID', {day:'numeric', month:'short'})}</div><div class="text-2xl font-black">${now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</div>`; }, 1000);
@@ -894,7 +934,11 @@
         if(navData) navData.onclick = () => setTab('data');
         if(navLogout) navLogout.onclick = () => { if (confirm("Keluar?")) { state.isAdmin = false; state.isStaff = false; refreshUI(); setTab('register'); } };
 
-        setTab('register'); refreshUI();
+        // INITIALIZE
+        initAppAuth(); // Login dulu baru buka aplikasi
+        setTab('register'); 
+        refreshUI();
+
         window.closeModal = closeModal;
         window.renderAdminLogin = renderAdminLogin;
     </script>
