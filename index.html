@@ -414,7 +414,7 @@
                 <div class="px-2">
                     <div class="flex justify-between items-center mb-6 px-4"><h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pendaftar Terkini</h5><div class="text-[9px] font-black text-emerald-600 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full">Total: ${state.participants.length}</div></div>
                     <div class="space-y-3">
-                        ${recent.map(p => `<div class="bg-white p-5 rounded-[1.5rem] flex justify-between items-center shadow-lg border border-slate-100 animate-[modalUp_0.3s]"><div><div class="font-black text-sm text-slate-800 uppercase leading-tight">${p.name}</div><div class="text-[8px] font-bold text-slate-400 uppercase mt-1 tracking-wider">${p.marga}</div></div><div class="text-[9px] font-black bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full uppercase border border-emerald-100 shadow-sm">${p.status}</div></div>`).join('') || '<div class="text-center py-16 text-slate-300 font-black text-xs uppercase tracking-widest border-2 border-dashed border-slate-100 rounded-[2.5rem]">Belum Ada Pendaftar</div>'}
+                        ${recent.map(p => `<div class="bg-white p-5 rounded-[1.5rem] flex justify-between items-center shadow-lg border border-slate-100 animate-[modalUp_0.3s]"><div><div class="font-black text-sm text-slate-800 uppercase leading-tight">${p.name}</div><div class="flex items-center gap-2 mt-1"><span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider">${p.marga}</span><span class="text-[8px] font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">${p.qrCode}</span></div></div><div class="text-[9px] font-black bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full uppercase border border-emerald-100 shadow-sm">${p.status}</div></div>`).join('') || '<div class="text-center py-16 text-slate-300 font-black text-xs uppercase tracking-widest border-2 border-dashed border-slate-100 rounded-[2.5rem]">Belum Ada Pendaftar</div>'}
                     </div>
                 </div>
             `;
@@ -546,8 +546,11 @@
                 <div class="space-y-3 max-h-[50vh] overflow-y-auto pr-1 no-scrollbar">
                     ${list.map(p => `
                         <button onclick="window.selectDuplicate('${p.firebaseId}')" class="w-full bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-left group relative overflow-hidden">
-                            <div class="font-black text-slate-800 text-sm uppercase group-hover:text-emerald-700 relative z-10">${p.name}</div>
-                            <div class="flex items-center gap-2 mt-2 relative z-10">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-black text-slate-800 text-sm uppercase group-hover:text-emerald-700 relative z-10">${p.name}</div>
+                                <div class="text-[10px] font-mono font-bold text-slate-400 bg-white border border-slate-200 px-2 py-1 rounded-lg group-hover:text-emerald-600 group-hover:border-emerald-200 shadow-sm">${p.qrCode}</div>
+                            </div>
+                            <div class="flex items-center gap-2 relative z-10">
                                 <span class="text-[9px] font-black text-white bg-slate-400 px-3 py-1 rounded-full uppercase group-hover:bg-emerald-500 transition-colors">${p.marga}</span>
                                 <span class="text-[9px] font-bold text-slate-500 uppercase group-hover:text-emerald-600 transition-colors">${p.status}</span>
                             </div>
@@ -732,6 +735,22 @@
         const renderAdmin = () => {
             const area = document.getElementById('content-area');
             if(!area) return;
+
+            // 1. Helper function untuk generate rows (agar bisa dipanggil ulang tanpa re-render seluruh layout)
+            const generateRows = () => {
+                return state.participants.filter(p => p.name.toLowerCase().includes(state.adminSearch.toLowerCase()) && (state.filterStatus==='Semua' || p.status===state.filterStatus)).map(p => `<tr><td class="p-6"><div class="font-black text-slate-800 text-sm uppercase">${p.name}</div><div class="text-[9px] font-mono text-emerald-500 mt-1 font-bold">${p.qrCode}</div></td><td class="p-6"><span class="bg-slate-100 px-3 py-1 rounded-full font-black text-slate-500">${p.status}</span></td><td class="p-6 text-center flex justify-center gap-2">
+                            <button onclick="window.adminEditPart('${p.firebaseId}')" class="text-blue-500 hover:text-blue-600 w-9 h-9 flex items-center justify-center bg-blue-50 rounded-xl shadow-sm border border-blue-100" title="Edit Data"><i class="fas fa-pen text-xs"></i></button>
+                            <button onclick="window.adminResetPIN('${p.firebaseId}', '${p.name}')" class="text-amber-500 hover:text-amber-600 w-9 h-9 flex items-center justify-center bg-amber-50 rounded-xl shadow-sm border border-amber-100" title="Reset PIN"><i class="fas fa-key text-xs"></i></button>
+                            <button onclick="window.adminDeletePart('${p.firebaseId}')" class="text-red-400 hover:text-red-600 w-9 h-9 flex items-center justify-center bg-red-50 rounded-xl shadow-sm border border-red-100" title="Hapus"><i class="fas fa-trash text-xs"></i></button>
+                        </td></tr>`).join('');
+            };
+
+            // 2. Simpan state fokus jika sedang mengetik (untuk menangani re-render dari update data realtime)
+            const activeEl = document.activeElement;
+            const isSearchFocused = activeEl && activeEl.id === 'admSearch';
+            const cursorStart = isSearchFocused ? activeEl.selectionStart : 0;
+            const cursorEnd = isSearchFocused ? activeEl.selectionEnd : 0;
+
             area.innerHTML = `
                 <div class="space-y-8 animate-[modalUp_0.5s]">
                     <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100">
@@ -748,15 +767,22 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10"><div class="relative"><input type="text" id="admSearch" value="${state.adminSearch}" placeholder="CARI PESERTA..." class="form-input w-full rounded-2xl py-4 px-12 text-xs font-black uppercase"><i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i></div><select id="admFilter" class="form-input rounded-2xl px-5 py-4 text-xs font-black bg-slate-50 border-slate-200"><option value="Semua">SEMUA KATEGORI</option><option value="Orangtua" ${state.filterStatus==='Orangtua'?'selected':''}>ORANGTUA</option><option value="Pemuda" ${state.filterStatus==='Pemuda'?'selected':''}>PEMUDA</option><option value="Sekolah Minggu" ${state.filterStatus==='Sekolah Minggu'?'selected':''}>SEKOLAH MINGGU</option><option value="Tamu" ${state.filterStatus==='Tamu'?'selected':''}>TAMU</option></select></div>
-                        <div class="overflow-x-auto rounded-3xl border border-slate-100 mb-12"><table class="w-full text-left text-[11px]"><thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100"><tr><th class="p-6">Informasi</th><th class="p-6">Kategori</th><th class="p-6 text-center">Aksi</th></tr></thead><tbody class="divide-y divide-slate-50">${state.participants.filter(p => p.name.toLowerCase().includes(state.adminSearch.toLowerCase()) && (state.filterStatus==='Semua' || p.status===state.filterStatus)).map(p => `<tr><td class="p-6"><div class="font-black text-slate-800 text-sm uppercase">${p.name}</div><div class="text-[9px] font-mono text-emerald-500 mt-1 font-bold">${p.qrCode}</div></td><td class="p-6"><span class="bg-slate-100 px-3 py-1 rounded-full font-black text-slate-500">${p.status}</span></td><td class="p-6 text-center flex justify-center gap-2">
-                            <button onclick="window.adminEditPart('${p.firebaseId}')" class="text-blue-500 hover:text-blue-600 w-9 h-9 flex items-center justify-center bg-blue-50 rounded-xl shadow-sm border border-blue-100" title="Edit Data"><i class="fas fa-pen text-xs"></i></button>
-                            <button onclick="window.adminResetPIN('${p.firebaseId}', '${p.name}')" class="text-amber-500 hover:text-amber-600 w-9 h-9 flex items-center justify-center bg-amber-50 rounded-xl shadow-sm border border-amber-100" title="Reset PIN"><i class="fas fa-key text-xs"></i></button>
-                            <button onclick="window.adminDeletePart('${p.firebaseId}')" class="text-red-400 hover:text-red-600 w-9 h-9 flex items-center justify-center bg-red-50 rounded-xl shadow-sm border border-red-100" title="Hapus"><i class="fas fa-trash text-xs"></i></button>
-                        </td></tr>`).join('')}</tbody></table></div>
+                        <div class="overflow-x-auto rounded-3xl border border-slate-100 mb-12"><table class="w-full text-left text-[11px]"><thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100"><tr><th class="p-6">Informasi</th><th class="p-6">Kategori</th><th class="p-6 text-center">Aksi</th></tr></thead>
+                        <tbody id="admTableBody" class="divide-y divide-slate-50">${generateRows()}</tbody></table></div>
                         <div class="border-t border-slate-100 pt-12"><div class="flex items-center gap-3 mb-8"><div class="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center shadow-lg"><i class="fas fa-users-gear"></i></div><h4 class="text-xs font-black text-slate-800 uppercase tracking-widest">Manajemen Staff</h4></div><div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8"><div class="md:col-span-5"><input id="stfName" type="text" placeholder="NAMA LENGKAP" class="form-input w-full rounded-2xl p-4 text-[11px] font-black uppercase shadow-inner"></div><div class="md:col-span-3"><input id="stfPin" type="password" maxlength="6" placeholder="PIN (6 DIG)" class="form-input w-full rounded-2xl p-4 text-[11px] font-black text-center shadow-inner"></div><div class="md:col-span-4"><button id="btnAddStaff" class="w-full h-full bg-slate-900 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-black transition-all shadow-xl py-4 md:py-0">TAMBAH</button></div></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${state.staff.map(s => `<div class="bg-slate-50 p-5 rounded-[1.5rem] border border-slate-100 flex justify-between items-center shadow-sm"><div><div class="font-black text-slate-800 text-[11px] uppercase tracking-wide">${s.name}</div><div class="text-[9px] text-emerald-600 font-black uppercase mt-1 bg-emerald-50 px-2 py-0.5 rounded-full inline-block border border-emerald-100">PIN: ${s.pin}</div></div><button onclick="window.adminRemoveStaff('${s.firebaseId}')" class="text-red-400 hover:text-red-600 w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-inner border border-slate-100"><i class="fas fa-trash-can text-xs"></i></button></div>`).join('') || '<div class="col-span-full text-center py-10 text-slate-300 font-black text-[10px] uppercase">Belum Ada Petugas</div>'}</div></div>
                     </div>
                 </div>
             `;
+            
+            // 3. Kembalikan fokus ke input search jika sebelumnya sedang fokus
+            if (isSearchFocused) {
+                const newSearch = document.getElementById('admSearch');
+                if (newSearch) {
+                    newSearch.focus();
+                    newSearch.setSelectionRange(cursorStart, cursorEnd);
+                }
+            }
+
             const searchIn = document.getElementById('admSearch');
             const filterIn = document.getElementById('admFilter');
             const staffAdd = document.getElementById('btnAddStaff');
@@ -766,8 +792,19 @@
             const expGiftBtn = document.getElementById('btnExpGift');
             const resetBtn = document.getElementById('btnResetAll');
             
-            if(searchIn) searchIn.onkeyup = (e) => { state.adminSearch = e.target.value; renderAdmin(); };
-            if(filterIn) filterIn.onchange = (e) => { state.filterStatus = e.target.value; renderAdmin(); };
+            // 4. Modifikasi Event Listener: Update tabel saja secara parsial, JANGAN render ulang layout!
+            if(searchIn) searchIn.onkeyup = (e) => { 
+                state.adminSearch = e.target.value; 
+                const tbody = document.getElementById('admTableBody');
+                if (tbody) tbody.innerHTML = generateRows();
+            };
+            
+            if(filterIn) filterIn.onchange = (e) => { 
+                state.filterStatus = e.target.value; 
+                const tbody = document.getElementById('admTableBody');
+                if (tbody) tbody.innerHTML = generateRows();
+            };
+            
             if(staffAdd) staffAdd.onclick = handleAddStaff;
             
             if(expAllBtn) expAllBtn.onclick = () => {
